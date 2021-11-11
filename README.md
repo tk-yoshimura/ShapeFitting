@@ -12,3 +12,8 @@ Robust shape fitting
 
 ![fitcircle1](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitcircle1.svg)  
 ![fitcircle2](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitcircle2.svg)  
+
+## Weighted Fitting for Ellipse2D
+
+![fitellipse1](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse1.svg)  
+![fitellipse2](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse2.svg)  

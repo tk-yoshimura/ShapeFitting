@@ -1,0 +1,37 @@
+\begin{eqnarray*}
+  f(x, y)&=& a x^2+b x y+c y^2+d x+e y+1, ~~ D = ac-\frac{b^2}{4} > 0 \\
+    E &=& \sum_{i=1}^{N} w_i f(x_i, y_i)^2 \\
+\frac{\partial E}{\partial a} &=& 2 (a S_{w x^4} + b S_{w x^3 y} + c S_{w x^2 y^2} + d S_{w x^3} + e S_{w x^2 y} + S_{w x^2} ) = 0 \\
+\frac{\partial E}{\partial b} &=& 2 (a S_{w x^3 y} + b S_{w x^2 y^2} + c S_{w x y^3} + d S_{w x^2 y} + e S_{w x y^2} + S_{w x y} ) = 0 \\
+\frac{\partial E}{\partial c} &=& 2 (a S_{w x^2 y^2} + b S_{w x y^3} + c S_{w x y^4} + d S_{w x y^2} + e S_{w y^3} + S_{w y^2} ) = 0 \\
+\frac{\partial E}{\partial d} &=& 2 (a S_{w x^3} + b S_{w x^2 y} + c S_{w x y^2} + d S_{w x^2} + e S_{w x y} + S_{w x} ) = 0 \\
+\frac{\partial E}{\partial e} &=& 2 (a S_{w x^2 y} + b S_{w x y^2} + c S_{w y^3} + d S_{w x y} + e S_{w y^2} + S_{w y} ) = 0 \\
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  \left[ 
+  \begin{matrix}
+    a \\
+    b \\
+    c \\
+    d \\
+    f \\
+  \end{matrix} \right]
+=
+  \left[ 
+  \begin{matrix}
+    S_{w x^4}     & S_{w x^3 y}   & S_{w x^2 y^2} & S_{w x^3}   & S_{w x^2 y} \\
+    S_{w x^3 y}   & S_{w x^2 y^2} & S_{w x y^3}   & S_{w x^2 y} & S_{w x y^2} \\
+    S_{w x^2 y^2} & S_{w x y^3}   & S_{w x y^4}   & S_{w x y^2} & S_{w y^3}   \\
+    S_{w x^3}     & S_{w x^2 y}   & S_{w x y^2}   & S_{w x^2}   & S_{w x y}   \\
+    S_{w x^2 y}   & S_{w x y^2}   & S_{w y^3}     & S_{w x y}   & S_{w y^2}   \\
+  \end{matrix} \right]^{-1}
+  \left[ 
+  \begin{matrix}
+- S_{w x^2} \\
+- S_{w x y} \\
+- S_{w y^2} \\
+- S_{w x}   \\
+- S_{w y}   \\
+  \end{matrix} \right]
+\end{eqnarray*}

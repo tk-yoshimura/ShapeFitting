@@ -1,0 +1,25 @@
+\begin{eqnarray*}
+  f(x, y)&=&\sin(\theta)x+\cos(\theta)y+\phi \\
+    E &=& \sum_{i=1}^{N} w_i f(x_i, y_i)^2 \\
+      &=& \sum_{i=1}^{N} w_i x_i^2 \sin(\theta)^2 + w_i y_i^2 \cos(\theta)^2 + 2 w_i x_i y_i \sin(\theta) \cos(\theta) \\
+        &~~~~+& 2 w_i x_i \sin(\theta) \phi  + 2 w_i y_i \cos(\theta) \phi + w_i \phi^2 \\
+      &=& \sin(\theta)^2 \sum_{i=1}^{N} w_i x_i^2 + \cos(\theta)^2 \sum_{i=1}^{N} w_i y_i^2  + 2 \sin(\theta) \cos(\theta) \sum_{i=1}^{N} w_i x_i y_i \\
+        &~~~~+& 2 \sin(\theta) \phi \sum_{i=1}^{N} w_i x_i + 2 \cos(\theta) \phi \sum_{i=1}^{N} w_i y_i + \phi^2 \sum_{i=1}^{N} w_i \\
+      &=& \sin(\theta)^2 S_{wxx} + \cos(\theta)^2 S_{wyy}  + 2 \sin(\theta) \cos(\theta) S_{wxy} \\
+        &~~~~+& 2 \sin(\theta) \phi S_{wx} + 2 \cos(\theta) \phi S_{wy} + \phi^2 S_{w} \\
+    \frac{\partial E}{\partial \theta} &=& \sin(2 \theta) S_{wxx} - \sin(2 \theta) S_{wyy} + 2 \cos(2 \theta) S_{wxy} + 2 \cos(\theta) \phi S_{wx} - 2 \sin(\theta) \phi S_{wy} \\
+    \frac{\partial E}{\partial \phi} &=& 2 ( \sin(\theta) S_{wx} + \cos(\theta) S_{wy} + \phi S_{w} )
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  \frac{\partial E}{\partial \phi} = 0 \rightarrow \phi = - \frac{ \sin(\theta) S_{wx} + \cos(\theta) S_{wy}}{S_{w}}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  \frac{\partial E}{\partial \theta} &=& \sin(2 \theta) S_{wxx} - \sin(2 \theta) S_{wyy} + 2 \cos(2 \theta) S_{wxy} + 2 \cos(\theta) \phi S_{wx} - 2 \sin(\theta) \phi S_{wy} \\
+   &=& \sin(2 \theta) S_{wxx} - \sin(2 \theta) S_{wyy} + 2 \cos(2 \theta) S_{wxy}\\
+   &~~~~-& 2 \cos(\theta) \frac{ \sin(\theta) S_{wx} + \cos(\theta) S_{wy}}{S_{w}} S_{wx} + 2 \sin(\theta) \frac{ \sin(\theta) S_{wx} + \cos(\theta) S_{wy}}{S_{w}} S_{wy} \\
+   &=& \sin(2 \theta) \left( S_{wxx} - S_{wyy} - \frac{S_{wx}^2}{S_{w}} + \frac{S_{wy}^2}{S_{w}} \right) + \cos(2 \theta) \left( 2 S_{wxy} + 2 \frac{S_{wx} S_{wy}}{S_w}} \right) \\
+   &=& \sin(2 \theta) U + \cos(2 \theta) V = 0\\
+   &~~~~\rightarrow& \tan(2 \theta) = -\frac{V}{U} \rightarrow \theta = - \frac{1}{2} \tan^{-1}\left( \frac{V}{U} \right)
+\end{eqnarray*}

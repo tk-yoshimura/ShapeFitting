@@ -15,7 +15,7 @@
     b \\
     c \\
     d \\
-    f \\
+    e \\
   \end{matrix} \right]
 =
   \left[ 

@@ -53,9 +53,9 @@
     S_{w x^4}     & S_{w x^3 y}   & S_{w x^2 y^2} & S_{w x^3}   & S_{w x^2 y} & S_{w x^2}\\
     S_{w x^3 y}   & S_{w x^2 y^2} & S_{w x y^3}   & S_{w x^2 y} & S_{w x y^2} & S_{w x y}\\
     S_{w x^2 y^2} & S_{w x y^3}   & S_{w y^4}     & S_{w x y^2} & S_{w y^3}   & S_{w y^2}\\
-    S_{w x^3}     & S_{w x y^3}   & S_{w x y^2}   & S_{w x^2}   & S_{w x y}   & S_{w x}\\
-    S_{w x^2 y}   & S_{w x^2 y}   & S_{w y^3}     & S_{w x y}   & S_{w y^2}   & S_{w y}\\
-    S_{w x^2}     & S_{w x y^2}   & S_{w y^2}     & S_{w x}     & S_{w y}     & S_{w}\\
+    S_{w x^3}     & S_{w x^2 y}   & S_{w x y^2}   & S_{w x^2}   & S_{w x y}   & S_{w x}\\
+    S_{w x^2 y}   & S_{w x y^2}   & S_{w y^3}     & S_{w x y}   & S_{w y^2}   & S_{w y}\\
+    S_{w x^2}     & S_{w x y}   & S_{w y^2}     & S_{w x}     & S_{w y}     & S_{w}\\
   \end{matrix} \right]
   \left[ 
   \begin{matrix}
@@ -67,7 +67,8 @@
     f \\
   \end{matrix} \right]
 =
-\bold{0},
+\bold{0},~~~~
+  \left[ 
   \begin{matrix}
     a \\
     b \\
@@ -76,6 +77,7 @@
     e \\
     f \\
   \end{matrix} \right]^T
+  \left[ 
   \begin{matrix}
     0 & 0  & 2 & 0 & 0 & 0\\
     0 & -1 & 0 & 0 & 0 & 0\\
@@ -84,6 +86,7 @@
     0 & 0  & 0 & 0 & 0 & 0\\
     0 & 0  & 0 & 0 & 0 & 0\\
   \end{matrix} \right]
+  \left[ 
   \begin{matrix}
     a \\
     b \\
@@ -91,6 +94,6 @@
     d \\
     e \\
     f \\
-  \end{matrix} = 1
+  \end{matrix} \right] = 1
 
 \end{eqnarray*}

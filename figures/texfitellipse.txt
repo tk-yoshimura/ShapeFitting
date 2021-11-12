@@ -116,3 +116,54 @@
 \begin{eqnarray*}
  \bold{S} \bold{v} = \lambda \bold{C} \bold{v}, \bold{v}^T \bold{C} \bold{v} = 1
 \end{eqnarray*}
+
+\begin{eqnarray*}
+\bold{S} = \left[ 
+  \begin{matrix}\begin{array}{c|c}
+    \bold{S_1} & \bold{S_2} \\
+    \hline \bold{S_2}^T & \bold{S_3} \\
+  \end{array}\end{matrix} \right], 
+\bold{C} = \left[ 
+  \begin{matrix}\begin{array}{c|c}
+    \bold{C_1} & \bold{0} \\
+    \hline \bold{0} & \bold{0} \\
+  \end{array}\end{matrix} \right], 
+\bold{v} = \left[ 
+  \begin{matrix}\begin{array}{c}
+    \bold{v_1} \\
+    \hline \bold{v_2} \\
+  \end{array} \end{matrix} \right] = \left[ 
+  \begin{matrix}\begin{array}{ccc|ccc}
+    a & b & c & d & e & f
+  \end{array} \end{matrix} \right]^T
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\bold{S_1} \bold{v_1} + \bold{S_2} \bold{v_2} = \lambda \bold{C_1} \bold{v_1}~,~~ \bold{S_2}^T \bold{v_1} + \bold{S_3} \bold{v_2} = \bold{0}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+&& \bold{S_2}^T \bold{v_1} + \bold{S_3} \bold{v_2} = \bold{0} \\
+&& ~~~ \rightarrow \bold{S_3} \bold{v_2} = - \bold{S_2}^T \bold{v_1} \\
+&& ~~~ \rightarrow \bold{v_2} = - \bold{S_3}^{-1} \bold{S_2}^T \bold{v_1} \\
+&& \bold{S_1} \bold{v_1} + \bold{S_2} (- \bold{S_3}^{-1} \bold{S_2}^T \bold{v_1}) = \lambda \bold{C_1} \bold{v_1} \\
+&& ~~~ \rightarrow ( \bold{S_1} - \bold{S_2} \bold{S_3}^{-1} \bold{S_2}^T) \bold{v_1} = \lambda \bold{C_1} \bold{v_1} \\
+&& ~~~ \rightarrow \bold{C_1}^{-1} ( \bold{S_1} - \bold{S_2} \bold{S_3}^{-1} \bold{S_2}^T) \bold{v_1} = \lambda \bold{v_1} \\
+&& \bold{M} = \bold{C_1}^{-1} ( \bold{S_1} - \bold{S_2} \bold{S_3}^{-1} \bold{S_2}^T ) \\
+&& ~~~ \bold{C_1}^{-1} = \frac{1}{2} \left[ 
+  \begin{matrix}
+    0 & 0  & 1\\
+    0 & -2 & 0\\
+    1 & 0  & 0
+  \end{matrix} \right], \\
+&& ~~~
+  \bold{S_3}^{-1} = 
+  \frac{1}{|\bold{S3}|} \left[ 
+  \begin{matrix}
+    S_{w} S_{w y^2}-S_{w y}^2            & S_{w x} S_{w y} - S_{w} S_{wxy}       & S_{w y} S_{w x y} -S_{w x} S_{w y^2} \\
+    S_{w x} S_{w y} - S_{w} S_{wxy}      & S_{w} S_{w x^2} - S_{w x}^2           & S_{w x} S_{w x y} - S_{w x^2} S_{w y}\\
+    S_{w y} S_{w x y} -S_{w x} S_{w y^2} & S_{w x} S_{w x y} - S_{w x^2} S_{w y} & S_{w x^2} S_{w y^2} - S_{w x y}^2
+  \end{matrix} \right], \\
+&& ~~~ |\bold{S3}| = S_{w} S_{w x^2} S_{w y^2}-S_{w x}^2 S_{w y^2}-S_{w x^2} S_{w y}^2+2 S_{w x} S_{w y} S_{w x y} - S_{w} S_{wxy}^2
+  
+\end{eqnarray*}

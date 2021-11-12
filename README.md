@@ -25,3 +25,6 @@ Robust shape fitting
 ![fitellipse3](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse3.svg)  
 ![fitellipse4](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse4.svg)  
 ![fitellipse5](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse5.svg)  
+![fitellipse6](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse6.svg)  
+![fitellipse7](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse7.svg)  
+![fitellipse8](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse8.svg)  

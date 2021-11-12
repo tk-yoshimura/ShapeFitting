@@ -20,8 +20,8 @@ Robust shape fitting
 ![fitellipse1](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse1.svg)  
 ![fitellipse2](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse2.svg)  
 
-### B2AC (Direct Least Square Fitting of Ellipses, A. Fitzgibbon, M. Pilu, and R. B. Fisher)
-[paper](https://www.researchgate.net/publication/2885417_Direct_Least_Square_Fitting_of_Ellipses)  
+### B2AC (Halir, R., & Flusser, J., "Numerically stable direct least squares fitting of ellipses.")
 
 ![fitellipse3](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse3.svg)  
 ![fitellipse4](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse4.svg)  
+![fitellipse5](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse5.svg)  

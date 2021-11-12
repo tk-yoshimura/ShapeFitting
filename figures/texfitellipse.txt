@@ -37,41 +37,60 @@
 \end{eqnarray*}
 
 \begin{eqnarray*}
-  f(x, y)&=& a x^2+b x y+c y^2+d x+e y+f, ~~ D = ac-\frac{b^2}{4} = 1 \\
-         &=& a x^2+ 2 \sqrt{ac-1} x y+c y^2+d x+e y+f \\
+  f(x, y)&=& a x^2+b x y+c y^2+d x+e y+f, ~~ D = 4 a c-b^2 = 1 \\
     E &=& \sum_{i=1}^{N} w_i f(x_i, y_i)^2 \\
-\frac{\partial E}{\partial a} &=& 2 (a S_{w x^4} + 2 \sqrt{ac-1} S_{w x^3 y} + c S_{w x^2 y^2} + d S_{w x^3} + e S_{w x^2 y} + f S_{w x^2} ) = 0 \\
-\frac{\partial E}{\partial c} &=& 2 (a S_{w x^2 y^2} + 2 \sqrt{ac-1} S_{w x y^3} + c S_{w y^4} + d S_{w x y^2} + e S_{w y^3} + f S_{w y^2} ) = 0 \\
-\frac{\partial E}{\partial d} &=& 2 (a S_{w x^3} + 2 \sqrt{ac-1} S_{w x y} + c S_{w x y^2} + d S_{w x^2} + e S_{w x y} + f S_{w x} ) = 0 \\
-\frac{\partial E}{\partial e} &=& 2 (a S_{w x^2 y} + 2 \sqrt{ac-1} S_{w x y} + c S_{w y^3} + d S_{w x y} + e S_{w y^2} + f S_{w y} ) = 0 \\
-\frac{\partial E}{\partial f} &=& 2 (a S_{w x^2} + 2 \sqrt{ac-1} S_{w x y} + c S_{w y^2} + d S_{w x} + e S_{w y} + f S_{w} ) = 0 \\
+\frac{\partial E}{\partial a} &=& 2 (a S_{w x^4} + b S_{w x^3 y} + c S_{w x^2 y^2} + d S_{w x^3} + e S_{w x^2 y} + f S_{w x^2} ) = 0 \\
+\frac{\partial E}{\partial b} &=& 2 (a S_{w x^3 y} + b S_{w x^2 y^2} + c S_{w x y^3} + d S_{w x^2 y} + e S_{w x y^2} + f S_{w x y} ) = 0 \\
+\frac{\partial E}{\partial c} &=& 2 (a S_{w x^2 y^2} + b S_{w x y^3} + c S_{w y^4} + d S_{w x y^2} + e S_{w y^3} + f S_{w y^2} ) = 0 \\
+\frac{\partial E}{\partial d} &=& 2 (a S_{w x^3} + b S_{w x^2 y} + c S_{w x y^2} + d S_{w x^2} + e S_{w x y} + f S_{w x} ) = 0 \\
+\frac{\partial E}{\partial e} &=& 2 (a S_{w x^2 y} + b S_{w x y^2} + c S_{w y^3} + d S_{w x y} + e S_{w y^2} + f S_{w y} ) = 0 \\
+\frac{\partial E}{\partial f} &=& 2 (a S_{w x^2} + b S_{w x y} + c S_{w y^2} + d S_{w x} + e S_{w y} + f S_{w} ) = 0 \\
 \end{eqnarray*}
 
 \begin{eqnarray*}
   \left[ 
   \begin{matrix}
-    S_{w x^4}     & S_{w x^2 y^2} & S_{w x^3}   & S_{w x^2 y} & S_{w x^2}\\
-    S_{w x^2 y^2} & S_{w y^4}     & S_{w x y^2} & S_{w y^3}   & S_{w y^2}\\
-    S_{w x^3}     & S_{w x y^2}   & S_{w x^2}   & S_{w x y}   & S_{w x}\\
-    S_{w x^2 y}   & S_{w y^3}     & S_{w x y}   & S_{w y^2}   & S_{w y}\\
-    S_{w x^2}     & S_{w y^2}     & S_{w x}     & S_{w y}     & S_{w}\\
+    S_{w x^4}     & S_{w x^3 y}   & S_{w x^2 y^2} & S_{w x^3}   & S_{w x^2 y} & S_{w x^2}\\
+    S_{w x^3 y}   & S_{w x^2 y^2} & S_{w x y^3}   & S_{w x^2 y} & S_{w x y^2} & S_{w x y}\\
+    S_{w x^2 y^2} & S_{w x y^3}   & S_{w y^4}     & S_{w x y^2} & S_{w y^3}   & S_{w y^2}\\
+    S_{w x^3}     & S_{w x y^3}   & S_{w x y^2}   & S_{w x^2}   & S_{w x y}   & S_{w x}\\
+    S_{w x^2 y}   & S_{w x^2 y}   & S_{w y^3}     & S_{w x y}   & S_{w y^2}   & S_{w y}\\
+    S_{w x^2}     & S_{w x y^2}   & S_{w y^2}     & S_{w x}     & S_{w y}     & S_{w}\\
   \end{matrix} \right]
   \left[ 
   \begin{matrix}
     a \\
+    b \\
     c \\
     d \\
     e \\
     f \\
   \end{matrix} \right]
 =
--2 \sqrt{ac-1}
-  \left[ 
+\bold{0},
   \begin{matrix}
-S_{w x^3 y} \\
-S_{w x y^3} \\
-S_{w x^2 y} \\
-S_{w x y^2} \\
-S_{w x y} \\
+    a \\
+    b \\
+    c \\
+    d \\
+    e \\
+    f \\
+  \end{matrix} \right]^T
+  \begin{matrix}
+    0 & 0  & 2 & 0 & 0 & 0\\
+    0 & -1 & 0 & 0 & 0 & 0\\
+    2 & 0  & 0 & 0 & 0 & 0\\
+    0 & 0  & 0 & 0 & 0 & 0\\
+    0 & 0  & 0 & 0 & 0 & 0\\
+    0 & 0  & 0 & 0 & 0 & 0\\
   \end{matrix} \right]
+  \begin{matrix}
+    a \\
+    b \\
+    c \\
+    d \\
+    e \\
+    f \\
+  \end{matrix} = 1
+
 \end{eqnarray*}

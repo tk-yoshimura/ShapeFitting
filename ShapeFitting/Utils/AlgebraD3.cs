@@ -77,7 +77,7 @@ namespace ShapeFitting {
             return det;
         }
 
-        public static SymmMatrix InvertSymmMatrix(SymmMatrix mat) {
+        public static SymmMatrix Invert(SymmMatrix mat) {
             (double m1, double m2, double m3, double m4, double m5, double m6) = mat;
 
             double d = 1 / Det(mat);

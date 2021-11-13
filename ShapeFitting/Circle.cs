@@ -5,7 +5,7 @@ namespace ShapeFitting {
     /// <summary>circle</summary>
     /// <remarks>(x - cx)^2 + (y - cy)^2 = r^2</remarks>
     public struct Circle {
-        public Vector Center { set; get; } 
+        public Vector Center { set; get; }
         public double Radius { set; get; }
 
         public Circle(Vector center, double radius) {
@@ -33,7 +33,7 @@ namespace ShapeFitting {
             double rc = c_sqnorm * (a_sqnorm + b_sqnorm - c_sqnorm);
 
             Vector center = (ra * c + rb * a + rc * b) / (ra + rb + rc);
-            double radius = (a_norm * b_norm * c_norm) / 
+            double radius = (a_norm * b_norm * c_norm) /
                 Math.Sqrt(
                     (a_norm + b_norm + c_norm) * (-a_norm + b_norm + c_norm)
                     * (a_norm - b_norm + c_norm) * (a_norm + b_norm - c_norm)

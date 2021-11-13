@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShapeFitting;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,13 +54,13 @@ namespace ShapeFittingTest {
 
             Assert.AreEqual(+1.6, line.Fx(-2), 1e-15);
             Assert.AreEqual(+1.8, line.Fx(-1), 1e-15);
-            Assert.AreEqual(+2.0, line.Fx( 0), 1e-15);
+            Assert.AreEqual(+2.0, line.Fx(0), 1e-15);
             Assert.AreEqual(+2.2, line.Fx(+1), 1e-15);
             Assert.AreEqual(+2.4, line.Fx(+2), 1e-15);
 
             Assert.AreEqual(-2, line.Fy(+1.6), 1e-15);
             Assert.AreEqual(-1, line.Fy(+1.8), 1e-15);
-            Assert.AreEqual( 0, line.Fy(+2.0), 1e-15);
+            Assert.AreEqual(0, line.Fy(+2.0), 1e-15);
             Assert.AreEqual(+1, line.Fy(+2.2), 1e-15);
             Assert.AreEqual(+2, line.Fy(+2.4), 1e-15);
         }
@@ -72,13 +71,13 @@ namespace ShapeFittingTest {
 
             Assert.AreEqual(-2, line.Fx(+1.6), 1e-15);
             Assert.AreEqual(-1, line.Fx(+1.8), 1e-15);
-            Assert.AreEqual( 0, line.Fx(+2.0), 1e-15);
+            Assert.AreEqual(0, line.Fx(+2.0), 1e-15);
             Assert.AreEqual(+1, line.Fx(+2.2), 1e-15);
             Assert.AreEqual(+2, line.Fx(+2.4), 1e-15);
 
             Assert.AreEqual(+1.6, line.Fy(-2), 1e-15);
             Assert.AreEqual(+1.8, line.Fy(-1), 1e-15);
-            Assert.AreEqual(+2.0, line.Fy( 0), 1e-15);
+            Assert.AreEqual(+2.0, line.Fy(0), 1e-15);
             Assert.AreEqual(+2.2, line.Fy(+1), 1e-15);
             Assert.AreEqual(+2.4, line.Fy(+2), 1e-15);
         }
@@ -141,7 +140,7 @@ namespace ShapeFittingTest {
 
                     double[] ys = line.Fx(xs);
                     IEnumerable<Vector> vs = Vector.Concat(xs, ys);
-                    
+
                     Line line_fit = MSEFitting.FitLine(vs);
 
                     Assert.AreEqual(theta, line_fit.Theta, 1e-5);
@@ -165,7 +164,7 @@ namespace ShapeFittingTest {
 
                     double[] ys = line.Fx(xs);
                     IEnumerable<Vector> vs = Vector.Concat(xs, ys);
-                    
+
                     Line line_fit = WeightedFitting.FitLine(vs, ws);
 
                     Assert.AreEqual(theta, line_fit.Theta, 1e-5);

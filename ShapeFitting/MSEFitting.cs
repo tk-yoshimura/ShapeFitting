@@ -15,8 +15,8 @@ namespace ShapeFitting {
             }
 
             double sx = 0, sy = 0, sxy = 0, sxx = 0, syy = 0;
-            
-            foreach((double x, double y) in vs) {
+
+            foreach ((double x, double y) in vs) {
                 sx += x;
                 sy += y;
                 sxy += x * y;
@@ -31,6 +31,6 @@ namespace ShapeFitting {
             double phi = -(Math.Sin(theta) * sx + Math.Cos(theta) * sy) / n;
 
             return new Line(theta, phi);
-        } 
+        }
     }
 }

@@ -19,8 +19,8 @@ namespace ShapeFitting {
             }
 
             double sw = 0, swx = 0, swy = 0, swxy = 0, swxx = 0, swyy = 0;
-            
-            foreach(((double x, double y), double w) in vs.Zip(weights)) {
+
+            foreach (((double x, double y), double w) in vs.Zip(weights)) {
                 sw += w;
                 swx += w * x;
                 swy += w * y;
@@ -36,6 +36,6 @@ namespace ShapeFitting {
             double phi = -(Math.Sin(theta) * swx + Math.Cos(theta) * swy) / sw;
 
             return new Line(theta, phi);
-        } 
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace ShapeFitting {
@@ -24,7 +23,7 @@ namespace ShapeFitting {
             this.C = c;
         }
 
-        public Line(double theta, double phi) { 
+        public Line(double theta, double phi) {
             this.A = Math.Sin(theta);
             this.B = Math.Cos(theta);
             this.C = phi;
@@ -77,7 +76,7 @@ namespace ShapeFitting {
                 double slope = dy / dx, y_intercept = a.Y - slope * a.X;
                 return FromFx(slope, y_intercept);
             }
-            else { 
+            else {
                 double slope = dx / dy, x_intercept = a.X - slope * a.Y;
                 return FromFy(slope, x_intercept);
             }
@@ -135,10 +134,10 @@ namespace ShapeFitting {
 
         public override string ToString() {
             static string tostr(double value, string suffix) {
-                if(value == 0) {
+                if (value == 0) {
                     return string.Empty;
                 }
-                if(Math.Abs(value) == 1 && suffix.Length > 0) {
+                if (Math.Abs(value) == 1 && suffix.Length > 0) {
                     return (value > 0) ? $"+{suffix}" : $"-{suffix}";
                 }
 

@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <DebugType>portable</DebugType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
     <DocumentationFile>bin\Debug\net5.0\ShapeFitting.xml</DocumentationFile>
     <Optimize>False</Optimize>
   </PropertyGroup>
@@ -14,9 +16,5 @@
     <DebugType>none</DebugType>
     <DocumentationFile>bin\Release\net5.0\ShapeFitting.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
 
 </Project>

@@ -202,8 +202,12 @@ namespace ShapeFitting {
             return new Vector(u1, u2, u3);
         }
 
-        public static ((double val, Vector vec) l1, (double val, Vector vec) l2, (double val, Vector vec) l3) EigenValues(SymmMatrix mat) {
+        public static ((double val, Vector vec) l1, (double val, Vector vec) l2, (double val, Vector vec) l3) EigenValues(SymmMatrix mat, double eps = 1e-10) {
             (double m1, double m2, double m3, double m4, double m5, double m6) = mat;
+
+            if (Math.Abs(m4) < eps && Math.Abs(m5) < eps && Math.Abs(m6) < eps) {
+                return Order.AbsSort((m1, new Vector(1, 0, 0)), (m2, new Vector(0, 1, 0)), (m3, new Vector(0, 0, 1)));
+            }
 
             (Complex x1, Complex x2, Complex x3) = RootFinding.Cubic(
                 -m1 - m2 - m3,
@@ -222,7 +226,7 @@ namespace ShapeFitting {
                 return new Vector(x / n, y / n, z / n);
             }
 
-            Vector eigenvector(double l, double eps = 1e-10) {
+            Vector eigenvector(double l) {
                 double rx, ry, rz;
                 double n1 = l - m1, n2 = l - m2, n3 = l - m3, n4 = -m4, n5 = -m5, n6 = -m6;
 

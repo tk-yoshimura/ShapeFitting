@@ -7,28 +7,143 @@ namespace ShapeFittingTest {
     [TestClass]
     public class AlgebraD2Tests {
         [TestMethod]
-        public void EigenValuesTest() {
-            {
-                // mat = 1 3
-                //       3 2
-                AlgebraD2.SymmMatrix mat1 = new(1, 2, 3);
+        public void EigenValuesTest1() {
+            // mat = 1 3
+            //       3 2
+            AlgebraD2.SymmMatrix mat = new(1, 2, 3);
 
-                (double l1, double l2) = AlgebraD2.EigenValues(mat1);
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2)) = AlgebraD2.EigenValues(mat);
 
-                Assert.AreEqual(-1.54138, l1, 1e-5);
-                Assert.AreEqual( 4.54138, l2, 1e-5);
-            }
+            Assert.AreEqual(-1.54138, l1, 1e-5);
+            Assert.AreEqual( 4.54138, l2, 1e-5);
 
-            {
-                // mat = -1 -3
-                //       -3  2
-                AlgebraD2.SymmMatrix mat2 = new(-1, 2, -3);
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
 
-                (double l1, double l2) = AlgebraD2.EigenValues(mat2);
+            Assert.AreEqual(-1.18046, e11 / e12, 1e-5);
+            Assert.AreEqual(0.847127, e21 / e22, 1e-5);
+        }
 
-                Assert.AreEqual(-2.8541, l1, 1e-5);
-                Assert.AreEqual( 3.8541, l2, 1e-5);
-            }
+         [TestMethod]
+        public void EigenValuesTest2() {
+            // mat = -1 -3
+            //       -3  2
+            AlgebraD2.SymmMatrix mat = new(-1, 2, -3);
+
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2)) = AlgebraD2.EigenValues(mat);
+
+            Assert.AreEqual(-2.8541, l1, 1e-5);
+            Assert.AreEqual( 3.8541, l2, 1e-5);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(1.618034, e11 / e12, 1e-5);
+            Assert.AreEqual(-0.618034, e21 / e22, 1e-5);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest3() {
+            // mat = 0 2
+            //       2 1
+            AlgebraD2.SymmMatrix mat = new(0, 1, 2);
+
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2))
+                = AlgebraD2.EigenValues(mat);
+
+            Assert.AreEqual(-1.56155, l1, 1e-5);
+            Assert.AreEqual(+2.56155, l2, 1e-5);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(-1.28078, e11 / e12, 1e-5);
+            Assert.AreEqual(0.780776, e21 / e22, 1e-5);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest4() {
+            // mat = 2 0
+            //       0 1
+            AlgebraD2.SymmMatrix mat = new(2, 1, 0);
+
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2))
+                = AlgebraD2.EigenValues(mat);
+
+            Assert.AreEqual(1, l1, 1e-10);
+            Assert.AreEqual(2, l2, 1e-10);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(0, e11, 1e-10);
+            Assert.AreEqual(1, e12, 1e-10);
+
+            Assert.AreEqual(1, e21, 1e-10);
+            Assert.AreEqual(0, e22, 1e-10);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest5() {
+            // mat = 1 3
+            //       3 2 x1e-10(eps)
+            AlgebraD2.SymmMatrix mat = new(1e-10, 2e-10, 3e-10);
+
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2))
+                = AlgebraD2.EigenValues(mat);
+
+            Assert.AreEqual(-1.54138e-10, l1, 1e-5);
+            Assert.AreEqual( 4.54138e-10, l2, 1e-5);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(-1.18046, e11 / e12, 1e-5);
+            Assert.AreEqual(0.847127, e21 / e22, 1e-5);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest6() {
+            // mat = 0 0
+            //       0 2
+            AlgebraD2.SymmMatrix mat = new(0, 2, 0);
+
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2))
+                = AlgebraD2.EigenValues(mat);
+
+            Assert.AreEqual(0, l1, 1e-10);
+            Assert.AreEqual(2, l2, 1e-10);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(1, e11, 1e-10);
+            Assert.AreEqual(0, e12, 1e-10);
+
+            Assert.AreEqual(0, e21, 1e-10);
+            Assert.AreEqual(1, e22, 1e-10);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest7() {
+            // mat = 1 0
+            //       0 1
+            AlgebraD2.SymmMatrix mat = new(1, 1, 0);
+
+            ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2))
+                = AlgebraD2.EigenValues(mat);
+
+            Assert.AreEqual(1, l1, 1e-10);
+            Assert.AreEqual(1, l2, 1e-10);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(1, e11, 1e-10);
+            Assert.AreEqual(0, e12, 1e-10);
+
+            Assert.AreEqual(0, e21, 1e-10);
+            Assert.AreEqual(1, e22, 1e-10);
         }
     }
 }

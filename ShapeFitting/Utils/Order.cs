@@ -14,6 +14,18 @@ namespace ShapeFitting {
                     : Math.Abs(x1) <= Math.Abs(x2) ? (x1, x2, x0) : (x2, x1, x0));
         } 
 
+        public static ((double, T), (double, T)) AbsSort<T>((double v, T) x0, (double v, T) x1) {
+            return Math.Abs(x0.v) <= Math.Abs(x1.v) ? (x0, x1) : (x1, x0);
+        } 
+
+        public static ((double, T), (double, T), (double, T)) AbsSort<T>((double v, T) x0, (double v, T) x1, (double v, T) x2) {
+            return Math.Abs(x0.v) <= Math.Abs(x1.v)
+                ? (Math.Abs(x1.v) <= Math.Abs(x2.v) ? (x0, x1, x2)
+                    : Math.Abs(x0.v) <= Math.Abs(x2.v) ? (x0, x2, x1) : (x2, x0, x1))
+                : (Math.Abs(x0.v) <= Math.Abs(x2.v) ? (x1, x0, x2)
+                    : Math.Abs(x1.v) <= Math.Abs(x2.v) ? (x1, x2, x0) : (x2, x1, x0));
+        }
+
         public static (int, int) AbsArgSort(double x0, double x1) {
             return Math.Abs(x0) <= Math.Abs(x1) ? (0, 1) : (1, 0);
         } 

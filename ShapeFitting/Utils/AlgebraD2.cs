@@ -148,16 +148,48 @@ namespace ShapeFitting {
             return new Vector(u1, u2);
         }
 
-        public static (double l1, double l2) EigenValues(SymmMatrix mat) {
+        public static ((double val, Vector vec) l1, (double val, Vector vec) l2) EigenValues(SymmMatrix mat, double eps = 1e-10) {
             (double m1, double m2, double m3) = mat;
+
+            if (Math.Abs(m3) < eps) {
+                return Order.AbsSort((m1, new Vector(1, 0)), (m2, new Vector(0, 1)));
+            }
 
             (Complex x1, Complex x2) = RootFinding.Quadratic(
                 -m1 - m2,
                 m1 * m2 - m3 * m3 
             );
 
+            static Vector normalize(Vector v) {
+                (double x, double y) = v;
+                
+                double s = x > 0 ? 1 : x < 0 ? -1
+                         : y >= 0 ? 1 : -1;                    
+                double n = s * Math.Max(Math.Abs(x), Math.Abs(y));
+                
+                return new Vector(x / n, y / n);
+            }
+
+            Vector eigenvector(double l) {
+                double n1 = l - m1, n2 = l - m2, n3 = -m3;
+
+                if (Math.Abs(n1) < eps && Math.Abs(n3) < eps){
+                    return new Vector(1, 0);
+                }
+                if (Math.Abs(n2) < eps && Math.Abs(n3) < eps){
+                    return new Vector(0, 1);
+                }
+
+                double rx = n3 - n2;
+                double ry = n3 - n1;
+
+                return normalize(new Vector(rx, ry));
+            }
+
             // M = transpose(M) => lambda in R (det lambda I - M = 0)
-            return Order.AbsSort(x1.Real, x2.Real);
+            (double l1, double l2) = Order.AbsSort(x1.Real, x2.Real);
+
+            return ((l1, eigenvector(l1)), (l2, eigenvector(l2)));
         }
     }
 }

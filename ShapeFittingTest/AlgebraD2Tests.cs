@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShapeFitting;
-using System;
-using System.Numerics;
 
 namespace ShapeFittingTest {
     [TestClass]
@@ -15,7 +13,7 @@ namespace ShapeFittingTest {
             ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2)) = AlgebraD2.EigenValues(mat);
 
             Assert.AreEqual(-1.54138, l1, 1e-5);
-            Assert.AreEqual( 4.54138, l2, 1e-5);
+            Assert.AreEqual(4.54138, l2, 1e-5);
 
             (double e11, double e12) = v1;
             (double e21, double e22) = v2;
@@ -24,7 +22,7 @@ namespace ShapeFittingTest {
             Assert.AreEqual(0.847127, e21 / e22, 1e-5);
         }
 
-         [TestMethod]
+        [TestMethod]
         public void EigenValuesTest2() {
             // mat = -1 -3
             //       -3  2
@@ -33,7 +31,7 @@ namespace ShapeFittingTest {
             ((double l1, AlgebraD2.Vector v1), (double l2, AlgebraD2.Vector v2)) = AlgebraD2.EigenValues(mat);
 
             Assert.AreEqual(-2.8541, l1, 1e-5);
-            Assert.AreEqual( 3.8541, l2, 1e-5);
+            Assert.AreEqual(3.8541, l2, 1e-5);
 
             (double e11, double e12) = v1;
             (double e21, double e22) = v2;
@@ -93,7 +91,7 @@ namespace ShapeFittingTest {
                 = AlgebraD2.EigenValues(mat);
 
             Assert.AreEqual(-1.54138e-10, l1, 1e-5);
-            Assert.AreEqual( 4.54138e-10, l2, 1e-5);
+            Assert.AreEqual(4.54138e-10, l2, 1e-5);
 
             (double e11, double e12) = v1;
             (double e21, double e22) = v2;
@@ -144,6 +142,108 @@ namespace ShapeFittingTest {
 
             Assert.AreEqual(0, e21, 1e-10);
             Assert.AreEqual(1, e22, 1e-10);
+        }
+
+        [TestMethod]
+        public void SymmMatrixInverseMulTest() {
+            // mat = -1 4
+            //        4 2
+            AlgebraD2.SymmMatrix mat = new(-1, 2, 4);
+
+            AlgebraD2.SymmMatrix mat_inv = AlgebraD2.Invert(mat);
+            AlgebraD2.SymmMatrix mat_id1 = AlgebraD2.Mul(mat, mat_inv);
+            AlgebraD2.SymmMatrix mat_id2 = AlgebraD2.Mul(mat_inv, mat);
+
+            (double m1, double m2, double m3) = mat_id1;
+            (double n1, double n2, double n3) = mat_id2;
+
+            Assert.AreEqual(1d, AlgebraD2.Det(mat) * AlgebraD2.Det(mat_inv), 1e-10);
+
+            Assert.AreEqual(1d, m1, 1e-10);
+            Assert.AreEqual(1d, m2, 1e-10);
+            Assert.AreEqual(0d, m3, 1e-10);
+
+            Assert.AreEqual(1d, n1, 1e-10);
+            Assert.AreEqual(1d, n2, 1e-10);
+            Assert.AreEqual(0d, n3, 1e-10);
+        }
+
+        [TestMethod]
+        public void MatrixMulTest() {
+            AlgebraD2.SymmMatrix mat1 = new(-1, 2, -3);
+            AlgebraD2.Matrix mat2 = new(-5, -4,
+                                         9, -8);
+
+            AlgebraD2.Matrix mat12 = AlgebraD2.Mul(mat1, mat2);
+            AlgebraD2.Matrix mat21 = AlgebraD2.Mul(mat2, mat1);
+
+            (double m11, double m12,
+             double m21, double m22) = mat12;
+            (double n11, double n12,
+             double n21, double n22) = mat21;
+
+            Assert.AreEqual(-22, m11, 1e-10);
+            Assert.AreEqual(28, m12, 1e-10);
+            Assert.AreEqual(33, m21, 1e-10);
+            Assert.AreEqual(-4, m22, 1e-10);
+
+            Assert.AreEqual(17, n11, 1e-10);
+            Assert.AreEqual(7, n12, 1e-10);
+            Assert.AreEqual(15, n21, 1e-10);
+            Assert.AreEqual(-43, n22, 1e-10);
+        }
+
+        [TestMethod]
+        public void MatrixSqueezeMulTest() {
+            AlgebraD2.SymmMatrix mat1 = new(-1, 2, -3);
+            AlgebraD2.Matrix mat2 = new(-5, -4,
+                                         9, -8);
+
+            AlgebraD2.SymmMatrix mat212 = AlgebraD2.SqueezeMul(mat2, mat1);
+
+            (double m1, double m2, double m3) = mat212;
+
+            Assert.AreEqual(-113, m1, 1e-10);
+            Assert.AreEqual(479, m2, 1e-10);
+            Assert.AreEqual(97, m3, 1e-10);
+        }
+
+        [TestMethod]
+        public void VectorMulTest() {
+            AlgebraD2.SymmMatrix mat1 = new(-1, 2, -3);
+            AlgebraD2.Matrix mat2 = new(-5, -4,
+                                         9, -8);
+
+            AlgebraD2.Vector vec = new(11, 13);
+
+            AlgebraD2.Vector vec1 = AlgebraD2.Mul(mat1, vec);
+            AlgebraD2.Vector vec2 = AlgebraD2.Mul(mat2, vec);
+
+            (double v1, double v2) = vec1;
+            (double u1, double u2) = vec2;
+
+            Assert.AreEqual(-50, v1, 1e-10);
+            Assert.AreEqual(-7, v2, 1e-10);
+
+            Assert.AreEqual(-107, u1, 1e-10);
+            Assert.AreEqual(-5, u2, 1e-10);
+        }
+
+        [TestMethod]
+        public void SymmMatrixAddSubTest() {
+            AlgebraD2.SymmMatrix mat1 = new(-1, 2, -13);
+            AlgebraD2.SymmMatrix mat2 = new(14, -11, 12);
+
+            (double m1, double m2, double m3) = AlgebraD2.Add(mat1, mat2);
+            (double n1, double n2, double n3) = AlgebraD2.Sub(mat1, mat2);
+
+            Assert.AreEqual(13, m1, 1e-10);
+            Assert.AreEqual(-9, m2, 1e-10);
+            Assert.AreEqual(-1, m3, 1e-10);
+
+            Assert.AreEqual(-15, n1, 1e-10);
+            Assert.AreEqual(13, n2, 1e-10);
+            Assert.AreEqual(-25, n3, 1e-10);
         }
     }
 }

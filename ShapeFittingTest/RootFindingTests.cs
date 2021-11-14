@@ -77,7 +77,7 @@ namespace ShapeFittingTest {
             Assert.AreEqual(-Math.Sqrt(7) / 2, x2.Imaginary, 1e-10);
             Assert.AreEqual(Math.Sqrt(7) / 2, x3.Imaginary, 1e-10);
 
-            Assert.AreEqual(2d,   x1.Real, 1e-10);
+            Assert.AreEqual(2d, x1.Real, 1e-10);
             Assert.AreEqual(2.5d, x2.Real, 1e-10);
             Assert.AreEqual(2.5d, x3.Real, 1e-10);
         }

@@ -115,9 +115,9 @@ namespace ShapeFitting {
             double r1 = m1 * n1 + mn4 + mn6;
             double r2 = m2 * n2 + mn4 + mn5;
             double r3 = m3 * n3 + mn5 + mn6;
-            double r4 = (m1 + n2) * m4 + m5 * n6;
-            double r5 = (m2 + n3) * m5 + m6 * n4;
-            double r6 = (m1 + n3) * m6 + m4 * n5;
+            double r4 = m1 * n4 + m4 * n2 + m6 * n5;
+            double r5 = m2 * n5 + m4 * n6 + m5 * n3;
+            double r6 = m1 * n6 + m4 * n5 + m6 * n3;
 
             return new SymmMatrix(r1, r2, r3, r4, r5, r6);
         }
@@ -217,12 +217,12 @@ namespace ShapeFitting {
 
             static Vector normalize(Vector v) {
                 (double x, double y, double z) = v;
-                
+
                 double s = x > 0 ? 1 : x < 0 ? -1
                          : y > 0 ? 1 : y < 0 ? -1
-                         : z >= 0 ? 1 : -1;                    
+                         : z >= 0 ? 1 : -1;
                 double n = s * Math.Max(Math.Max(Math.Abs(x), Math.Abs(y)), Math.Abs(z));
-                
+
                 return new Vector(x / n, y / n, z / n);
             }
 
@@ -230,7 +230,7 @@ namespace ShapeFitting {
                 double rx, ry, rz;
                 double n1 = l - m1, n2 = l - m2, n3 = l - m3, n4 = -m4, n5 = -m5, n6 = -m6;
 
-                if (Math.Abs(n1) < eps && Math.Abs(n4) < eps && Math.Abs(n6) < eps) { 
+                if (Math.Abs(n1) < eps && Math.Abs(n4) < eps && Math.Abs(n6) < eps) {
                     return new Vector(1, 0, 0);
                 }
                 if (Math.Abs(n2) < eps && Math.Abs(n4) < eps && Math.Abs(n5) < eps) {

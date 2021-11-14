@@ -82,8 +82,8 @@ namespace ShapeFitting {
             (double n1, double n2, double n3) = mat2;
 
             double r1 = m1 * n1 + m3 * n3;
-            double r2 = m1 * n3 + m3 * n2;
-            double r3 = m3 * n3 + m2 * n2;
+            double r2 = m3 * n3 + m2 * n2;
+            double r3 = m1 * n3 + m3 * n2;
 
             return new SymmMatrix(r1, r2, r3);
         }
@@ -157,26 +157,26 @@ namespace ShapeFitting {
 
             (Complex x1, Complex x2) = RootFinding.Quadratic(
                 -m1 - m2,
-                m1 * m2 - m3 * m3 
+                m1 * m2 - m3 * m3
             );
 
             static Vector normalize(Vector v) {
                 (double x, double y) = v;
-                
+
                 double s = x > 0 ? 1 : x < 0 ? -1
-                         : y >= 0 ? 1 : -1;                    
+                         : y >= 0 ? 1 : -1;
                 double n = s * Math.Max(Math.Abs(x), Math.Abs(y));
-                
+
                 return new Vector(x / n, y / n);
             }
 
             Vector eigenvector(double l) {
                 double n1 = l - m1, n2 = l - m2, n3 = -m3;
 
-                if (Math.Abs(n1) < eps && Math.Abs(n3) < eps){
+                if (Math.Abs(n1) < eps && Math.Abs(n3) < eps) {
                     return new Vector(1, 0);
                 }
-                if (Math.Abs(n2) < eps && Math.Abs(n3) < eps){
+                if (Math.Abs(n2) < eps && Math.Abs(n3) < eps) {
                     return new Vector(0, 1);
                 }
 

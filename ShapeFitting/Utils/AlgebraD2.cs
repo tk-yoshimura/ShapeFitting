@@ -157,9 +157,7 @@ namespace ShapeFitting {
             );
 
             // M = transpose(M) => lambda in R (det lambda I - M = 0)
-            double[] ls = new double[] { x1.Real, x2.Real };
-            
-            return (Math.Min(ls[0], ls[1]), Math.Max(ls[0], ls[1]));
+            return Order.AbsSort(x1.Real, x2.Real);
         }
     }
 }

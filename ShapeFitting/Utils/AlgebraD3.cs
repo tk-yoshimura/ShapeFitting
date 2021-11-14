@@ -202,7 +202,7 @@ namespace ShapeFitting {
             return new Vector(u1, u2, u3);
         }
 
-        public static (double l1, double l2, double l3) EigenValues(SymmMatrix mat) {
+        public static ((double val, Vector vec) l1, (double val, Vector vec) l2, (double val, Vector vec) l3) EigenValues(SymmMatrix mat) {
             (double m1, double m2, double m3, double m4, double m5, double m6) = mat;
 
             (Complex x1, Complex x2, Complex x3) = RootFinding.Cubic(
@@ -211,11 +211,55 @@ namespace ShapeFitting {
                 m1 * m5 * m5 + m2 * m6 * m6 + m3 * m4 * m4 - m1 * m2 * m3 - 2 * m4 * m5 * m6
             );
 
-            // M = transpose(M) => lambda in R (det lambda I - M = 0)
-            double[] ls = new double[] { x1.Real, x2.Real, x3.Real };
-            Array.Sort(ls);
+            static Vector normalize(Vector v) {
+                (double x, double y, double z) = v;
+                
+                double s = x > 0 ? 1 : x < 0 ? -1
+                         : y > 0 ? 1 : y < 0 ? -1
+                         : z >= 0 ? 1 : -1;                    
+                double n = s * Math.Max(Math.Max(Math.Abs(x), Math.Abs(y)), Math.Abs(z));
+                
+                return new Vector(x / n, y / n, z / n);
+            }
 
-            return (ls[0], ls[1], ls[2]);
+            Vector eigenvector(double l, double eps = 1e-10) {
+                double rx, ry, rz;
+                double n1 = l - m1, n2 = l - m2, n3 = l - m3, n4 = -m4, n5 = -m5, n6 = -m6;
+
+                if (Math.Abs(n1) < eps && Math.Abs(n4) < eps && Math.Abs(n6) < eps) { 
+                    return new Vector(1, 0, 0);
+                }
+                if (Math.Abs(n2) < eps && Math.Abs(n4) < eps && Math.Abs(n5) < eps) {
+                    return new Vector(0, 1, 0);
+                }
+                if (Math.Abs(n3) < eps && Math.Abs(n5) < eps && Math.Abs(n6) < eps) {
+                    return new Vector(0, 0, 1);
+                }
+
+                double[] ex = { n1, n4, n6 }, ey = { n4, n2, n5 }, ez = { n6, n5, n3 };
+
+                (int iz0, int iz1, int iz2) = Order.AbsArgSort(n6, n5, n3);
+
+                if (Math.Abs(ez[iz1]) > eps) {
+                    rx = -ey[iz0] * ez[iz1] + ey[iz1] * ez[iz0];
+                    ry = +ex[iz0] * ez[iz1] - ex[iz1] * ez[iz0];
+                }
+                else {
+                    rx = -ey[iz0];
+                    ry = +ex[iz0];
+                }
+
+                rz = -(ex[iz2] * rx + ey[iz2] * ry) / ez[iz2];
+
+                return double.IsInfinity(rz)
+                    ? new Vector(0, 0, 1)
+                    : normalize(new Vector(rx, ry, rz));
+            }
+
+            // M = transpose(M) => lambda in R (det lambda I - M = 0)
+            (double l1, double l2, double l3) = Order.AbsSort(x1.Real, x2.Real, x3.Real);
+
+            return ((l1, eigenvector(l1)), (l2, eigenvector(l2)), (l3, eigenvector(l3)));
         }
     }
 }

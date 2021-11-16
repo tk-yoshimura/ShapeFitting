@@ -22,6 +22,15 @@ namespace ShapeFitting {
 
         public static Circle NaN => new(Vector.NaN, double.NaN);
 
+        /// <summary>from x^2 + y^2 + ax + by + c = 0</summary>
+        public static Circle FromImplicit(double a, double b, double c) {
+            double cx = -a / 2;
+            double cy = -b / 2;
+            double r = Math.Sqrt(cx * cx + cy * cy - c);
+
+            return new Circle(cx, cy, r);
+        }
+
         public static Circle FromPoints(Vector a, Vector b, Vector c) {
             Vector ab = a - b, bc = b - c, ca = c - a;
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ShapeFitting {
     internal static class Order {
@@ -14,6 +16,10 @@ namespace ShapeFitting {
                     : Math.Abs(x1) <= Math.Abs(x2) ? (x1, x2, x0) : (x2, x1, x0));
         }
 
+        public static IEnumerable<double> AbsSort(IEnumerable<double> xs) {
+            return xs.OrderBy((x) => Math.Abs(x));
+        }
+
         public static ((double, T), (double, T)) AbsSort<T>((double v, T) x0, (double v, T) x1) {
             return Math.Abs(x0.v) <= Math.Abs(x1.v) ? (x0, x1) : (x1, x0);
         }
@@ -24,6 +30,10 @@ namespace ShapeFitting {
                     : Math.Abs(x0.v) <= Math.Abs(x2.v) ? (x0, x2, x1) : (x2, x0, x1))
                 : (Math.Abs(x0.v) <= Math.Abs(x2.v) ? (x1, x0, x2)
                     : Math.Abs(x1.v) <= Math.Abs(x2.v) ? (x1, x2, x0) : (x2, x1, x0));
+        }
+
+        public static IEnumerable<(double, T)> AbsSort<T>(IEnumerable<(double v, T)> xs) {
+            return xs.OrderBy((x) => Math.Abs(x.v));
         }
 
         public static (int, int) AbsArgSort(double x0, double x1) {

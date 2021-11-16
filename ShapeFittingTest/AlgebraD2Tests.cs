@@ -151,21 +151,25 @@ namespace ShapeFittingTest {
             AlgebraD2.SymmMatrix mat = new(-1, 2, 4);
 
             AlgebraD2.SymmMatrix mat_inv = AlgebraD2.Invert(mat);
-            AlgebraD2.SymmMatrix mat_id1 = AlgebraD2.Mul(mat, mat_inv);
-            AlgebraD2.SymmMatrix mat_id2 = AlgebraD2.Mul(mat_inv, mat);
+            AlgebraD2.Matrix mat_id1 = AlgebraD2.Mul(mat, mat_inv);
+            AlgebraD2.Matrix mat_id2 = AlgebraD2.Mul(mat_inv, mat);
 
-            (double m1, double m2, double m3) = mat_id1;
-            (double n1, double n2, double n3) = mat_id2;
+            (double m11, double m12,
+             double m21, double m22) = mat_id1;
+            (double n11, double n12,
+             double n21, double n22) = mat_id2;
 
             Assert.AreEqual(1d, AlgebraD2.Det(mat) * AlgebraD2.Det(mat_inv), 1e-10);
 
-            Assert.AreEqual(1d, m1, 1e-10);
-            Assert.AreEqual(1d, m2, 1e-10);
-            Assert.AreEqual(0d, m3, 1e-10);
+            Assert.AreEqual(1d, m11, 1e-10);
+            Assert.AreEqual(1d, m22, 1e-10);
+            Assert.AreEqual(0d, m12, 1e-10);
+            Assert.AreEqual(0d, m21, 1e-10);
 
-            Assert.AreEqual(1d, n1, 1e-10);
-            Assert.AreEqual(1d, n2, 1e-10);
-            Assert.AreEqual(0d, n3, 1e-10);
+            Assert.AreEqual(1d, n11, 1e-10);
+            Assert.AreEqual(1d, n22, 1e-10);
+            Assert.AreEqual(0d, n12, 1e-10);
+            Assert.AreEqual(0d, n21, 1e-10);
         }
 
         [TestMethod]
@@ -173,14 +177,19 @@ namespace ShapeFittingTest {
             AlgebraD2.SymmMatrix mat1 = new(-1, 2, -3);
             AlgebraD2.Matrix mat2 = new(-5, -4,
                                          9, -8);
+            AlgebraD2.Matrix mat3 = new(1, -2,
+                                        -3, 7);
 
             AlgebraD2.Matrix mat12 = AlgebraD2.Mul(mat1, mat2);
             AlgebraD2.Matrix mat21 = AlgebraD2.Mul(mat2, mat1);
+            AlgebraD2.Matrix mat23 = AlgebraD2.Mul(mat2, mat3);
 
             (double m11, double m12,
              double m21, double m22) = mat12;
             (double n11, double n12,
              double n21, double n22) = mat21;
+            (double r11, double r12,
+             double r21, double r22) = mat23;
 
             Assert.AreEqual(-22, m11, 1e-10);
             Assert.AreEqual(28, m12, 1e-10);
@@ -191,21 +200,27 @@ namespace ShapeFittingTest {
             Assert.AreEqual(7, n12, 1e-10);
             Assert.AreEqual(15, n21, 1e-10);
             Assert.AreEqual(-43, n22, 1e-10);
+
+            Assert.AreEqual(7, r11, 1e-10);
+            Assert.AreEqual(-18, r12, 1e-10);
+            Assert.AreEqual(33, r21, 1e-10);
+            Assert.AreEqual(-74, r22, 1e-10);
         }
 
         [TestMethod]
-        public void MatrixSqueezeMulTest() {
-            AlgebraD2.SymmMatrix mat1 = new(-1, 2, -3);
-            AlgebraD2.Matrix mat2 = new(-5, -4,
-                                         9, -8);
+        public void TransposeTest() {
+            AlgebraD2.Matrix mat = new(-5, -4,
+                                       9, -8);
 
-            AlgebraD2.SymmMatrix mat212 = AlgebraD2.SqueezeMul(mat2, mat1);
+            AlgebraD2.Matrix mat_t = AlgebraD2.Transpose(mat);
 
-            (double m1, double m2, double m3) = mat212;
+            (double r11, double r12,
+             double r21, double r22) = mat_t;
 
-            Assert.AreEqual(-113, m1, 1e-10);
-            Assert.AreEqual(479, m2, 1e-10);
-            Assert.AreEqual(97, m3, 1e-10);
+            Assert.AreEqual(-5, r11, 1e-10);
+            Assert.AreEqual(9, r12, 1e-10);
+            Assert.AreEqual(-4, r21, 1e-10);
+            Assert.AreEqual(-8, r22, 1e-10);
         }
 
         [TestMethod]

@@ -166,18 +166,3 @@
   \end{matrix} \right], \\
 && ~~~ |\bold{S3}| = S_{w} S_{w x^2} S_{w y^2}-S_{w x}^2 S_{w y^2}-S_{w x^2} S_{w y}^2+2 S_{w x} S_{w y} S_{w x y} - S_{w} S_{wxy}^2
 \end{eqnarray*}
-
-\begin{eqnarray*}
-&& \bold{M} = \left[ 
-  \begin{matrix}
-    m_1 & m_4 & m_6 \\
-    m_4 & m_2 & m_5 \\
-    m_6 & m_5 & m_3
-  \end{matrix} \right] \\
-&& |\lambda \bold{I} - \bold{M} | = 
-\ \lambda^3
- + (-m_1 - m_2 - m_3) \lambda^2 \\
- &&~~~~ + (m_1 m_2+m_2 m_3+ m_3 m_1-m_4^2-m_5^2-m_6^2) \lambda \\
- &&~~~~ + m_1 m_5^2 + m_2 m_6^2 + m_3 m_4^2 - m_1 m_2 m_3 - 2 m_4 m_5 m_6 \\
- && = \lambda^3 + A_2 \lambda^2 + A_1 \lambda + A_0 = 0
-\end{eqnarray*}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace ShapeFitting {
@@ -14,23 +13,19 @@ namespace ShapeFitting {
                 return Line.FromPoints(vs.First(), vs.Last());
             }
 
-            double sx = 0, sy = 0, sxy = 0, sxx = 0, syy = 0;
+            double sx = 0, sy = 0, sx2 = 0, sxy = 0, sy2 = 0;
 
             foreach ((double x, double y) in vs) {
                 sx += x;
                 sy += y;
+                sx2 += x * x;
                 sxy += x * y;
-                sxx += x * x;
-                syy += y * y;
+                sy2 += y * y;
             }
 
-            double u = sxx - syy - (sx * sx - sy * sy) / n;
-            double v = 2 * (sxy - sx * sy / n);
+            Line line = Solver.FitLine(n, sx, sy, sx2, sxy, sy2);
 
-            double theta = -Math.Atan2(v, u) / 2;
-            double phi = -(Math.Sin(theta) * sx + Math.Cos(theta) * sy) / n;
-
-            return new Line(theta, phi);
+            return line;
         }
     }
 }

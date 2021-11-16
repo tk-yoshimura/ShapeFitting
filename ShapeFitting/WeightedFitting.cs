@@ -18,24 +18,20 @@ namespace ShapeFitting {
                 return Line.FromPoints(vs.First(), vs.Last());
             }
 
-            double sw = 0, swx = 0, swy = 0, swxy = 0, swxx = 0, swyy = 0;
+            double sw = 0, swx = 0, swy = 0, swx2 = 0, swxy = 0, swy2 = 0;
 
             foreach (((double x, double y), double w) in vs.Zip(weights)) {
                 sw += w;
                 swx += w * x;
                 swy += w * y;
+                swx2 += w * x * x;
                 swxy += w * x * y;
-                swxx += w * x * x;
-                swyy += w * y * y;
+                swy2 += w * y * y;
             }
 
-            double u = swxx - swyy - (swx * swx - swy * swy) / sw;
-            double v = 2 * (swxy - swx * swy / sw);
+            Line line = Solver.FitLine(sw, swx, swy, swx2, swxy, swy2);
 
-            double theta = -Math.Atan2(v, u) / 2;
-            double phi = -(Math.Sin(theta) * swx + Math.Cos(theta) * swy) / sw;
-
-            return new Line(theta, phi);
+            return line;
         }
     }
 }

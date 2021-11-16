@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace ShapeFitting {
@@ -26,6 +28,16 @@ namespace ShapeFitting {
 
                 (m1, m2, m3, m4, m5, m6)
                 = (this.m1, this.m2, this.m3, this.m4, this.m5, this.m6);
+
+            public double MaxAbsValue {
+                get {
+                    static double max(double a, double b, double c) => Math.Max(Math.Max(a, b), c);
+
+                    return max(Math.Max(Math.Abs(m1), Math.Abs(m2)),
+                               Math.Max(Math.Abs(m3), Math.Abs(m4)),
+                               Math.Max(Math.Abs(m5), Math.Abs(m6)));
+                }
+            }
         };
 
         public class Matrix {
@@ -54,6 +66,16 @@ namespace ShapeFitting {
 
                 (m11, m12, m13, m21, m22, m23, m31, m32, m33)
                 = (this.m11, this.m12, this.m13, this.m21, this.m22, this.m23, this.m31, this.m32, this.m33);
+
+            public double MaxAbsValue {
+                get {
+                    static double max(double a, double b, double c) => Math.Max(Math.Max(a, b), c);
+
+                    return max(max(Math.Abs(m11), Math.Abs(m12), Math.Abs(m13)),
+                               max(Math.Abs(m21), Math.Abs(m22), Math.Abs(m23)),
+                               max(Math.Abs(m31), Math.Abs(m32), Math.Abs(m33)));
+                }
+            }
         };
 
         public class Vector {
@@ -106,20 +128,21 @@ namespace ShapeFitting {
             return new SymmMatrix(m1 - n1, m2 - n2, m3 - n3, m4 - n4, m5 - n5, m6 - n6);
         }
 
-        public static SymmMatrix Mul(SymmMatrix mat1, SymmMatrix mat2) {
+        public static Matrix Mul(SymmMatrix mat1, SymmMatrix mat2) {
             (double m1, double m2, double m3, double m4, double m5, double m6) = mat1;
             (double n1, double n2, double n3, double n4, double n5, double n6) = mat2;
 
-            double mn4 = m4 * n4, mn5 = m5 * n5, mn6 = m6 * n6;
+            double r11 = m1 * n1 + m4 * n4 + m6 * n6;
+            double r12 = m1 * n4 + m4 * n2 + m6 * n5;
+            double r13 = m1 * n6 + m4 * n5 + m6 * n3;
+            double r21 = m2 * n4 + m5 * n6 + m4 * n1;
+            double r22 = m2 * n2 + m5 * n5 + m4 * n4;
+            double r23 = m2 * n5 + m5 * n3 + m4 * n6;
+            double r31 = m3 * n6 + m5 * n4 + m6 * n1;
+            double r32 = m3 * n5 + m5 * n2 + m6 * n4;
+            double r33 = m3 * n3 + m5 * n5 + m6 * n6;
 
-            double r1 = m1 * n1 + mn4 + mn6;
-            double r2 = m2 * n2 + mn4 + mn5;
-            double r3 = m3 * n3 + mn5 + mn6;
-            double r4 = m1 * n4 + m4 * n2 + m6 * n5;
-            double r5 = m2 * n5 + m4 * n6 + m5 * n3;
-            double r6 = m1 * n6 + m4 * n5 + m6 * n3;
-
-            return new SymmMatrix(r1, r2, r3, r4, r5, r6);
+            return new Matrix(r11, r12, r13, r21, r22, r23, r31, r32, r33);
         }
 
         public static Matrix Mul(SymmMatrix mat1, Matrix mat2) {
@@ -160,22 +183,25 @@ namespace ShapeFitting {
             return new Matrix(r11, r12, r13, r21, r22, r23, r31, r32, r33);
         }
 
-        public static SymmMatrix SqueezeMul(Matrix mat1, SymmMatrix mat2) {
+        public static Matrix Mul(Matrix mat1, Matrix mat2) {
+            (double m11, double m12, double m13,
+             double m21, double m22, double m23,
+             double m31, double m32, double m33) = mat1;
             (double n11, double n12, double n13,
              double n21, double n22, double n23,
-             double n31, double n32, double n33) = mat1;
-            (double r11, double r12, double r13,
-             double r21, double r22, double r23,
-             double r31, double r32, double r33) = Mul(mat1, mat2);
+             double n31, double n32, double n33) = mat2;
 
-            double r1 = n11 * r11 + n12 * r12 + n13 * r13;
-            double r2 = n21 * r21 + n22 * r22 + n23 * r23;
-            double r3 = n31 * r31 + n32 * r32 + n33 * r33;
-            double r4 = n11 * r21 + n12 * r22 + n13 * r23;
-            double r5 = n21 * r31 + n22 * r32 + n23 * r33;
-            double r6 = n11 * r31 + n12 * r32 + n13 * r33;
+            double r11 = m11 * n11 + m12 * n21 + m13 * n31;
+            double r21 = m21 * n11 + m22 * n21 + m23 * n31;
+            double r31 = m31 * n11 + m32 * n21 + m33 * n31;
+            double r12 = m11 * n12 + m12 * n22 + m13 * n32;
+            double r22 = m21 * n12 + m22 * n22 + m23 * n32;
+            double r32 = m31 * n12 + m32 * n22 + m33 * n32;
+            double r13 = m11 * n13 + m12 * n23 + m13 * n33;
+            double r23 = m21 * n13 + m22 * n23 + m23 * n33;
+            double r33 = m31 * n13 + m32 * n23 + m33 * n33;
 
-            return new SymmMatrix(r1, r2, r3, r4, r5, r6);
+            return new Matrix(r11, r12, r13, r21, r22, r23, r31, r32, r33);
         }
 
         public static Vector Mul(Matrix mat, Vector v) {
@@ -202,10 +228,20 @@ namespace ShapeFitting {
             return new Vector(u1, u2, u3);
         }
 
-        public static ((double val, Vector vec) l1, (double val, Vector vec) l2, (double val, Vector vec) l3) EigenValues(SymmMatrix mat, double eps = 1e-10) {
+        public static Matrix Transpose(Matrix mat) {
+            (double m11, double m12, double m13,
+             double m21, double m22, double m23,
+             double m31, double m32, double m33) = mat;
+
+            return new Matrix(m11, m21, m31, m12, m22, m32, m13, m23, m33);
+        }
+
+        public static ((double val, Vector vec) l1, (double val, Vector vec) l2, (double val, Vector vec) l3) EigenValues(SymmMatrix mat, double eps = 1e-8) {
             (double m1, double m2, double m3, double m4, double m5, double m6) = mat;
 
-            if (Math.Abs(m4) < eps && Math.Abs(m5) < eps && Math.Abs(m6) < eps) {
+            double veps = eps * mat.MaxAbsValue;
+
+            if (Math.Abs(m4) < veps && Math.Abs(m5) < veps && Math.Abs(m6) < veps) {
                 return Order.AbsSort((m1, new Vector(1, 0, 0)), (m2, new Vector(0, 1, 0)), (m3, new Vector(0, 0, 1)));
             }
 
@@ -214,6 +250,49 @@ namespace ShapeFitting {
                 m1 * m2 + m2 * m3 + m3 * m1 - m4 * m4 - m5 * m5 - m6 * m6,
                 m1 * m5 * m5 + m2 * m6 * m6 + m3 * m4 * m4 - m1 * m2 * m3 - 2 * m4 * m5 * m6
             );
+
+            // M = transpose(M) => lambda in R (det lambda I - M = 0)
+            (double l1, double l2, double l3) = Order.AbsSort(x1.Real, x2.Real, x3.Real);
+
+            Matrix mat_asymm = new(m1, m4, m6, m4, m2, m5, m6, m5, m3);
+
+            return ((l1, EigenVector(mat_asymm, l1, veps)),
+                    (l2, EigenVector(mat_asymm, l2, veps)),
+                    (l3, EigenVector(mat_asymm, l3, veps)));
+        }
+
+        public static IEnumerable<(double val, Vector vec)> EigenValues(Matrix mat, double eps = 1e-8) {
+            (double m11, double m12, double m13,
+             double m21, double m22, double m23,
+             double m31, double m32, double m33) = mat;
+
+            double veps = eps * mat.MaxAbsValue;
+
+            if (Math.Abs(m12) < veps && Math.Abs(m13) < veps && Math.Abs(m21) < veps &&
+                Math.Abs(m23) < veps && Math.Abs(m31) < veps && Math.Abs(m33) < veps) {
+
+                return Order.AbsSort(new (double val, Vector vec)[]{
+                    (m11, new Vector(1, 0, 0)), (m22, new Vector(0, 1, 0)), (m33, new Vector(0, 0, 1))
+                });
+            }
+
+            (Complex x1, Complex x2, Complex x3) = RootFinding.Cubic(
+                 -m11 - m22 - m33,
+                 m11 * m22 + m22 * m33 + m33 * m11 - m12 * m21 - m23 * m32 - m31 * m13,
+                 m11 * (m23 * m32 - m22 * m33) + m12 * (m21 * m33 - m23 * m31) + m13 * (m22 * m31 - m21 * m32)
+            );
+
+            double[] ls = Order.AbsSort(
+                    new Complex[] { x1, x2, x3 }
+                    .Where((c) => Math.Abs(c.Real) * eps > Math.Abs(c.Imaginary))
+                    .Select((c) => c.Real)
+                ).ToArray();
+
+            return ls.Select((l) => (l, EigenVector(mat, l, veps)));
+        }
+
+        private static Vector EigenVector(Matrix mat, double l, double eps) {
+            const int size = 3;
 
             static Vector normalize(Vector v) {
                 (double x, double y, double z) = v;
@@ -226,44 +305,103 @@ namespace ShapeFitting {
                 return new Vector(x / n, y / n, z / n);
             }
 
-            Vector eigenvector(double l) {
-                double rx, ry, rz;
-                double n1 = l - m1, n2 = l - m2, n3 = l - m3, n4 = -m4, n5 = -m5, n6 = -m6;
+            (double m11, double m12, double m13,
+             double m21, double m22, double m23,
+             double m31, double m32, double m33) = mat;
 
-                if (Math.Abs(n1) < eps && Math.Abs(n4) < eps && Math.Abs(n6) < eps) {
-                    return new Vector(1, 0, 0);
+            m11 -= l; m22 -= l; m33 -= l;
+            
+            double rx, ry, rz;
+            int[] nzs = new int[size];
+            double[,] e = { { m11, m12, m13 }, 
+                            { m21, m22, m23 }, 
+                            { m31, m32, m33 } };
+            bool[,] nz = new bool[size, size];
+
+            for (int j = 0; j < size; j++) { 
+                for (int i = 0; i < size; i++) {
+                    nz[j, i] = Math.Abs(e[j, i]) > eps;
+                    nzs[j] += nz[j, i] ? 1 : 0;
                 }
-                if (Math.Abs(n2) < eps && Math.Abs(n4) < eps && Math.Abs(n5) < eps) {
-                    return new Vector(0, 1, 0);
-                }
-                if (Math.Abs(n3) < eps && Math.Abs(n5) < eps && Math.Abs(n6) < eps) {
-                    return new Vector(0, 0, 1);
-                }
-
-                double[] ex = { n1, n4, n6 }, ey = { n4, n2, n5 }, ez = { n6, n5, n3 };
-
-                (int iz0, int iz1, int iz2) = Order.AbsArgSort(n6, n5, n3);
-
-                if (Math.Abs(ez[iz1]) > eps) {
-                    rx = -ey[iz0] * ez[iz1] + ey[iz1] * ez[iz0];
-                    ry = +ex[iz0] * ez[iz1] - ex[iz1] * ez[iz0];
-                }
-                else {
-                    rx = -ey[iz0];
-                    ry = +ex[iz0];
-                }
-
-                rz = -(ex[iz2] * rx + ey[iz2] * ry) / ez[iz2];
-
-                return double.IsInfinity(rz)
-                    ? new Vector(0, 0, 1)
-                    : normalize(new Vector(rx, ry, rz));
             }
 
-            // M = transpose(M) => lambda in R (det lambda I - M = 0)
-            (double l1, double l2, double l3) = Order.AbsSort(x1.Real, x2.Real, x3.Real);
+            if (nzs[0] == size && nzs[1] == size && nzs[2] == size) {
+                rx = -e[0, 1] * e[1, 2] + e[1, 1] * e[0, 2];
+                ry = +e[0, 0] * e[1, 2] - e[1, 0] * e[0, 2];
+                rz = -(e[2, 0] * rx + e[2, 1] * ry) / e[2, 2];
+            }
+            else if (nzs[0] == 2 || nzs[1] == 2 || nzs[2] == 2) {
+                
+                int inz = nzs[0] == 2 ? 0 : nzs[1] == 2 ? 1 : 2;
+                int jnz = (inz + 1) % size, knz = (inz + 2) % size;
 
-            return ((l1, eigenvector(l1)), (l2, eigenvector(l2)), (l3, eigenvector(l3)));
+                static (double r1, double r2, double r3) solve(double s11, double s12, double s21, double s22, double s23) {
+                    // solve (r0, r1, r2)
+                    // s11 * r0 + s12 * r1 = 0
+                    // s21 * r0 + s22 * r1 + s23 * r2 = 0
+                    // |s11| > 0, |s12| > 0, |s23| > 0, 
+
+                    double r1 = -s12, r2 = s11;
+                    double r3 = (s12 * s21 - s11 * s22) / s23;
+
+                    return (r1, r2, r3);
+                };
+
+                if (!nz[inz, 0]) {
+                    if (nz[jnz, 0]) {
+                        (ry, rz, rx) = solve(e[inz, 1], e[inz, 2], e[jnz, 1], e[jnz, 2], e[jnz, 0]);
+                    }
+                    else if (nz[knz, 0]) {
+                        (ry, rz, rx) = solve(e[inz, 1], e[inz, 2], e[knz, 1], e[knz, 2], e[knz, 0]);
+                    }
+                    else {
+                        (ry, rz, rx) = (0, 0, 1);
+                    }
+                }
+                else if (!nz[inz, 1]) {
+                    if (nz[jnz, 1]) {
+                        (rz, rx, ry) = solve(e[inz, 2], e[inz, 0], e[jnz, 2], e[jnz, 0], e[jnz, 1]);
+                    }
+                    else if (nz[knz, 1]) {
+                        (rz, rx, ry) = solve(e[inz, 2], e[inz, 0], e[knz, 2], e[knz, 0], e[knz, 1]);
+                    }
+                    else {
+                        (rz, rx, ry) = (0, 0, 1);
+                    }
+                }
+                else{
+                    if (nz[jnz, 2]) {
+                        (rx, ry, rz) = solve(e[inz, 0], e[inz, 1], e[jnz, 0], e[jnz, 1], e[jnz, 2]);
+                    }
+                    else if (nz[knz, 2]) {
+                        (rx, ry, rz) = solve(e[inz, 0], e[inz, 1], e[knz, 0], e[knz, 1], e[knz, 2]);
+                    }
+                    else {
+                        (rx, ry, rz) = (0, 0, 1);
+                    }
+                }
+            }
+            else if (nzs[0] == 0 || nzs[1] == 0 || nzs[2] == 0) {
+                (rx, ry, rz) = (1, 1, 1);
+
+                for (int j = 0; j < size; j++) {
+                    if (nz[j, 0]) {
+                        rx = 0;
+                    }
+                    if (nz[j, 1]) {
+                        ry = 0;
+                    }
+                    if (nz[j, 2]) {
+                        rz = 0;
+                    }
+                }
+            }
+            else {
+                // det(M - lambda I) != 0
+                return new Vector(0, 0, 0);
+            }
+
+            return normalize(new Vector(rx, ry, rz));
         }
     }
 }

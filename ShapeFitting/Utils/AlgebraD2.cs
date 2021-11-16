@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace ShapeFitting {
@@ -15,6 +17,14 @@ namespace ShapeFitting {
 
             public void Deconstruct(out double m1, out double m2, out double m3) =>
                 (m1, m2, m3) = (this.m1, this.m2, this.m3);
+
+            public double MaxAbsValue {
+                get {
+                    static double max(double a, double b, double c) => Math.Max(Math.Max(a, b), c);
+
+                    return max(Math.Abs(m1), Math.Abs(m2), Math.Abs(m3));
+                }
+            }
         };
 
         public class Matrix {
@@ -29,6 +39,13 @@ namespace ShapeFitting {
 
             public void Deconstruct(out double m11, out double m12, out double m21, out double m22) =>
                 (m11, m12, m21, m22) = (this.m11, this.m12, this.m21, this.m22);
+
+            public double MaxAbsValue {
+                get {
+                    return Math.Max(Math.Max(Math.Abs(m11), Math.Abs(m12)),
+                                    Math.Max(Math.Abs(m21), Math.Abs(m22)));
+                }
+            }
         };
 
         public class Vector {
@@ -77,15 +94,16 @@ namespace ShapeFitting {
             return new SymmMatrix(m1 - n1, m2 - n2, m3 - n3);
         }
 
-        public static SymmMatrix Mul(SymmMatrix mat1, SymmMatrix mat2) {
+        public static Matrix Mul(SymmMatrix mat1, SymmMatrix mat2) {
             (double m1, double m2, double m3) = mat1;
             (double n1, double n2, double n3) = mat2;
 
-            double r1 = m1 * n1 + m3 * n3;
-            double r2 = m3 * n3 + m2 * n2;
-            double r3 = m1 * n3 + m3 * n2;
+            double r11 = m1 * n1 + m3 * n3;
+            double r12 = m1 * n3 + m3 * n2;
+            double r21 = m2 * n3 + m3 * n1;
+            double r22 = m2 * n2 + m3 * n3;
 
-            return new SymmMatrix(r1, r2, r3);
+            return new Matrix(r11, r12, r21, r22);
         }
 
         public static Matrix Mul(SymmMatrix mat1, Matrix mat2) {
@@ -114,17 +132,18 @@ namespace ShapeFitting {
             return new Matrix(r11, r12, r21, r22);
         }
 
-        public static SymmMatrix SqueezeMul(Matrix mat1, SymmMatrix mat2) {
+        public static Matrix Mul(Matrix mat1, Matrix mat2) {
+            (double m11, double m12,
+             double m21, double m22) = mat1;
             (double n11, double n12,
-             double n21, double n22) = mat1;
-            (double r11, double r12,
-             double r21, double r22) = Mul(mat1, mat2);
+             double n21, double n22) = mat2;
 
-            double r1 = n11 * r11 + n12 * r12;
-            double r2 = n21 * r21 + n22 * r22;
-            double r3 = n11 * r21 + n12 * r22;
+            double r11 = m11 * n11 + m12 * n21;
+            double r21 = m21 * n11 + m22 * n21;
+            double r12 = m11 * n12 + m12 * n22;
+            double r22 = m21 * n12 + m22 * n22;
 
-            return new SymmMatrix(r1, r2, r3);
+            return new Matrix(r11, r12, r21, r22);
         }
 
         public static Vector Mul(Matrix mat, Vector v) {
@@ -148,10 +167,19 @@ namespace ShapeFitting {
             return new Vector(u1, u2);
         }
 
+        public static Matrix Transpose(Matrix mat) {
+            (double m11, double m12,
+             double m21, double m22) = mat;
+
+            return new Matrix(m11, m21, m12, m22);
+        }
+
         public static ((double val, Vector vec) l1, (double val, Vector vec) l2) EigenValues(SymmMatrix mat, double eps = 1e-10) {
             (double m1, double m2, double m3) = mat;
 
-            if (Math.Abs(m3) < eps) {
+            double veps = eps * mat.MaxAbsValue;
+
+            if (Math.Abs(m3) < veps) {
                 return Order.AbsSort((m1, new Vector(1, 0)), (m2, new Vector(0, 1)));
             }
 
@@ -159,6 +187,44 @@ namespace ShapeFitting {
                 -m1 - m2,
                 m1 * m2 - m3 * m3
             );
+
+            // M = transpose(M) => lambda in R (det lambda I - M = 0)
+            (double l1, double l2) = Order.AbsSort(x1.Real, x2.Real);
+
+            Matrix mat_asymm = new(m1, m3, m3, m2);
+
+            return ((l1, EigenVector(mat_asymm, l1, veps)),
+                    (l2, EigenVector(mat_asymm, l2, veps)));
+        }
+
+        public static IEnumerable<(double val, Vector vec)> EigenValues(Matrix mat, double eps = 1e-8) {
+            (double m11, double m12,
+             double m21, double m22) = mat;
+
+            double veps = eps * mat.MaxAbsValue;
+
+            if (Math.Abs(m12) < veps && Math.Abs(m21) < veps) {
+
+                return Order.AbsSort(new (double val, Vector vec)[]{
+                    (m11, new Vector(1, 0)), (m22, new Vector(0, 1))
+                });
+            }
+
+            (Complex x1, Complex x2) = RootFinding.Quadratic(
+                 -m11 - m22,
+                 m11 * m22 - m12 * m21
+            );
+
+            double[] ls = Order.AbsSort(
+                    new Complex[] { x1, x2 }
+                    .Where((c) => Math.Abs(c.Real) * eps > Math.Abs(c.Imaginary))
+                    .Select((c) => c.Real)
+                ).ToArray();
+
+            return ls.Select((l) => (l, EigenVector(mat, l, veps)));
+        }
+
+        private static Vector EigenVector(Matrix mat, double l, double eps) {
 
             static Vector normalize(Vector v) {
                 (double x, double y) = v;
@@ -170,26 +236,15 @@ namespace ShapeFitting {
                 return new Vector(x / n, y / n);
             }
 
-            Vector eigenvector(double l) {
-                double n1 = l - m1, n2 = l - m2, n3 = -m3;
+            (double m11, double m12,
+             double m21, double m22) = mat;
 
-                if (Math.Abs(n1) < eps && Math.Abs(n3) < eps) {
-                    return new Vector(1, 0);
-                }
-                if (Math.Abs(n2) < eps && Math.Abs(n3) < eps) {
-                    return new Vector(0, 1);
-                }
+            m11 -= l; m22 -= l;
 
-                double rx = n3 - n2;
-                double ry = n3 - n1;
+            double rx = m12 - m22;
+            double ry = m21 - m11;
 
-                return normalize(new Vector(rx, ry));
-            }
-
-            // M = transpose(M) => lambda in R (det lambda I - M = 0)
-            (double l1, double l2) = Order.AbsSort(x1.Real, x2.Real);
-
-            return ((l1, eigenvector(l1)), (l2, eigenvector(l2)));
+            return normalize(new Vector(rx, ry));
         }
     }
 }

@@ -233,7 +233,7 @@ namespace ShapeFittingTest {
 
             Assert.AreEqual(1, e21, 1e-10);
             Assert.AreEqual(-1d / 7, e22, 1e-10);
-            Assert.AreEqual(3d / 7, e23, 1e-10);
+            Assert.AreEqual(-3d / 7, e23, 1e-10);
 
             Assert.AreEqual(1,    e31, 1e-10);
             Assert.AreEqual(1d/4, e32, 1e-10);

@@ -312,93 +312,65 @@ namespace ShapeFitting {
             m11 -= l; m22 -= l; m33 -= l;
             
             double rx, ry, rz;
-            int[] nzs = new int[size];
-            double[,] e = { { m11, m12, m13 }, 
-                            { m21, m22, m23 }, 
-                            { m31, m32, m33 } };
-            bool[,] nz = new bool[size, size];
+            double[][] e = { new double[]{ m11, m12, m13 }, 
+                             new double[]{ m21, m22, m23 }, 
+                             new double[]{ m31, m32, m33 } };
 
-            for (int j = 0; j < size; j++) { 
-                for (int i = 0; i < size; i++) {
-                    nz[j, i] = Math.Abs(e[j, i]) > eps;
-                    nzs[j] += nz[j, i] ? 1 : 0;
+            (int i0, int i1, int i2) = Order.AbsArgSort(e[0][0], e[1][0], e[2][0]);
+            e = new double[][] { e[i0], e[i1], e[i2] };
+
+            if (Math.Abs(e[2][0]) > eps) {
+                double r02 = e[0][0] / e[2][0], r12 = e[1][0] / e[2][0];
+
+                e[0][0] = e[1][0] = 0;
+                e[0][1] -= e[2][1] * r02;
+                e[0][2] -= e[2][2] * r02;
+                e[1][1] -= e[2][1] * r12;
+                e[1][2] -= e[2][2] * r12;
+
+                if (Math.Abs(e[0][1]) > Math.Abs(e[1][1])) {
+                    e = new double[][] { e[1], e[0], e[2] };
+                }
+
+                if (Math.Abs(e[1][1]) > eps) {
+                    double r01 = e[0][1] / e[1][1], r21 = e[2][1] / e[1][1];
+
+                    e[0][1] = e[2][1] = 0;
+                    e[0][2] -= e[1][2] * r01;
+                    e[2][2] -= e[1][2] * r21;
+                }
+
+                if (Math.Abs(e[0][2]) > eps) {
+                    e[1][2] = e[2][2] = 0;
                 }
             }
 
-            if (nzs[0] == size && nzs[1] == size && nzs[2] == size) {
-                rx = -e[0, 1] * e[1, 2] + e[1, 1] * e[0, 2];
-                ry = +e[0, 0] * e[1, 2] - e[1, 0] * e[0, 2];
-                rz = -(e[2, 0] * rx + e[2, 1] * ry) / e[2, 2];
-            }
-            else if (nzs[0] == 2 || nzs[1] == 2 || nzs[2] == 2) {
-                
-                int inz = nzs[0] == 2 ? 0 : nzs[1] == 2 ? 1 : 2;
-                int jnz = (inz + 1) % size, knz = (inz + 2) % size;
+            if (Math.Abs(e[0][2]) <= eps) {
+                double s11 = e[2][0], s12 = e[2][1], s13 = e[2][2], s22 = e[1][1], s23 = e[1][2];
+                // s11 rx + s12 ry + s13 rz = 0
+                //          s22 ry + s23 rz = 0
 
-                static (double r1, double r2, double r3) solve(double s11, double s12, double s21, double s22, double s23) {
-                    // solve (r0, r1, r2)
-                    // s11 * r0 + s12 * r1 = 0
-                    // s21 * r0 + s22 * r1 + s23 * r2 = 0
-                    // |s11| > 0, |s12| > 0, |s23| > 0, 
-
-                    double r1 = -s12, r2 = s11;
-                    double r3 = (s12 * s21 - s11 * s22) / s23;
-
-                    return (r1, r2, r3);
-                };
-
-                if (!nz[inz, 0]) {
-                    if (nz[jnz, 0]) {
-                        (ry, rz, rx) = solve(e[inz, 1], e[inz, 2], e[jnz, 1], e[jnz, 2], e[jnz, 0]);
-                    }
-                    else if (nz[knz, 0]) {
-                        (ry, rz, rx) = solve(e[inz, 1], e[inz, 2], e[knz, 1], e[knz, 2], e[knz, 0]);
-                    }
-                    else {
-                        (ry, rz, rx) = (0, 0, 1);
-                    }
+                if (Math.Abs(s11) > eps) {
+                    (rx, ry, rz) = ((s12 * s23 - s13 * s22) / s11, -s23, s22);
                 }
-                else if (!nz[inz, 1]) {
-                    if (nz[jnz, 1]) {
-                        (rz, rx, ry) = solve(e[inz, 2], e[inz, 0], e[jnz, 2], e[jnz, 0], e[jnz, 1]);
-                    }
-                    else if (nz[knz, 1]) {
-                        (rz, rx, ry) = solve(e[inz, 2], e[inz, 0], e[knz, 2], e[knz, 0], e[knz, 1]);
-                    }
-                    else {
-                        (rz, rx, ry) = (0, 0, 1);
-                    }
+                else if (Math.Abs(s12) <= eps && Math.Abs(s13) <= eps) {
+                    (rx, ry, rz) = (0, -s23, s22);
                 }
-                else{
-                    if (nz[jnz, 2]) {
-                        (rx, ry, rz) = solve(e[inz, 0], e[inz, 1], e[jnz, 0], e[jnz, 1], e[jnz, 2]);
-                    }
-                    else if (nz[knz, 2]) {
-                        (rx, ry, rz) = solve(e[inz, 0], e[inz, 1], e[knz, 0], e[knz, 1], e[knz, 2]);
-                    }
-                    else {
-                        (rx, ry, rz) = (0, 0, 1);
-                    }
+                else {
+                    (rx, ry, rz) = (1, 0, 0);
                 }
             }
-            else if (nzs[0] == 0 || nzs[1] == 0 || nzs[2] == 0) {
-                (rx, ry, rz) = (1, 1, 1);
+            else { 
+                double s11 = e[2][0], s12 = e[2][1], s22 = e[1][1];
+                // s11 rx + s12 ry = 0
+                //          s22 ry = 0
 
-                for (int j = 0; j < size; j++) {
-                    if (nz[j, 0]) {
-                        rx = 0;
-                    }
-                    if (nz[j, 1]) {
-                        ry = 0;
-                    }
-                    if (nz[j, 2]) {
-                        rz = 0;
-                    }
+                if (Math.Abs(s22) <= eps) {
+                    (rx, ry, rz) = (-s12, s11, 0);
                 }
-            }
-            else {
-                // det(M - lambda I) != 0
-                return new Vector(0, 0, 0);
+                else {
+                    (rx, ry, rz) = (0, 0, 1);
+                }
             }
 
             return normalize(new Vector(rx, ry, rz));

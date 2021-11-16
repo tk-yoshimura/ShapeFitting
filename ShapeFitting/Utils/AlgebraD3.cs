@@ -284,7 +284,7 @@ namespace ShapeFitting {
 
             double[] ls = Order.AbsSort(
                     new Complex[] { x1, x2, x3 }
-                    .Where((c) => Math.Abs(c.Real) * eps > Math.Abs(c.Imaginary))
+                    .Where((c) => Math.Abs(c.Real) < eps || Math.Abs(c.Real) * eps >= Math.Abs(c.Imaginary))
                     .Select((c) => c.Real)
                 ).ToArray();
 
@@ -292,8 +292,6 @@ namespace ShapeFitting {
         }
 
         private static Vector EigenVector(Matrix mat, double l, double eps) {
-            const int size = 3;
-
             static Vector normalize(Vector v) {
                 (double x, double y, double z) = v;
 
@@ -327,23 +325,29 @@ namespace ShapeFitting {
                 e[0][2] -= e[2][2] * r02;
                 e[1][1] -= e[2][1] * r12;
                 e[1][2] -= e[2][2] * r12;
-
-                if (Math.Abs(e[0][1]) > Math.Abs(e[1][1])) {
-                    e = new double[][] { e[1], e[0], e[2] };
-                }
-
-                if (Math.Abs(e[1][1]) > eps) {
-                    double r01 = e[0][1] / e[1][1], r21 = e[2][1] / e[1][1];
-
-                    e[0][1] = e[2][1] = 0;
-                    e[0][2] -= e[1][2] * r01;
-                    e[2][2] -= e[1][2] * r21;
-                }
-
-                if (Math.Abs(e[0][2]) > eps) {
-                    e[1][2] = e[2][2] = 0;
-                }
             }
+
+            if (Math.Abs(e[0][1]) > Math.Abs(e[1][1])) {
+                e = new double[][] { e[1], e[0], e[2] };
+            }
+
+            if (Math.Abs(e[1][1]) > eps) {
+                double r01 = e[0][1] / e[1][1], r21 = e[2][1] / e[1][1];
+
+                e[0][1] = e[2][1] = 0;
+                e[0][2] -= e[1][2] * r01;
+                e[2][2] -= e[1][2] * r21;
+            }
+
+            if (Math.Abs(e[0][2]) > eps) {
+                e[1][2] = e[2][2] = 0;
+            }
+
+#if DEBUG
+            if (Math.Abs(e[0][0]) > eps || Math.Abs(e[0][1]) > eps || Math.Abs(e[1][0]) > eps) {
+                throw new NotImplementedException();
+            }
+#endif
 
             if (Math.Abs(e[0][2]) <= eps) {
                 double s11 = e[2][0], s12 = e[2][1], s13 = e[2][2], s22 = e[1][1], s23 = e[1][2];
@@ -361,15 +365,20 @@ namespace ShapeFitting {
                 }
             }
             else { 
-                double s11 = e[2][0], s12 = e[2][1], s22 = e[1][1];
-                // s11 rx + s12 ry = 0
-                //          s22 ry = 0
+                double s11 = e[2][0], s12 = e[2][1], s22 = e[1][1], s33 = e[0][2];
+                // s11 rx + s12 ry        = 0
+                //          s22 ry        = 0
+                //                 s33 rz = 0
 
                 if (Math.Abs(s22) <= eps) {
                     (rx, ry, rz) = (-s12, s11, 0);
                 }
+                else if(Math.Abs(s11) <= eps){
+                    (rx, ry, rz) = (1, 0, 0);
+                }
                 else {
-                    (rx, ry, rz) = (0, 0, 1);
+                    // det M - lambda I != 0
+                    return new Vector(0, 0, 0);
                 }
             }
 

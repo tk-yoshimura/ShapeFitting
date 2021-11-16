@@ -241,6 +241,72 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void EigenValuesTest9() {
+            AlgebraD3.Matrix mat = new(2, 1, 0, 2, 2, 0, 0, 0, 1);
+
+            (double l, AlgebraD3.Vector v)[] eigens = AlgebraD3.EigenValues(mat).ToArray();
+
+            Assert.AreEqual(3, eigens.Length);
+
+            (double l1, AlgebraD3.Vector v1) = eigens[0];
+            (double l2, AlgebraD3.Vector v2) = eigens[1];
+            (double l3, AlgebraD3.Vector v3) = eigens[2];
+
+            Assert.AreEqual(0.585786, l1, 1e-5);
+            Assert.AreEqual(1, l2, 1e-10);
+            Assert.AreEqual(3.41421, l3, 1e-5);
+
+            (double e11, double e12, double e13) = v1;
+            (double e21, double e22, double e23) = v2;
+            (double e31, double e32, double e33) = v3;
+
+            Assert.AreEqual(0.707107, e11, 1e-5);
+            Assert.AreEqual(-1, e12, 1e-10);
+            Assert.AreEqual(0,  e13, 1e-10);
+
+            Assert.AreEqual(0, e21, 1e-10);
+            Assert.AreEqual(0, e22, 1e-10);
+            Assert.AreEqual(1, e23, 1e-10);
+
+            Assert.AreEqual(0.707107, e31, 1e-5);
+            Assert.AreEqual(1, e32, 1e-10);
+            Assert.AreEqual(0, e33, 1e-10);
+        }
+
+         [TestMethod]
+        public void EigenValuesTest10() {
+            AlgebraD3.Matrix mat = new(0, 1, 2, 0, 2, 4, 0, 0, 1);
+
+            (double l, AlgebraD3.Vector v)[] eigens = AlgebraD3.EigenValues(mat).ToArray();
+
+            Assert.AreEqual(3, eigens.Length);
+
+            (double l1, AlgebraD3.Vector v1) = eigens[0];
+            (double l2, AlgebraD3.Vector v2) = eigens[1];
+            (double l3, AlgebraD3.Vector v3) = eigens[2];
+
+            Assert.AreEqual(0, l1, 1e-5);
+            Assert.AreEqual(1, l2, 1e-10);
+            Assert.AreEqual(2, l3, 1e-5);
+
+            (double e11, double e12, double e13) = v1;
+            (double e21, double e22, double e23) = v2;
+            (double e31, double e32, double e33) = v3;
+
+            Assert.AreEqual(1, e11, 1e-5);
+            Assert.AreEqual(0, e12, 1e-10);
+            Assert.AreEqual(0, e13, 1e-10);
+
+            Assert.AreEqual(1d/2, e21, 1e-10);
+            Assert.AreEqual(1, e22, 1e-10);
+            Assert.AreEqual(-1d/4, e23, 1e-10);
+
+            Assert.AreEqual(1d/2, e31, 1e-5);
+            Assert.AreEqual(1,    e32, 1e-10);
+            Assert.AreEqual(0,     e33, 1e-10);
+        }
+
+        [TestMethod]
         public void SymmMatrixInverseMulTest() {
             // mat = -1 4 -6
             //        4 2  7

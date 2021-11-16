@@ -227,17 +227,17 @@ namespace ShapeFittingTest {
             (double e21, double e22, double e23) = v2;
             (double e31, double e32, double e33) = v3;
 
-            Assert.AreEqual(1,  e11, 1e-10);
+            Assert.AreEqual(1, e11, 1e-10);
             Assert.AreEqual(-1, e12, 1e-10);
-            Assert.AreEqual(0,  e13, 1e-10);
+            Assert.AreEqual(0, e13, 1e-10);
 
             Assert.AreEqual(1, e21, 1e-10);
             Assert.AreEqual(-1d / 7, e22, 1e-10);
             Assert.AreEqual(-3d / 7, e23, 1e-10);
 
-            Assert.AreEqual(1,    e31, 1e-10);
-            Assert.AreEqual(1d/4, e32, 1e-10);
-            Assert.AreEqual(0,    e33, 1e-10);
+            Assert.AreEqual(1, e31, 1e-10);
+            Assert.AreEqual(1d / 4, e32, 1e-10);
+            Assert.AreEqual(0, e33, 1e-10);
         }
 
         [TestMethod]
@@ -262,7 +262,7 @@ namespace ShapeFittingTest {
 
             Assert.AreEqual(0.707107, e11, 1e-5);
             Assert.AreEqual(-1, e12, 1e-10);
-            Assert.AreEqual(0,  e13, 1e-10);
+            Assert.AreEqual(0, e13, 1e-10);
 
             Assert.AreEqual(0, e21, 1e-10);
             Assert.AreEqual(0, e22, 1e-10);
@@ -273,7 +273,7 @@ namespace ShapeFittingTest {
             Assert.AreEqual(0, e33, 1e-10);
         }
 
-         [TestMethod]
+        [TestMethod]
         public void EigenValuesTest10() {
             AlgebraD3.Matrix mat = new(0, 1, 2, 0, 2, 4, 0, 0, 1);
 
@@ -297,13 +297,91 @@ namespace ShapeFittingTest {
             Assert.AreEqual(0, e12, 1e-10);
             Assert.AreEqual(0, e13, 1e-10);
 
-            Assert.AreEqual(1d/2, e21, 1e-10);
+            Assert.AreEqual(1d / 2, e21, 1e-10);
             Assert.AreEqual(1, e22, 1e-10);
-            Assert.AreEqual(-1d/4, e23, 1e-10);
+            Assert.AreEqual(-1d / 4, e23, 1e-10);
 
-            Assert.AreEqual(1d/2, e31, 1e-5);
-            Assert.AreEqual(1,    e32, 1e-10);
-            Assert.AreEqual(0,     e33, 1e-10);
+            Assert.AreEqual(1d / 2, e31, 1e-5);
+            Assert.AreEqual(1, e32, 1e-10);
+            Assert.AreEqual(0, e33, 1e-10);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest11() {
+            AlgebraD3.Matrix mat = new(0, 1, 2, 0, 2, 4, 0, 0, 0);
+
+            (double l, AlgebraD3.Vector v)[] eigens = AlgebraD3.EigenValues(mat).ToArray();
+
+            Assert.AreEqual(2, eigens.Length);
+
+            (double l1, AlgebraD3.Vector v1) = eigens[0];
+            (double l2, AlgebraD3.Vector v2) = eigens[1];
+
+            Assert.AreEqual(0, l1, 1e-10);
+            Assert.AreEqual(2, l2, 1e-10);
+
+            (double e11, double e12, double e13) = v1;
+            (double e21, double e22, double e23) = v2;
+
+            Assert.AreEqual(0, e11, 1e-10);
+            Assert.AreEqual(1, e12, 1e-10);
+            Assert.AreEqual(-1d / 2, e13, 1e-10);
+
+            Assert.AreEqual(1d / 2, e21, 1e-10);
+            Assert.AreEqual(1, e22, 1e-10);
+            Assert.AreEqual(0, e23, 1e-10);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest12() {
+            AlgebraD3.Matrix mat = new(1, 2, 0, 2, 4, 0, 0, 0, 0);
+
+            (double l, AlgebraD3.Vector v)[] eigens = AlgebraD3.EigenValues(mat).ToArray();
+
+            Assert.AreEqual(2, eigens.Length);
+
+            (double l1, AlgebraD3.Vector v1) = eigens[0];
+            (double l2, AlgebraD3.Vector v2) = eigens[1];
+
+            Assert.AreEqual(0, l1, 1e-10);
+            Assert.AreEqual(5, l2, 1e-10);
+
+            (double e11, double e12, double e13) = v1;
+            (double e21, double e22, double e23) = v2;
+
+            Assert.AreEqual(0, e11, 1e-10);
+            Assert.AreEqual(0, e12, 1e-10);
+            Assert.AreEqual(1, e13, 1e-10);
+
+            Assert.AreEqual(1d / 2, e21, 1e-10);
+            Assert.AreEqual(1, e22, 1e-10);
+            Assert.AreEqual(0, e23, 1e-10);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest13() {
+            AlgebraD3.Matrix mat = new(0, 0, 0, 0, 1, 2, 0, 2, 4);
+
+            (double l, AlgebraD3.Vector v)[] eigens = AlgebraD3.EigenValues(mat).ToArray();
+
+            Assert.AreEqual(2, eigens.Length);
+
+            (double l1, AlgebraD3.Vector v1) = eigens[0];
+            (double l2, AlgebraD3.Vector v2) = eigens[1];
+
+            Assert.AreEqual(0, l1, 1e-10);
+            Assert.AreEqual(5, l2, 1e-10);
+
+            (double e11, double e12, double e13) = v1;
+            (double e21, double e22, double e23) = v2;
+
+            Assert.AreEqual(0, e11, 1e-10);
+            Assert.AreEqual(1, e12, 1e-10);
+            Assert.AreEqual(-1d / 2, e13, 1e-10);
+
+            Assert.AreEqual(0, e21, 1e-10);
+            Assert.AreEqual(1d / 2, e22, 1e-10);
+            Assert.AreEqual(1, e23, 1e-10);
         }
 
         [TestMethod]

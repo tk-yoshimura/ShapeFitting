@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShapeFitting;
+using System.Linq;
 
 namespace ShapeFittingTest {
     [TestClass]
@@ -142,6 +143,28 @@ namespace ShapeFittingTest {
 
             Assert.AreEqual(0, e21, 1e-10);
             Assert.AreEqual(1, e22, 1e-10);
+        }
+
+        [TestMethod]
+        public void EigenValuesTest8() {
+            AlgebraD2.Matrix mat = new(3, 4, 1, 2);
+
+            (double l, AlgebraD2.Vector v)[] eigens = AlgebraD2.EigenValues(mat).ToArray();
+
+            Assert.AreEqual(2, eigens.Length);
+
+            (double l1, AlgebraD2.Vector v1) = eigens[0];
+            (double l2, AlgebraD2.Vector v2) = eigens[1];
+
+            Assert.AreEqual(0.438447, l1, 1e-5);
+            Assert.AreEqual(4.56155,  l2, 1e-5);
+
+            (double e11, double e12) = v1;
+            (double e21, double e22) = v2;
+
+            Assert.AreEqual(-1.56155, e11 / e12, 1e-5);
+            
+            Assert.AreEqual(2.56155, e21 / e22, 1e-5);
         }
 
         [TestMethod]

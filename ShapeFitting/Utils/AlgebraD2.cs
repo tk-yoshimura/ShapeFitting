@@ -217,8 +217,9 @@ namespace ShapeFitting {
 
             double[] ls = Order.AbsSort(
                     new Complex[] { x1, x2 }
-                    .Where((c) => Math.Abs(c.Real) * eps > Math.Abs(c.Imaginary))
+                    .Where((c) => Math.Abs(c.Real) < eps || Math.Abs(c.Real) * eps > Math.Abs(c.Imaginary))
                     .Select((c) => c.Real)
+                    .Distinct()
                 ).ToArray();
 
             return ls.Select((l) => (l, EigenVector(mat, l, veps)));

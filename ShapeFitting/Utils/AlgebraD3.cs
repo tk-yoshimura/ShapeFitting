@@ -286,6 +286,7 @@ namespace ShapeFitting {
                     new Complex[] { x1, x2, x3 }
                     .Where((c) => Math.Abs(c.Real) < eps || Math.Abs(c.Real) * eps >= Math.Abs(c.Imaginary))
                     .Select((c) => c.Real)
+                    .Distinct()
                 ).ToArray();
 
             return ls.Select((l) => (l, EigenVector(mat, l, veps)));
@@ -308,10 +309,10 @@ namespace ShapeFitting {
              double m31, double m32, double m33) = mat;
 
             m11 -= l; m22 -= l; m33 -= l;
-            
+
             double rx, ry, rz;
-            double[][] e = { new double[]{ m11, m12, m13 }, 
-                             new double[]{ m21, m22, m23 }, 
+            double[][] e = { new double[]{ m11, m12, m13 },
+                             new double[]{ m21, m22, m23 },
                              new double[]{ m31, m32, m33 } };
 
             (int i0, int i1, int i2) = Order.AbsArgSort(e[0][0], e[1][0], e[2][0]);
@@ -364,7 +365,7 @@ namespace ShapeFitting {
                     (rx, ry, rz) = (1, 0, 0);
                 }
             }
-            else { 
+            else {
                 double s11 = e[2][0], s12 = e[2][1], s22 = e[1][1], s33 = e[0][2];
                 // s11 rx + s12 ry        = 0
                 //          s22 ry        = 0
@@ -373,11 +374,11 @@ namespace ShapeFitting {
                 if (Math.Abs(s22) <= eps) {
                     (rx, ry, rz) = (-s12, s11, 0);
                 }
-                else if(Math.Abs(s11) <= eps){
+                else if (Math.Abs(s11) <= eps) {
                     (rx, ry, rz) = (1, 0, 0);
                 }
                 else {
-                    // det M - lambda I != 0
+                    // det(M - lambda I) != 0
                     return new Vector(0, 0, 0);
                 }
             }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ShapeFitting {
     internal static class Solver {
@@ -34,7 +36,7 @@ namespace ShapeFitting {
             FitEllipse(double sw,
                        double swx, double swy,
                        double swx2, double swxy, double swy2,
-                       double swx2y, double swxy2, double swx3, double swy3,
+                       double swx3, double swx2y, double swxy2, double swy3,
                        double swx4, double swx3y, double swx2y2, double swxy3, double swy4) {
 
             AlgebraD3.SymmMatrix s1 = new(swx4, swx2y2, swy4, swx3y, swxy3, swx2y2);
@@ -52,8 +54,27 @@ namespace ShapeFitting {
 
             AlgebraD3.Matrix m = new(p6 / 2, p5 / 2, p3 / 2, -p4, -p2, -p5, p1 / 2, p4 / 2, p6 / 2);
 
+            IEnumerable<(double val, AlgebraD3.Vector vec)> eigens_m = AlgebraD3.EigenValues(m);
 
-            throw new NotImplementedException();
+            AlgebraD3.Vector[] param = eigens_m.Where(
+                ((double lambda, AlgebraD3.Vector vec) eigen) => {
+                    (double a, double b, double c) = eigen.vec;
+
+                    return 4 * a * c - b * b > 0;
+                }
+            ).Select(((double lambda, AlgebraD3.Vector vec) eigen) => eigen.vec).ToArray();
+
+            if (param.Length < 1) {
+                return (double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
+            }
+
+            AlgebraD3.Vector v1 = param.First();
+            AlgebraD3.Vector v2 = AlgebraD3.Mul(t, v1);
+
+            (double a, double b, double c) = v1;
+            (double d, double e, double f) = v2;
+
+            return (a, b, c, -d, -e, -f);
         }
     }
 }

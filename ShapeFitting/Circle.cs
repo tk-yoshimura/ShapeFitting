@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ShapeFitting {
 
@@ -51,6 +52,16 @@ namespace ShapeFitting {
             return new Circle(center, radius);
         }
 
+        public Vector Point(double theta) {
+            return Center + new Vector(Math.Cos(theta) * Radius, Math.Sin(theta) * Radius);
+        }
+
+        public IEnumerable<Vector> Points(IEnumerable<double> thetas) {
+            foreach (double theta in thetas) {
+                yield return Center + new Vector(Math.Cos(theta) * Radius, Math.Sin(theta) * Radius);
+            }
+        }
+
         public override bool Equals(object obj) {
             return obj is Circle circle && (circle == this);
         }
@@ -71,6 +82,18 @@ namespace ShapeFitting {
             return new Circle(circle.c, circle.r);
         }
 
+        public static implicit operator (double cx, double cy, double r)(Circle circle) {
+            return (circle.Center.X, circle.Center.Y, circle.Radius);
+        }
+
+        public static implicit operator (Vector c, double r)(Circle circle) {
+            return (circle.Center, circle.Radius);
+        }
+
+        public static explicit operator Ellipse(Circle circle) {
+            return new Ellipse(circle.Center, (circle.Radius, circle.Radius), 0);
+        }
+
         public void Deconstruct(out double cx, out double cy, out double r) => (cx, cy, r) = (Center.X, Center.Y, Radius);
 
         public void Deconstruct(out Vector c, out double r) => (c, r) = (Center, Radius);
@@ -84,10 +107,7 @@ namespace ShapeFitting {
                 return nameof(NaN);
             }
 
-            string str = $"(x-{Center.X})^2+(y-{Center.Y})^2={Radius}^2";
-            str = str.Replace("--", "+");
-
-            return str;
+            return $"({Center}),{Radius}";
         }
     }
 }

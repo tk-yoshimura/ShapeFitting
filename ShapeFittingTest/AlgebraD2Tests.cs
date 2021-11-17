@@ -157,13 +157,13 @@ namespace ShapeFittingTest {
             (double l2, AlgebraD2.Vector v2) = eigens[1];
 
             Assert.AreEqual(0.438447, l1, 1e-5);
-            Assert.AreEqual(4.56155,  l2, 1e-5);
+            Assert.AreEqual(4.56155, l2, 1e-5);
 
             (double e11, double e12) = v1;
             (double e21, double e22) = v2;
 
             Assert.AreEqual(-1.56155, e11 / e12, 1e-5);
-            
+
             Assert.AreEqual(2.56155, e21 / e22, 1e-5);
         }
 

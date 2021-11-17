@@ -102,6 +102,14 @@ namespace ShapeFitting {
             return new Line(line.theta, line.phi);
         }
 
+        public static implicit operator (double a, double b, double c)(Line line) {
+            return (line.A, line.B, line.C);
+        }
+
+        public static implicit operator (double theta, double phi)(Line line) {
+            return (line.Theta, line.Phi);
+        }
+
         public void Deconstruct(out double a, out double b, out double c) => (a, b, c) = (A, B, C);
 
         public void Deconstruct(out double theta, out double phi) => (theta, phi) = (Theta, Phi);
@@ -133,24 +141,11 @@ namespace ShapeFitting {
         }
 
         public override string ToString() {
-            static string tostr(double value, string suffix) {
-                if (value == 0) {
-                    return string.Empty;
-                }
-                if (Math.Abs(value) == 1 && suffix.Length > 0) {
-                    return (value > 0) ? $"+{suffix}" : $"-{suffix}";
-                }
-
-                return (value > 0) ? $"+{value}{suffix}" : $"{value}{suffix}";
-            }
-
             if (!IsValid) {
                 return nameof(NaN);
             }
 
-            string str = $"{tostr(A, "x")}{tostr(B, "y")}{tostr(C, string.Empty)}=0";
-
-            return (str[0] == '+') ? str[1..] : str;
+            return $"({Theta},{Phi})";
         }
     }
 }

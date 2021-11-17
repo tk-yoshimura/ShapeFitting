@@ -57,7 +57,7 @@ namespace ShapeFitting {
         }
     }
 
-    public class Lasso : IWeightComputable {
+    internal class Lasso : IWeightComputable {
         public Lasso() { }
 
         public IEnumerable<double> Weight(IEnumerable<double> errs) {

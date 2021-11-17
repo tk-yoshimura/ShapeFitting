@@ -21,7 +21,7 @@ namespace ShapeFitting {
 
             double median = ((vs_arr.Length & 1) == 1)
                 ? vs_arr[vs_arr.Length / 2]
-                : (vs_arr[vs_arr.Length / 2] + vs_arr[vs_arr.Length / 2 + 1]) / 2;
+                : (vs_arr[vs_arr.Length / 2 - 1] + vs_arr[vs_arr.Length / 2]) / 2;
 
             return median;
         }

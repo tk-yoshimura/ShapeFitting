@@ -88,6 +88,28 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void MAEFitCircleTest() {
+            List<double> thetas = new();
+            for (decimal theta = 0; theta < 6.3m; theta += 0.1m) {
+                thetas.Add((double)theta);
+            }
+
+            foreach (Vector center in new Vector[] { (-1, -1), (0, -1), (+1, -1), (-1, 0), (0, 0), (+1, 0), (-1, +1), (0, +1), (+1, +1) }) {
+                foreach (double radius in new double[] { 1, 2, 4, 8 }) {
+                    Circle circle = new(center, radius);
+
+                    IEnumerable<Vector> vs = circle.Points(thetas);
+
+                    Circle circle_fit = MAEFitting.FitCircle(vs);
+
+                    Assert.AreEqual(center.X, circle_fit.Center.X, 1e-5);
+                    Assert.AreEqual(center.Y, circle_fit.Center.Y, 1e-5);
+                    Assert.AreEqual(radius, circle_fit.Radius, 1e-5);
+                }
+            }
+        }
+
+        [TestMethod]
         public void WeightedFitCircleTest() {
             List<double> thetas = new();
             for (decimal theta = 0; theta < 6.3m; theta += 0.1m) {

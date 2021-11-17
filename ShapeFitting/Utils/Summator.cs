@@ -64,17 +64,20 @@ namespace ShapeFitting {
                    sx3 = 0, sx2y = 0, sxy2 = 0, sy3 = 0;
 
             foreach ((double x, double y) in vs) {
+                double x2 = x * x, x3 = x * x2;
+                double y2 = y * y, y3 = y * y2;
+
                 sx += x;
                 sy += y;
 
-                sx2 += x * x;
+                sx2 += x2;
                 sxy += x * y;
-                sy2 += y * y;
+                sy2 += y2;
 
-                sx3 += x * x * x;
-                sx2y += x * x * y;
-                sxy2 += x * y * y;
-                sy3 += y * y * y;
+                sx3 += x3;
+                sx2y += x2 * y;
+                sxy2 += x * y2;
+                sy3 += y3;
             }
 
             return (sx, sy,
@@ -98,19 +101,22 @@ namespace ShapeFitting {
                    swx3 = 0, swx2y = 0, swxy2 = 0, swy3 = 0;
 
             foreach (((double x, double y), double w) in vs.Zip(weights)) {
+                double x2 = x * x, x3 = x * x2;
+                double y2 = y * y, y3 = y * y2;
+
                 sw += w;
 
                 swx += w * x;
                 swy += w * y;
 
-                swx2 += w * x * x;
+                swx2 += w * x2;
                 swxy += w * x * y;
-                swy2 += w * y * y;
+                swy2 += w * y2;
 
-                swx3 += w * x * x * x;
-                swx2y += w * x * x * y;
-                swxy2 += w * x * y * y;
-                swy3 += w * y * y * y;
+                swx3 += w * x3;
+                swx2y += w * x2 * y;
+                swxy2 += w * x * y2;
+                swy3 += w * y3;
             }
 
             return (sw,
@@ -131,23 +137,26 @@ namespace ShapeFitting {
                    sx4 = 0, sx3y = 0, sx2y2 = 0, sxy3 = 0, sy4 = 0;
 
             foreach ((double x, double y) in vs) {
+                double x2 = x * x, x3 = x * x2, x4 = x * x3;
+                double y2 = y * y, y3 = y * y2, y4 = y * y3;
+
                 sx += x;
                 sy += y;
 
-                sx2 += x * x;
+                sx2 += x2;
                 sxy += x * y;
-                sy2 += y * y;
+                sy2 += y2;
 
-                sx3 += x * x * x;
-                sx2y += x * x * y;
-                sxy2 += x * y * y;
-                sy3 += y * y * y;
+                sx3 += x3;
+                sx2y += x2 * y;
+                sxy2 += x * y2;
+                sy3 += y3;
 
-                sx4 += x * x * x * x;
-                sx3y += x * x * x * y;
-                sx2y2 += x * x * y * y;
-                sxy3 += x * y * y * y;
-                sy4 += y * y * y * y;
+                sx4 += x4;
+                sx3y += x3 * y;
+                sx2y2 += x2 * y2;
+                sxy3 += x * y3;
+                sy4 += y4;
             }
 
             return (sx, sy,
@@ -174,25 +183,28 @@ namespace ShapeFitting {
                    swx4 = 0, swx3y = 0, swx2y2 = 0, swxy3 = 0, swy4 = 0;
 
             foreach (((double x, double y), double w) in vs.Zip(weights)) {
+                double x2 = x * x, x3 = x * x2, x4 = x * x3;
+                double y2 = y * y, y3 = y * y2, y4 = y * y3;
+
                 sw += w;
 
                 swx += w * x;
                 swy += w * y;
 
-                swx2 += w * x * x;
+                swx2 += w * x2;
                 swxy += w * x * y;
-                swy2 += w * y * y;
+                swy2 += w * y2;
 
-                swx3 += w * x * x * x;
-                swx2y += w * x * x * y;
-                swxy2 += w * x * y * y;
-                swy3 += w * y * y * y;
+                swx3 += w * x3;
+                swx2y += w * x2 * y;
+                swxy2 += w * x * y2;
+                swy3 += w * y3;
 
-                swx4 += w * x * x * x * x;
-                swx3y += w * x * x * x * y;
-                swx2y2 += w * x * x * y * y;
-                swxy3 += w * x * y * y * y;
-                swy4 += w * y * y * y * y;
+                swx4 += w * x4;
+                swx3y += w * x3 * y;
+                swx2y2 += w * x2 * y2;
+                swxy3 += w * x * y3;
+                swy4 += w * y4;
             }
 
             return (sw,

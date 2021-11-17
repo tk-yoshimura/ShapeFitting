@@ -74,7 +74,9 @@ namespace ShapeFitting {
             (double a, double b, double c) = v1;
             (double d, double e, double f) = v2;
 
-            return (a, b, c, -d, -e, -f);
+            double norm = Math.Sqrt(a * a + b * b + c * c + d * d + e * e + f * f);
+
+            return (a / norm, b / norm, c / norm, -d / norm, -e / norm, -f / norm);
         }
     }
 }

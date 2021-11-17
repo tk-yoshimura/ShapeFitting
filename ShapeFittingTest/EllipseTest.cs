@@ -130,6 +130,34 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void MAEFitEllipseTest() {
+            List<double> thetas = new();
+            for (decimal theta = 0; theta < 6.3m; theta += 0.1m) {
+                thetas.Add((double)theta);
+            }
+
+            foreach (Vector center in new Vector[] { (-1, -1), (0, -1), (+1, -1), (-1, 0), (0, 0), (+1, 0), (-1, +1), (0, +1), (+1, +1) }) {
+                foreach ((double major, double minor) axis in new (double, double)[] { (2, 1), (3, 2), (5, 4), (9, 8) }) {
+                    foreach (double angle in new double[] { -1.2, -0.6, 0, +0.6, +1.2 }) {
+
+                        Ellipse Ellipse = new(center, axis, angle);
+
+                        IEnumerable<Vector> vs = Ellipse.Points(thetas);
+
+                        Ellipse Ellipse_fit = MAEFitting.FitEllipse(vs);
+
+                        Assert.AreEqual(center.X, Ellipse_fit.Center.X, 1e-5);
+                        Assert.AreEqual(center.Y, Ellipse_fit.Center.Y, 1e-5);
+                        Assert.AreEqual(axis.major, Ellipse_fit.Axis.major, 1e-5);
+                        Assert.AreEqual(axis.minor, Ellipse_fit.Axis.minor, 1e-5);
+
+                        Assert.AreEqual(0f, Math.Sin(Ellipse_fit.Angle - angle), 1e-5);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
         public void WeightedFitEllipseTest() {
             List<double> thetas = new();
             for (decimal theta = 0; theta < 6.3m; theta += 0.1m) {

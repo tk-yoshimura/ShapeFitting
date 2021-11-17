@@ -150,6 +150,29 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void MAEFitLineTest() {
+            const int n = 1024;
+
+            Random random = new Random(1234);
+
+            double[] xs = (new double[n]).Select((_) => random.NextDouble() * 10 - 5).ToArray();
+
+            foreach (double theta in new double[] { -1.4, -1.0, -0.5, 0, 0.5, 1, 1.4 }) {
+                foreach (double phi in new double[] { -2, -1, 0, 1, 2 }) {
+                    Line line = new(theta, phi);
+
+                    double[] ys = line.Fx(xs);
+                    IEnumerable<Vector> vs = Vector.Concat(xs, ys);
+
+                    Line line_fit = MAEFitting.FitLine(vs);
+
+                    Assert.AreEqual(theta, line_fit.Theta, 1e-5);
+                    Assert.AreEqual(phi, line_fit.Phi, 1e-5);
+                }
+            }
+        }
+
+        [TestMethod]
         public void WeightedFitLineTest() {
             const int n = 1024;
 

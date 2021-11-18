@@ -61,7 +61,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MAEFitLineRandomShiftBenchmarkTest() {
+        public void FitLineRandomShiftMAEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -84,7 +84,9 @@ namespace ShapeFittingTest {
                             mistakes++;
                         }
 
+#if DEBUG
                         Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
                     }
                 }
             }
@@ -93,7 +95,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MSEFitLineRandomShiftBenchmarkTest() {
+        public void FitLineRandomShiftMSEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -127,7 +129,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberMADFitLineRandomShiftBenchmarkTest() {
+        public void FitLineRandomShiftHuberMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -161,7 +163,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberAADFitLineRandomShiftBenchmarkTest() {
+        public void FitLineRandomShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -195,7 +197,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyMADFitLineRandomShiftBenchmarkTest() {
+        public void FitLineRandomShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -229,7 +231,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyAADFitLineRandomShiftBenchmarkTest() {
+        public void FitLineRandomShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -263,7 +265,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MAEFitCircleRandomShiftBenchmarkTest() {
+        public void FitCircleRandomShiftMAEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -297,7 +299,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MSEFitCircleRandomShiftBenchmarkTest() {
+        public void FitCircleRandomShiftMSEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -331,7 +333,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberMADFitCircleRandomShiftBenchmarkTest() {
+        public void FitCircleRandomShiftHuberMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -365,7 +367,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberAADFitCircleRandomShiftBenchmarkTest() {
+        public void FitCircleRandomShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -399,7 +401,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyMADFitCircleRandomShiftBenchmarkTest() {
+        public void FitCircleTukeyMADRandomShiftBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -433,7 +435,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyAADFitCircleRandomShiftBenchmarkTest() {
+        public void FitCircleRandomShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -467,7 +469,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MAEFitEllipseRandomShiftBenchmarkTest() {
+        public void FitEllipseRandomShiftMAEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -502,7 +504,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MSEFitEllipseRandomShiftBenchmarkTest() {
+        public void FitEllipseRandomShiftMSEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -537,7 +539,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberMADFitEllipseRandomShiftBenchmarkTest() {
+        public void FitEllipseRandomShiftHuberMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -572,7 +574,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberAADFitEllipseRandomShiftBenchmarkTest() {
+        public void FitEllipseRandomShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -607,7 +609,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyMADFitEllipseRandomShiftBenchmarkTest() {
+        public void FitEllipseRandomShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -642,7 +644,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyAADFitEllipseRandomShiftBenchmarkTest() {
+        public void FitEllipseRandomShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -678,7 +680,7 @@ namespace ShapeFittingTest {
 
 
         [TestMethod]
-        public void MAEFitLineFixedShiftBenchmarkTest() {
+        public void FitLineFixedShiftMAEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -712,7 +714,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MSEFitLineFixedShiftBenchmarkTest() {
+        public void FitLineFixedShiftMSEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -746,7 +748,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberMADFitLineFixedShiftBenchmarkTest() {
+        public void FitLineFixedShiftHuberMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -780,7 +782,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberAADFitLineFixedShiftBenchmarkTest() {
+        public void FitLineFixedShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -814,7 +816,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyMADFitLineFixedShiftBenchmarkTest() {
+        public void FitLineFixedShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -848,7 +850,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyAADFitLineFixedShiftBenchmarkTest() {
+        public void FitLineFixedShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -882,7 +884,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MAEFitCircleFixedShiftBenchmarkTest() {
+        public void FitCircleFixedShiftMAEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -916,7 +918,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MSEFitCircleFixedShiftBenchmarkTest() {
+        public void FitCircleFixedShiftMSEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -950,7 +952,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberMADFitCircleFixedShiftBenchmarkTest() {
+        public void FitCircleFixedShiftHuberMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -984,7 +986,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberAADFitCircleFixedShiftBenchmarkTest() {
+        public void FitCircleFixedShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1018,7 +1020,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyMADFitCircleFixedShiftBenchmarkTest() {
+        public void FitCircleFixedShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1052,7 +1054,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyAADFitCircleFixedShiftBenchmarkTest() {
+        public void FitCircleFixedShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1086,7 +1088,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MAEFitEllipseFixedShiftBenchmarkTest() {
+        public void FitEllipseFixedShiftMAEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1121,7 +1123,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void MSEFitEllipseFixedShiftBenchmarkTest() {
+        public void FitEllipseFixedShiftMSEBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1156,7 +1158,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberMADFitEllipseFixedShiftBenchmarkTest() {
+        public void FitEllipseFixedShiftHuberMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1191,7 +1193,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void HuberAADFitEllipseFixedShiftBenchmarkTest() {
+        public void FitEllipseFixedShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1226,7 +1228,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyMADFitEllipseFixedShiftBenchmarkTest() {
+        public void FitEllipseFixedShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1261,7 +1263,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void TukeyAADFitEllipseFixedShiftBenchmarkTest() {
+        public void FitEllipseFixedShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);

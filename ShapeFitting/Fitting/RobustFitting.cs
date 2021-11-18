@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace ShapeFitting {
     public static class RobustFitting {
-        public static Line FitLine(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-8) {
+        public static Line FitLine(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
@@ -22,13 +21,13 @@ namespace ShapeFitting {
             (double sx, double sy,
              double sx2, double sxy, double sy2) = Summator.D2(vs);
 
-            Line line = Solver.FitLine(
+            (double a, double b, double c) = (Line)Solver.FitLine(
                 n,
                 sx, sy,
                 sx2, sxy, sy2
             );
 
-            (double a, double b, double c) = line;
+            double scale = double.NaN;
 
 #if DEBUG
             Trace.WriteLine($"{(a, b, c)}");
@@ -42,39 +41,43 @@ namespace ShapeFitting {
                     errs.Add(err);
                 }
 
-                IEnumerable<double> weights = weight_rule.Weight(errs);
+                (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
 
                 (double sw,
                  double swx, double swy,
                  double swx2, double swxy, double swy2) = Summator.D2(vs, weights);
 
-                line = Solver.FitLine(
+                (double new_a, double new_b, double new_c) = (Line)Solver.FitLine(
                     sw,
                     swx, swy,
                     swx2, swxy, swy2
                 );
 
-                (double new_a, double new_b, double new_c) = line;
-
-                if (Math.Abs(a - new_a) < toi && Math.Abs(b - new_b) < toi && Math.Abs(c - new_c) < toi) {
+                if (new_scale < scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"breakiter {iter}");
 #endif
-
+                    iter = iters;
+                }
+                else if (new_scale > scale || double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
+#if DEBUG
+                    Trace.WriteLine($"breakiter {iter}");
+#endif
                     break;
                 }
 
                 (a, b, c) = (new_a, new_b, new_c);
+                scale = new_scale;
 
 #if DEBUG
                 Trace.WriteLine($"{(a, b, c)}");
 #endif
             }
 
-            return line;
+            return new Line(a, b, c);
         }
 
-        public static Circle FitCircle(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-8) {
+        public static Circle FitCircle(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
@@ -99,6 +102,8 @@ namespace ShapeFitting {
                 sx3, sx2y, sxy2, sy3
             );
 
+            double scale = double.NaN;
+
 #if DEBUG
             Trace.WriteLine($"{(a, b, c)}");
 #endif
@@ -111,7 +116,7 @@ namespace ShapeFitting {
                     errs.Add(err);
                 }
 
-                IEnumerable<double> weights = weight_rule.Weight(errs);
+                (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
 
                 (double sw,
                  double swx, double swy,
@@ -125,15 +130,21 @@ namespace ShapeFitting {
                     swx3, swx2y, swxy2, swy3
                 );
 
-                if (Math.Abs(a - new_a) < toi && Math.Abs(b - new_b) < toi && Math.Abs(c - new_c) < toi) {
+                if (new_scale < scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"breakiter {iter}");
 #endif
-
                     iter = iters;
+                }
+                else if (new_scale > scale || double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
+#if DEBUG
+                    Trace.WriteLine($"breakiter {iter}");
+#endif
+                    break;
                 }
 
                 (a, b, c) = (new_a, new_b, new_c);
+                scale = new_scale;
 
 #if DEBUG
                 Trace.WriteLine($"{(a, b, c)}");
@@ -143,7 +154,7 @@ namespace ShapeFitting {
             return Circle.FromImplicit(a, b, c);
         }
 
-        public static Ellipse FitEllipse(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-8) {
+        public static Ellipse FitEllipse(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
@@ -170,6 +181,8 @@ namespace ShapeFitting {
                 sx4, sx3y, sx2y2, sxy3, sy4
             );
 
+            double scale = double.NaN;
+
 #if DEBUG
             Trace.WriteLine($"{(a, b, c, d, e, f)}");
 #endif
@@ -182,7 +195,7 @@ namespace ShapeFitting {
                     errs.Add(err);
                 }
 
-                IEnumerable<double> weights = weight_rule.Weight(errs);
+                (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
 
                 (double sw,
                  double swx, double swy,
@@ -198,17 +211,24 @@ namespace ShapeFitting {
                     swx4, swx3y, swx2y2, swxy3, swy4
                 );
 
-                if (Math.Abs(a - new_a) < toi && Math.Abs(b - new_b) < toi && Math.Abs(c - new_c) < toi &&
-                    Math.Abs(d - new_d) < toi && Math.Abs(e - new_e) < toi && Math.Abs(f - new_f) < toi) {
-
+                if (new_scale < scale && scale - new_scale < toi) {
+#if DEBUG
+                    Trace.WriteLine($"breakiter {iter}");
+#endif
+                    iter = iters;
+                }
+                else if (new_scale > scale ||
+                         double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c) ||
+                         double.IsNaN(new_d) || double.IsNaN(new_e) || double.IsNaN(new_f)) {
 #if DEBUG
                     Trace.WriteLine($"breakiter {iter}");
 #endif
 
-                    iter = iters;
+                    break;
                 }
 
                 (a, b, c, d, e, f) = (new_a, new_b, new_c, new_d, new_e, new_f);
+                scale = new_scale;
 
 #if DEBUG
                 Trace.WriteLine($"{(a, b, c, d, e, f)}");

@@ -195,5 +195,26 @@ namespace ShapeFittingTest {
                 }
             }
         }
+
+        [TestMethod]
+        public void DistanceTest() {
+            double[] xs = (new double[513]).Select((_, i) => i - 256 / 256d).ToArray();
+
+            foreach (double theta in new double[] { -1.4, -1.0, -0.5, 0, 0.5, 1, 1.4 }) {
+                foreach (double phi in new double[] { -2, -1, 0, 1, 2 }) {
+                    Line line = new(theta, phi);
+                    (double a, double b, double c) = line;
+
+                    double[] ys = line.Fx(xs);
+                    IEnumerable<Vector> vs = Vector.Concat(xs, ys);
+
+                    IEnumerable<double> dists = Line.Distance(vs, a, b, c);
+
+                    foreach (double dist in dists) {
+                        Assert.AreEqual(0f, dist, 1e-5);
+                    }
+                }
+            }
+        }
     }
 }

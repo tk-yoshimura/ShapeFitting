@@ -189,5 +189,43 @@ namespace ShapeFittingTest {
                 }
             }
         }
+
+        [TestMethod]
+        public void DistanceTest() {
+            List<double> thetas = new();
+            for (decimal theta = 0; theta < 6.3m; theta += 0.1m) {
+                thetas.Add((double)theta);
+            }
+
+            foreach ((double a, double b, double c, double d, double e, double f) in 
+                new (double a, double b, double c, double d, double e, double f)[]{
+                    (5, 3, 2, 7, 11, -13), 
+                    (5, -1, 5, 9, 13, -11)
+                }){
+
+                Ellipse ellipse = Ellipse.FromImplicit(a, b, c, d, e, f);
+
+                IEnumerable<Vector> vs = ellipse.Points(thetas);
+
+                IEnumerable<double> dists = Ellipse.Distance(vs, a, b, c, d, e, f);
+
+                foreach (double dist in dists) {
+                    Assert.AreEqual(0f, dist, 1e-5);
+                }
+
+                Ellipse ellipse_half = new Ellipse(ellipse.Center, (ellipse.Axis.major / 2, ellipse.Axis.minor / 2), ellipse.Angle);
+                Ellipse ellipse_x2 = new Ellipse(ellipse.Center, (ellipse.Axis.major * 2, ellipse.Axis.minor * 2), ellipse.Angle);
+                Ellipse ellipse_x3 = new Ellipse(ellipse.Center, (ellipse.Axis.major * 3, ellipse.Axis.minor * 3), ellipse.Angle);
+
+                double[] dists_half = Ellipse.Distance(ellipse_half.Points(thetas), a, b, c, d, e, f).ToArray();
+                double[] dists_x2 = Ellipse.Distance(ellipse_x2.Points(thetas), a, b, c, d, e, f).ToArray();
+                double[] dists_x3 = Ellipse.Distance(ellipse_x3.Points(thetas), a, b, c, d, e, f).ToArray();
+
+                for (int i = 0; i < dists_half.Length; i++) {
+                    Assert.AreEqual(dists_x2[i] / 2, dists_half[i], 1e-5);
+                    Assert.AreEqual(dists_x3[i] / 4, dists_half[i], 1e-5);
+                }
+            }
+        }
     }
 }

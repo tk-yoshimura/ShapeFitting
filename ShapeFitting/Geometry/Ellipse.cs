@@ -28,7 +28,7 @@ namespace ShapeFitting {
                 return NaN;
             }
 
-            double angle = Math.Atan2(b, a - c) / 2;
+            double angle = (b == 0 && a == c) ? 0 : Math.Atan2(b, a - c) / 2;
 
             double cs = Math.Cos(angle), sn = Math.Sin(angle);
             double sqcs = cs * cs, sqsn = sn * sn, cssn = cs * sn;
@@ -101,6 +101,15 @@ namespace ShapeFitting {
 
         public void Deconstruct(out Vector center, out (double major, double minor) axis, out double angle)
             => (center, axis, angle) = (Center, Axis, Angle);
+
+        public static IEnumerable<double> Distance(IEnumerable<Vector> vs, double a, double b, double c, double d, double e, double f) {
+            double bias = f - (a * e * e - b * d * e + c * d * d) / (4 * a * c - b * b), sq_bias = Math.Sqrt(-bias);
+
+            foreach ((double x, double y) in vs) {
+                double dist = Math.Abs(Math.Sqrt(Math.Abs((a * x + d) * x + (c * y + e) * y + b * x * y + f - bias)) - sq_bias);
+                yield return dist;
+            }
+        }
 
         public override int GetHashCode() {
             return Center.GetHashCode() ^ Axis.GetHashCode() ^ Angle.GetHashCode();

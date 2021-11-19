@@ -136,6 +136,16 @@ namespace ShapeFitting {
             return theta_list.Zip(phi_list, (theta, phi) => new Line(theta, phi));
         }
 
+        public static IEnumerable<double> Distance(IEnumerable<Vector> vs, double a, double b, double c) {
+            double n = Math.Sqrt(a * a + b * b);
+            (a, b, c) = (a / n, b / n, c / n);
+
+            foreach ((double x, double y) in vs) {
+                double dist = Math.Abs(a * x + b * y + c);
+                yield return dist;
+            }
+        }
+
         public override int GetHashCode() {
             return A.GetHashCode() ^ B.GetHashCode() ^ C.GetHashCode();
         }

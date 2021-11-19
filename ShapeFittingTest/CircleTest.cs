@@ -134,5 +134,41 @@ namespace ShapeFittingTest {
                 }
             }
         }
+
+        [TestMethod]
+        public void DistanceTest() {
+            List<double> thetas = new();
+            for (decimal theta = 0; theta < 6.3m; theta += 0.1m) {
+                thetas.Add((double)theta);
+            }
+
+            foreach ((double a, double b, double c) in new (double a, double b, double c)[]{ (5, 3, 2) , (8, 4, 2), (3, 4, 2) , (2, 5, 2) }){
+
+                Circle circle = Circle.FromImplicit(a, b, c);
+
+                IEnumerable<Vector> vs = circle.Points(thetas);
+
+                IEnumerable<double> dists = Circle.Distance(vs, a, b, c);
+
+                foreach (double dist in dists) {
+                    Assert.AreEqual(0f, dist, 1e-5);
+                }
+
+                Assert.AreEqual(circle.Radius, Circle.Distance(new Vector[] { (-a / 2, -b / 2) }, a, b, c).First(), 1e-5);
+
+                Assert.AreEqual(circle.Radius / 2, Circle.Distance(new Vector[] { (-a / 2 + circle.Radius / 2, -b / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius, Circle.Distance(new Vector[] { (-a / 2 + 2 * circle.Radius, -b / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(2 * circle.Radius, Circle.Distance(new Vector[] { (-a / 2 + 3 * circle.Radius, -b / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius / 2, Circle.Distance(new Vector[] { (-a / 2, -b / 2 + circle.Radius / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius, Circle.Distance(new Vector[] { (-a / 2, -b / 2 + 2 * circle.Radius) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(2 * circle.Radius, Circle.Distance(new Vector[] { (-a / 2, -b / 2 + 3 * circle.Radius) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius / 2, Circle.Distance(new Vector[] { (-a / 2 - circle.Radius / 2, -b / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius, Circle.Distance(new Vector[] { (-a / 2 - 2 * circle.Radius, -b / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(2 * circle.Radius, Circle.Distance(new Vector[] { (-a / 2 - 3 * circle.Radius, -b / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius / 2, Circle.Distance(new Vector[] { (-a / 2, -b / 2 - circle.Radius / 2) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(circle.Radius, Circle.Distance(new Vector[] { (-a / 2, -b / 2 - 2 * circle.Radius) }, a, b, c).First(), 1e-5);
+                Assert.AreEqual(2 * circle.Radius, Circle.Distance(new Vector[] { (-a / 2, -b / 2 - 3 * circle.Radius) }, a, b, c).First(), 1e-5);
+            }
+        }
     }
 }

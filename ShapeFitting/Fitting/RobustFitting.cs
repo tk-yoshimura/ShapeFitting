@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ShapeFitting {
@@ -34,12 +35,7 @@ namespace ShapeFitting {
 #endif
 
             for (int iter = 0; iter < iters; iter++) {
-                List<double> errs = new();
-
-                foreach ((double x, double y) in vs) {
-                    double err = Math.Abs(a * x + b * y + c);
-                    errs.Add(err);
-                }
+                IEnumerable<double> errs = Line.Distance(vs, a, b, c);
 
                 (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
 
@@ -109,12 +105,7 @@ namespace ShapeFitting {
 #endif
 
             for (int iter = 0; iter < iters; iter++) {
-                List<double> errs = new();
-
-                foreach ((double x, double y) in vs) {
-                    double err = Math.Abs(x * x + y * y + a * x + b * y + c);
-                    errs.Add(err);
-                }
+                IEnumerable<double> errs = Circle.Distance(vs, a, b, c);
 
                 (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
 
@@ -188,12 +179,7 @@ namespace ShapeFitting {
 #endif
 
             for (int iter = 0; iter < iters; iter++) {
-                List<double> errs = new();
-
-                foreach ((double x, double y) in vs) {
-                    double err = Math.Abs(a * x * x + b * x * y + c * y * y + d * x + e * y + f);
-                    errs.Add(err);
-                }
+                IEnumerable<double> errs = Ellipse.Distance(vs, a, b, c, d, e, f);
 
                 (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
 

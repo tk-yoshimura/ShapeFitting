@@ -98,6 +98,15 @@ namespace ShapeFitting {
 
         public void Deconstruct(out Vector c, out double r) => (c, r) = (Center, Radius);
 
+        public static IEnumerable<double> Distance(IEnumerable<Vector> vs, double a, double b, double c) {
+            double bias = c - (a * a + b * b) / 4, sq_bias = Math.Sqrt(-bias);
+
+            foreach ((double x, double y) in vs) {
+                double dist = Math.Abs(Math.Sqrt(Math.Abs((x + a) * x + (y + b) * y + c - bias)) - sq_bias);
+                yield return dist;
+            }
+        }
+
         public override int GetHashCode() {
             return Center.GetHashCode() ^ Radius.GetHashCode();
         }

@@ -226,6 +226,40 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void FitLineURandomShiftHuberMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Line line = RobustFitting.FitLine(URandomShift(line_points, prob, range, random), new HuberMedian(min_scale: 0.01));
+
+                        (double theta, double phi) = line;
+
+                        Assert.IsTrue(line.IsValid);
+
+                        bool miss = Math.Abs(theta - 1) > 0.1 || Math.Abs(phi - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
         public void FitLineURandomShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
@@ -272,6 +306,40 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Line line = RobustFitting.FitLine(URandomShift(line_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double theta, double phi) = line;
+
+                        Assert.IsTrue(line.IsValid);
+
+                        bool miss = Math.Abs(theta - 1) > 0.1 || Math.Abs(phi - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
+        public void FitLineURandomShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Line line = RobustFitting.FitLine(URandomShift(line_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double theta, double phi) = line;
 
@@ -396,7 +464,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void FitCircleURandomShiftHuberMedianBenchmarkTest() {
+        public void FitCircleURandomShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -407,7 +475,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(URandomShift(circle_points, prob, range, random), new HuberMedian(k: 1.44, min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(URandomShift(circle_points, prob, range, random), new HuberAAD(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -430,7 +498,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void FitCircleURandomShiftHuberAADBenchmarkTest() {
+        public void FitCircleURandomShiftHuberMedianBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -441,7 +509,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(URandomShift(circle_points, prob, range, random), new HuberAAD(min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(URandomShift(circle_points, prob, range, random), new HuberMedian(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -510,6 +578,41 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Circle circle = RobustFitting.FitCircle(URandomShift(circle_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double cx, double cy, double r) = circle;
+
+                        Assert.IsTrue(circle.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 || Math.Abs(r - 4) > 0.4;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} circle={circle} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        
+        [TestMethod]
+        public void FitCircleURandomShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Circle circle = RobustFitting.FitCircle(URandomShift(circle_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -672,6 +775,41 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void FitEllipseURandomShiftHuberMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Ellipse ellipse = RobustFitting.FitEllipse(URandomShift(ellipse_points, prob, range, random), new HuberMedian(min_scale: 0.01));
+
+                        (double cx, double cy, double rx, double ry, double angle) = ellipse;
+
+                        Assert.IsTrue(ellipse.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 ||
+                                    Math.Abs(rx - 4) > 0.4 || Math.Abs(ry - 1) > 0.1 || Math.Abs(angle - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} ellipse={ellipse} {(miss ? "NG" : "OK")}");
+#endif                        
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
         public void FitEllipseURandomShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
@@ -719,6 +857,41 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Ellipse ellipse = RobustFitting.FitEllipse(URandomShift(ellipse_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double cx, double cy, double rx, double ry, double angle) = ellipse;
+
+                        Assert.IsTrue(ellipse.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 ||
+                                    Math.Abs(rx - 4) > 0.4 || Math.Abs(ry - 1) > 0.1 || Math.Abs(angle - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} ellipse={ellipse} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
+        public void FitEllipseURandomShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Ellipse ellipse = RobustFitting.FitEllipse(URandomShift(ellipse_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double cx, double cy, double rx, double ry, double angle) = ellipse;
 
@@ -878,6 +1051,40 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void FitLineNRandomShiftHuberMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Line line = RobustFitting.FitLine(NRandomShift(line_points, prob, range, random), new HuberMedian(min_scale: 0.01));
+
+                        (double theta, double phi) = line;
+
+                        Assert.IsTrue(line.IsValid);
+
+                        bool miss = Math.Abs(theta - 1) > 0.1 || Math.Abs(phi - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
         public void FitLineNRandomShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
@@ -924,6 +1131,40 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Line line = RobustFitting.FitLine(NRandomShift(line_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double theta, double phi) = line;
+
+                        Assert.IsTrue(line.IsValid);
+
+                        bool miss = Math.Abs(theta - 1) > 0.1 || Math.Abs(phi - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
+        public void FitLineNRandomShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Line line = RobustFitting.FitLine(NRandomShift(line_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double theta, double phi) = line;
 
@@ -1048,7 +1289,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void FitCircleNRandomShiftHuberMedianBenchmarkTest() {
+        public void FitCircleNRandomShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1059,7 +1300,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(NRandomShift(circle_points, prob, range, random), new HuberMedian(k: 1.44, min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(NRandomShift(circle_points, prob, range, random), new HuberAAD(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -1082,7 +1323,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void FitCircleNRandomShiftHuberAADBenchmarkTest() {
+        public void FitCircleNRandomShiftHuberMedianBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1093,7 +1334,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(NRandomShift(circle_points, prob, range, random), new HuberAAD(min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(NRandomShift(circle_points, prob, range, random), new HuberMedian(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -1162,6 +1403,40 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Circle circle = RobustFitting.FitCircle(NRandomShift(circle_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double cx, double cy, double r) = circle;
+
+                        Assert.IsTrue(circle.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 || Math.Abs(r - 4) > 0.4;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} circle={circle} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
+        public void FitCircleNRandomShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Circle circle = RobustFitting.FitCircle(NRandomShift(circle_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -1324,6 +1599,41 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void FitEllipseNRandomShiftHuberMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Ellipse ellipse = RobustFitting.FitEllipse(NRandomShift(ellipse_points, prob, range, random), new HuberMedian(min_scale: 0.01));
+
+                        (double cx, double cy, double rx, double ry, double angle) = ellipse;
+
+                        Assert.IsTrue(ellipse.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 ||
+                                    Math.Abs(rx - 4) > 0.4 || Math.Abs(ry - 1) > 0.1 || Math.Abs(angle - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} ellipse={ellipse} {(miss ? "NG" : "OK")}");
+#endif                        
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
         public void FitEllipseNRandomShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
@@ -1393,6 +1703,40 @@ namespace ShapeFittingTest {
             Console.WriteLine($"mistakes = {mistakes}");
         }
 
+        [TestMethod]
+        public void FitEllipseNRandomShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Ellipse ellipse = RobustFitting.FitEllipse(NRandomShift(ellipse_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
+
+                        (double cx, double cy, double rx, double ry, double angle) = ellipse;
+
+                        Assert.IsTrue(ellipse.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 ||
+                                    Math.Abs(rx - 4) > 0.4 || Math.Abs(ry - 1) > 0.1 || Math.Abs(angle - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} ellipse={ellipse} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
 
         [TestMethod]
         public void FitLineFixedShiftMAEBenchmarkTest() {
@@ -1531,6 +1875,40 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void FitLineFixedShiftHuberMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.01, 0.05, 0.1, 0.2 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Line line = RobustFitting.FitLine(FixedShift(line_points, prob, range, random), new HuberMedian(min_scale: 0.01));
+
+                        (double theta, double phi) = line;
+
+                        Assert.IsTrue(line.IsValid);
+
+                        bool miss = Math.Abs(theta - 1) > 0.1 || Math.Abs(phi - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
         public void FitLineFixedShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
@@ -1577,6 +1955,40 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Line line = RobustFitting.FitLine(FixedShift(line_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double theta, double phi) = line;
+
+                        Assert.IsTrue(line.IsValid);
+
+                        bool miss = Math.Abs(theta - 1) > 0.1 || Math.Abs(phi - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} line={line} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
+        public void FitLineFixedShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.01, 0.05, 0.1, 0.2 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Line line = RobustFitting.FitLine(FixedShift(line_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double theta, double phi) = line;
 
@@ -1699,9 +2111,9 @@ namespace ShapeFittingTest {
 
             Console.WriteLine($"mistakes = {mistakes}");
         }
-
+                
         [TestMethod]
-        public void FitCircleFixedShiftHuberMedianBenchmarkTest() {
+        public void FitCircleFixedShiftHuberAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1712,7 +2124,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new HuberMedian(k: 1.44, min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new HuberAAD(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -1735,7 +2147,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void FitCircleFixedShiftHuberAADBenchmarkTest() {
+        public void FitCircleFixedShiftHuberMedianBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1746,7 +2158,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new HuberAAD(min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new HuberMedian(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -1801,9 +2213,9 @@ namespace ShapeFittingTest {
 
             Console.WriteLine($"mistakes = {mistakes}");
         }
-
+                
         [TestMethod]
-        public void FitCircleFixedShiftTukeyMedianBenchmarkTest() {
+        public void FitCircleFixedShiftTukeyAADBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1814,7 +2226,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new TukeyMedian(c: 5, min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -1837,7 +2249,7 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
-        public void FitCircleFixedShiftTukeyAADBenchmarkTest() {
+        public void FitCircleFixedShiftTukeyMedianBenchmarkTest() {
             const int tests = 4;
 
             Random random = new(1234);
@@ -1848,7 +2260,7 @@ namespace ShapeFittingTest {
                 foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
 
                     for (int i = 0; i < tests; i++) {
-                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+                        Circle circle = RobustFitting.FitCircle(FixedShift(circle_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double cx, double cy, double r) = circle;
 
@@ -2011,6 +2423,41 @@ namespace ShapeFittingTest {
         }
 
         [TestMethod]
+        public void FitEllipseFixedShiftHuberMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.01, 0.05, 0.1, 0.2 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Ellipse ellipse = RobustFitting.FitEllipse(FixedShift(ellipse_points, prob, range, random), new HuberMedian(min_scale: 0.01));
+
+                        (double cx, double cy, double rx, double ry, double angle) = ellipse;
+
+                        Assert.IsTrue(ellipse.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 ||
+                                    Math.Abs(rx - 4) > 0.4 || Math.Abs(ry - 1) > 0.1 || Math.Abs(angle - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} ellipse={ellipse} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
         public void FitEllipseFixedShiftTukeyMADBenchmarkTest() {
             const int tests = 4;
 
@@ -2058,6 +2505,41 @@ namespace ShapeFittingTest {
 
                     for (int i = 0; i < tests; i++) {
                         Ellipse ellipse = RobustFitting.FitEllipse(FixedShift(ellipse_points, prob, range, random), new TukeyAAD(min_scale: 0.01));
+
+                        (double cx, double cy, double rx, double ry, double angle) = ellipse;
+
+                        Assert.IsTrue(ellipse.IsValid);
+
+                        bool miss = Math.Abs(cx - 2) > 0.2 || Math.Abs(cy - 3) > 0.3 ||
+                                    Math.Abs(rx - 4) > 0.4 || Math.Abs(ry - 1) > 0.1 || Math.Abs(angle - 0.5) > 0.05;
+
+                        if (miss) {
+                            mistakes++;
+                        }
+
+#if DEBUG
+                        Console.WriteLine($"prob={prob} range={range} ellipse={ellipse} {(miss ? "NG" : "OK")}");
+#endif
+                    }
+                }
+            }
+
+            Console.WriteLine($"mistakes = {mistakes}");
+        }
+
+        [TestMethod]
+        public void FitEllipseFixedShiftTukeyMedianBenchmarkTest() {
+            const int tests = 4;
+
+            Random random = new(1234);
+
+            int mistakes = 0;
+
+            foreach (double prob in new double[] { 0.01, 0.05, 0.1, 0.2 }) {
+                foreach (double range in new double[] { 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4 }) {
+
+                    for (int i = 0; i < tests; i++) {
+                        Ellipse ellipse = RobustFitting.FitEllipse(FixedShift(ellipse_points, prob, range, random), new TukeyMedian(min_scale: 0.01));
 
                         (double cx, double cy, double rx, double ry, double angle) = ellipse;
 

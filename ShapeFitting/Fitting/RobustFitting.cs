@@ -48,7 +48,7 @@ namespace ShapeFitting {
                     swx2, swxy, swy2
                 );
 
-                if (new_scale < scale && scale - new_scale < toi) {
+                if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"breakiter {iter}");
 #endif
@@ -120,7 +120,7 @@ namespace ShapeFitting {
                     swx3, swx2y, swxy2, swy3
                 );
 
-                if (new_scale < scale && scale - new_scale < toi) {
+                if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"breakiter {iter}");
 #endif
@@ -196,7 +196,7 @@ namespace ShapeFitting {
                     swx4, swx3y, swx2y2, swxy3, swy4
                 );
 
-                if (new_scale < scale && scale - new_scale < toi) {
+                if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"breakiter {iter}");
 #endif

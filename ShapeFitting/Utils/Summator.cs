@@ -7,7 +7,7 @@ namespace ShapeFitting {
 
         public static (double sx, double sy,
                        double sx2, double sxy, double sy2)
-            D2(IEnumerable<Vector> vs) {
+            D2(IReadOnlyList<Vector> vs) {
 
             double sx = 0, sy = 0,
                    sx2 = 0, sxy = 0, sy2 = 0;
@@ -28,9 +28,9 @@ namespace ShapeFitting {
         public static (double sw,
                        double swx, double swy,
                        double swx2, double swxy, double swy2)
-            D2(IEnumerable<Vector> vs, IEnumerable<double> weights) {
+            D2(IReadOnlyList<Vector> vs, IReadOnlyList<double> weights) {
 
-            if (vs.Count() != weights.Count()) {
+            if (vs.Count != weights.Count) {
                 throw new ArgumentException(ExceptionMessage.MismatchLength);
             }
 
@@ -57,7 +57,7 @@ namespace ShapeFitting {
         public static (double sx, double sy,
                        double sx2, double sxy, double sy2,
                        double sx3, double sx2y, double sxy2, double sy3)
-            D3(IEnumerable<Vector> vs) {
+            D3(IReadOnlyList<Vector> vs) {
 
             double sx = 0, sy = 0,
                    sx2 = 0, sxy = 0, sy2 = 0,
@@ -89,9 +89,9 @@ namespace ShapeFitting {
                        double swx, double swy,
                        double swx2, double swxy, double swy2,
                        double swx3, double swx2y, double swxy2, double swy3)
-            D3(IEnumerable<Vector> vs, IEnumerable<double> weights) {
+            D3(IReadOnlyList<Vector> vs, IReadOnlyList<double> weights) {
 
-            if (vs.Count() != weights.Count()) {
+            if (vs.Count != weights.Count) {
                 throw new ArgumentException(ExceptionMessage.MismatchLength);
             }
 
@@ -129,7 +129,7 @@ namespace ShapeFitting {
                        double sx2, double sxy, double sy2,
                        double sx3, double sx2y, double sxy2, double sy3,
                        double sx4, double sx3y, double sx2y2, double sxy3, double sy4)
-            D4(IEnumerable<Vector> vs) {
+            D4(IReadOnlyList<Vector> vs) {
 
             double sx = 0, sy = 0,
                    sx2 = 0, sxy = 0, sy2 = 0,
@@ -170,9 +170,9 @@ namespace ShapeFitting {
                        double swx2, double swxy, double swy2,
                        double swx3, double swx2y, double swxy2, double swy3,
                        double swx4, double swx3y, double swx2y2, double swxy3, double swy4)
-            D4(IEnumerable<Vector> vs, IEnumerable<double> weights) {
+            D4(IReadOnlyList<Vector> vs, IReadOnlyList<double> weights) {
 
-            if (vs.Count() != weights.Count()) {
+            if (vs.Count != weights.Count) {
                 throw new ArgumentException(ExceptionMessage.MismatchLength);
             }
 

@@ -76,7 +76,7 @@ namespace ShapeFittingTest {
                 foreach (double radius in new double[] { 1, 2, 4, 8 }) {
                     Circle circle = new(center, radius);
 
-                    IEnumerable<Vector> vs = circle.Points(thetas);
+                    IReadOnlyList<Vector> vs = circle.Points(thetas);
 
                     Circle circle_fit = MSEFitting.FitCircle(vs);
 
@@ -98,7 +98,7 @@ namespace ShapeFittingTest {
                 foreach (double radius in new double[] { 1, 2, 4, 8 }) {
                     Circle circle = new(center, radius);
 
-                    IEnumerable<Vector> vs = circle.Points(thetas);
+                    IReadOnlyList<Vector> vs = circle.Points(thetas);
 
                     Circle circle_fit = MAEFitting.FitCircle(vs);
 
@@ -124,7 +124,7 @@ namespace ShapeFittingTest {
                 foreach (double radius in new double[] { 1, 2, 4, 8 }) {
                     Circle circle = new(center, radius);
 
-                    IEnumerable<Vector> vs = circle.Points(thetas);
+                    IReadOnlyList<Vector> vs = circle.Points(thetas);
 
                     Circle circle_fit = WeightedFitting.FitCircle(vs, ws);
 
@@ -142,13 +142,13 @@ namespace ShapeFittingTest {
                 thetas.Add((double)theta);
             }
 
-            foreach ((double a, double b, double c) in new (double a, double b, double c)[]{ (5, 3, 2) , (8, 4, 2), (3, 4, 2) , (2, 5, 2) }){
+            foreach ((double a, double b, double c) in new (double a, double b, double c)[] { (5, 3, 2), (8, 4, 2), (3, 4, 2), (2, 5, 2) }) {
 
                 Circle circle = Circle.FromImplicit(a, b, c);
 
-                IEnumerable<Vector> vs = circle.Points(thetas);
+                IReadOnlyList<Vector> vs = circle.Points(thetas);
 
-                IEnumerable<double> dists = Circle.Distance(vs, a, b, c);
+                IReadOnlyList<double> dists = Circle.Distance(vs, a, b, c);
 
                 foreach (double dist in dists) {
                     Assert.AreEqual(0f, dist, 1e-5);

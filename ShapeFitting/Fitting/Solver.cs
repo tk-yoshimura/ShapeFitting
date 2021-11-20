@@ -54,7 +54,7 @@ namespace ShapeFitting {
 
             AlgebraD3.Matrix m = new(p6 / 2, p5 / 2, p3 / 2, -p4, -p2, -p5, p1 / 2, p4 / 2, p6 / 2);
 
-            IEnumerable<(double val, AlgebraD3.Vector vec)> eigens_m = AlgebraD3.EigenValues(m);
+            IReadOnlyList<(double val, AlgebraD3.Vector vec)> eigens_m = AlgebraD3.EigenValues(m);
 
             AlgebraD3.Vector[] param = eigens_m.Where(
                 ((double lambda, AlgebraD3.Vector vec) eigen) => {

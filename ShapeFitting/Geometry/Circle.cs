@@ -56,10 +56,15 @@ namespace ShapeFitting {
             return Center + new Vector(Math.Cos(theta) * Radius, Math.Sin(theta) * Radius);
         }
 
-        public IEnumerable<Vector> Points(IEnumerable<double> thetas) {
-            foreach (double theta in thetas) {
-                yield return Center + new Vector(Math.Cos(theta) * Radius, Math.Sin(theta) * Radius);
+        public Vector[] Points(IReadOnlyList<double> thetas) {
+            Vector[] vs = new Vector[thetas.Count];
+
+            for (int i = 0; i < thetas.Count; i++) {
+                double theta = thetas[i];
+                vs[i] = Center + new Vector(Math.Cos(theta) * Radius, Math.Sin(theta) * Radius);
             }
+
+            return vs;
         }
 
         public override bool Equals(object obj) {
@@ -98,13 +103,19 @@ namespace ShapeFitting {
 
         public void Deconstruct(out Vector c, out double r) => (c, r) = (Center, Radius);
 
-        public static IEnumerable<double> Distance(IEnumerable<Vector> vs, double a, double b, double c) {
+        public static double[] Distance(IReadOnlyList<Vector> vs, double a, double b, double c) {
+            double[] dists = new double[vs.Count];
+
             double bias = c - (a * a + b * b) / 4, sq_bias = Math.Sqrt(-bias);
 
-            foreach ((double x, double y) in vs) {
+            for (int i = 0; i < vs.Count; i++) {
+                (double x, double y) = vs[i];
+
                 double dist = Math.Abs(Math.Sqrt(Math.Abs((x + a) * x + (y + b) * y + c - bias)) - sq_bias);
-                yield return dist;
+                dists[i] = dist;
             }
+
+            return dists;
         }
 
         public override int GetHashCode() {

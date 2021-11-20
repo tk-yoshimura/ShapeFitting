@@ -114,7 +114,7 @@ namespace ShapeFittingTest {
 
                         Ellipse Ellipse = new(center, axis, angle);
 
-                        IEnumerable<Vector> vs = Ellipse.Points(thetas);
+                        IReadOnlyList<Vector> vs = Ellipse.Points(thetas);
 
                         Ellipse Ellipse_fit = MSEFitting.FitEllipse(vs);
 
@@ -142,7 +142,7 @@ namespace ShapeFittingTest {
 
                         Ellipse Ellipse = new(center, axis, angle);
 
-                        IEnumerable<Vector> vs = Ellipse.Points(thetas);
+                        IReadOnlyList<Vector> vs = Ellipse.Points(thetas);
 
                         Ellipse Ellipse_fit = MAEFitting.FitEllipse(vs);
 
@@ -174,7 +174,7 @@ namespace ShapeFittingTest {
 
                         Ellipse Ellipse = new(center, axis, angle);
 
-                        IEnumerable<Vector> vs = Ellipse.Points(thetas);
+                        IReadOnlyList<Vector> vs = Ellipse.Points(thetas);
 
                         Ellipse Ellipse_fit = WeightedFitting.FitEllipse(vs, ws);
 
@@ -197,17 +197,17 @@ namespace ShapeFittingTest {
                 thetas.Add((double)theta);
             }
 
-            foreach ((double a, double b, double c, double d, double e, double f) in 
+            foreach ((double a, double b, double c, double d, double e, double f) in
                 new (double a, double b, double c, double d, double e, double f)[]{
-                    (5, 3, 2, 7, 11, -13), 
+                    (5, 3, 2, 7, 11, -13),
                     (5, -1, 5, 9, 13, -11)
-                }){
+                }) {
 
                 Ellipse ellipse = Ellipse.FromImplicit(a, b, c, d, e, f);
 
-                IEnumerable<Vector> vs = ellipse.Points(thetas);
+                IReadOnlyList<Vector> vs = ellipse.Points(thetas);
 
-                IEnumerable<double> dists = Ellipse.Distance(vs, a, b, c, d, e, f);
+                IReadOnlyList<double> dists = Ellipse.Distance(vs, a, b, c, d, e, f);
 
                 foreach (double dist in dists) {
                     Assert.AreEqual(0f, dist, 1e-5);

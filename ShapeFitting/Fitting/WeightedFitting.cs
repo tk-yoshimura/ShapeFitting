@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace ShapeFitting {
     public static class WeightedFitting {
-        public static Line FitLine(IEnumerable<Vector> vs, IEnumerable<double> weights) {
-            int n = vs.Count();
+        public static Line FitLine(IReadOnlyList<Vector> vs, IReadOnlyList<double> weights) {
+            int n = vs.Count;
 
             if (n < 2) {
                 return Line.NaN;
@@ -23,8 +22,8 @@ namespace ShapeFitting {
             return line;
         }
 
-        public static Circle FitCircle(IEnumerable<Vector> vs, IEnumerable<double> weights) {
-            int n = vs.Count();
+        public static Circle FitCircle(IReadOnlyList<Vector> vs, IReadOnlyList<double> weights) {
+            int n = vs.Count;
 
             if (n < 3) {
                 return Circle.NaN;
@@ -45,8 +44,8 @@ namespace ShapeFitting {
             return Circle.FromImplicit(a, b, c);
         }
 
-        public static Ellipse FitEllipse(IEnumerable<Vector> vs, IEnumerable<double> weights) {
-            int n = vs.Count();
+        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, IReadOnlyList<double> weights) {
+            int n = vs.Count;
 
             if (n < 5) {
                 return (Ellipse)FitCircle(vs, weights);

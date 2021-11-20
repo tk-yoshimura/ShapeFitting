@@ -139,7 +139,7 @@ namespace ShapeFittingTest {
                     Line line = new(theta, phi);
 
                     double[] ys = line.Fx(xs);
-                    IEnumerable<Vector> vs = Vector.Concat(xs, ys);
+                    IReadOnlyList<Vector> vs = Vector.Concat(xs, ys);
 
                     Line line_fit = MSEFitting.FitLine(vs);
 
@@ -162,7 +162,7 @@ namespace ShapeFittingTest {
                     Line line = new(theta, phi);
 
                     double[] ys = line.Fx(xs);
-                    IEnumerable<Vector> vs = Vector.Concat(xs, ys);
+                    IReadOnlyList<Vector> vs = Vector.Concat(xs, ys);
 
                     Line line_fit = MAEFitting.FitLine(vs);
 
@@ -186,7 +186,7 @@ namespace ShapeFittingTest {
                     Line line = new(theta, phi);
 
                     double[] ys = line.Fx(xs);
-                    IEnumerable<Vector> vs = Vector.Concat(xs, ys);
+                    IReadOnlyList<Vector> vs = Vector.Concat(xs, ys);
 
                     Line line_fit = WeightedFitting.FitLine(vs, ws);
 
@@ -206,9 +206,9 @@ namespace ShapeFittingTest {
                     (double a, double b, double c) = line;
 
                     double[] ys = line.Fx(xs);
-                    IEnumerable<Vector> vs = Vector.Concat(xs, ys);
+                    IReadOnlyList<Vector> vs = Vector.Concat(xs, ys);
 
-                    IEnumerable<double> dists = Line.Distance(vs, a, b, c);
+                    IReadOnlyList<double> dists = Line.Distance(vs, a, b, c);
 
                     foreach (double dist in dists) {
                         Assert.AreEqual(0f, dist, 1e-5);

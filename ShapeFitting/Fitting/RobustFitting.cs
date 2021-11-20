@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace ShapeFitting {
     public static class RobustFitting {
-        public static Line FitLine(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
+        public static Line FitLine(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
@@ -13,7 +12,7 @@ namespace ShapeFitting {
                 throw new ArgumentOutOfRangeException(nameof(toi));
             }
 
-            int n = vs.Count();
+            int n = vs.Count;
 
             if (n < 2) {
                 return Line.NaN;
@@ -35,9 +34,9 @@ namespace ShapeFitting {
 #endif
 
             for (int iter = 0; iter < iters; iter++) {
-                IEnumerable<double> errs = Line.Distance(vs, a, b, c);
+                IReadOnlyList<double> errs = Line.Distance(vs, a, b, c);
 
-                (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
+                (IReadOnlyList<double> weights, double new_scale) = weight_rule.Weight(errs);
 
                 (double sw,
                  double swx, double swy,
@@ -73,7 +72,7 @@ namespace ShapeFitting {
             return new Line(a, b, c);
         }
 
-        public static Circle FitCircle(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
+        public static Circle FitCircle(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
@@ -81,7 +80,7 @@ namespace ShapeFitting {
                 throw new ArgumentOutOfRangeException(nameof(toi));
             }
 
-            int n = vs.Count();
+            int n = vs.Count;
 
             if (n < 3) {
                 return Circle.NaN;
@@ -105,9 +104,9 @@ namespace ShapeFitting {
 #endif
 
             for (int iter = 0; iter < iters; iter++) {
-                IEnumerable<double> errs = Circle.Distance(vs, a, b, c);
+                IReadOnlyList<double> errs = Circle.Distance(vs, a, b, c);
 
-                (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
+                (IReadOnlyList<double> weights, double new_scale) = weight_rule.Weight(errs);
 
                 (double sw,
                  double swx, double swy,
@@ -145,7 +144,7 @@ namespace ShapeFitting {
             return Circle.FromImplicit(a, b, c);
         }
 
-        public static Ellipse FitEllipse(IEnumerable<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
+        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
@@ -153,7 +152,7 @@ namespace ShapeFitting {
                 throw new ArgumentOutOfRangeException(nameof(toi));
             }
 
-            int n = vs.Count();
+            int n = vs.Count;
 
             if (n < 5) {
                 return (Ellipse)FitCircle(vs, weight_rule);
@@ -179,9 +178,9 @@ namespace ShapeFitting {
 #endif
 
             for (int iter = 0; iter < iters; iter++) {
-                IEnumerable<double> errs = Ellipse.Distance(vs, a, b, c, d, e, f);
+                IReadOnlyList<double> errs = Ellipse.Distance(vs, a, b, c, d, e, f);
 
-                (IEnumerable<double> weights, double new_scale) = weight_rule.Weight(errs);
+                (IReadOnlyList<double> weights, double new_scale) = weight_rule.Weight(errs);
 
                 (double sw,
                  double swx, double swy,

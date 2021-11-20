@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -261,7 +260,7 @@ namespace ShapeFitting {
                     (l3, EigenVector(mat_asymm, l3, veps)));
         }
 
-        public static IEnumerable<(double val, Vector vec)> EigenValues(Matrix mat, double eps = 1e-8) {
+        public static (double val, Vector vec)[] EigenValues(Matrix mat, double eps = 1e-8) {
             (double m11, double m12, double m13,
              double m21, double m22, double m23,
              double m31, double m32, double m33) = mat;
@@ -273,7 +272,7 @@ namespace ShapeFitting {
 
                 return Order.AbsSort(new (double val, Vector vec)[]{
                     (m11, new Vector(1, 0, 0)), (m22, new Vector(0, 1, 0)), (m33, new Vector(0, 0, 1))
-                });
+                }).ToArray();
             }
 
             (Complex x1, Complex x2, Complex x3) = RootFinding.Cubic(
@@ -289,7 +288,7 @@ namespace ShapeFitting {
                     .Distinct()
                 ).ToArray();
 
-            return ls.Select((l) => (l, EigenVector(mat, l, veps)));
+            return ls.Select((l) => (l, EigenVector(mat, l, veps))).ToArray();
         }
 
         private static Vector EigenVector(Matrix mat, double l, double eps) {

@@ -18,7 +18,7 @@ namespace ShapeFitting {
             this.min_scale = min_scale;
         }
 
-        public (IEnumerable<double> ws, double scale) Weight(IEnumerable<double> errs) {
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
             double mad = errs.MedianAbsoluteDeviation();
             double scale = Math.Max(min_scale, c * mad);
 
@@ -41,9 +41,32 @@ namespace ShapeFitting {
             this.min_scale = min_scale;
         }
 
-        public (IEnumerable<double> ws, double scale) Weight(IEnumerable<double> errs) {
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
             double aad = errs.AverageAbsoluteDeviation();
             double scale = Math.Max(min_scale, c * aad);
+
+            return (WeightFunc.Tukey(errs, scale), scale);
+        }
+    }
+
+    public class TukeyMedian : IWeightComputable {
+        readonly double c, min_scale;
+
+        public TukeyMedian(double c = 2.50, double min_scale = 0) {
+            if (!(c > 0)) {
+                throw new ArgumentOutOfRangeException(nameof(c));
+            }
+            if (!(min_scale >= 0)) {
+                throw new ArgumentOutOfRangeException(nameof(min_scale));
+            }
+
+            this.c = c;
+            this.min_scale = min_scale;
+        }
+
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
+            double mad = errs.Median();
+            double scale = Math.Max(min_scale, c * mad);
 
             return (WeightFunc.Tukey(errs, scale), scale);
         }
@@ -64,7 +87,7 @@ namespace ShapeFitting {
             this.min_scale = min_scale;
         }
 
-        public (IEnumerable<double> ws, double scale) Weight(IEnumerable<double> errs) {
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
             double mad = errs.MedianAbsoluteDeviation();
             double scale = Math.Max(min_scale, k * mad);
 
@@ -87,9 +110,32 @@ namespace ShapeFitting {
             this.min_scale = min_scale;
         }
 
-        public (IEnumerable<double> ws, double scale) Weight(IEnumerable<double> errs) {
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
             double aad = errs.AverageAbsoluteDeviation();
             double scale = Math.Max(min_scale, k * aad);
+
+            return (WeightFunc.Huber(errs, scale), scale);
+        }
+    }
+
+    public class HuberMedian : IWeightComputable {
+        readonly double k, min_scale;
+
+        public HuberMedian(double k = 0.720, double min_scale = 0) {
+            if (!(k > 0)) {
+                throw new ArgumentOutOfRangeException(nameof(k));
+            }
+            if (!(min_scale >= 0)) {
+                throw new ArgumentOutOfRangeException(nameof(min_scale));
+            }
+
+            this.k = k;
+            this.min_scale = min_scale;
+        }
+
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
+            double mad = errs.Median();
+            double scale = Math.Max(min_scale, k * mad);
 
             return (WeightFunc.Huber(errs, scale), scale);
         }
@@ -98,7 +144,7 @@ namespace ShapeFitting {
     internal class Lasso : IWeightComputable {
         public Lasso() { }
 
-        public (IEnumerable<double> ws, double scale) Weight(IEnumerable<double> errs) {
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
             double k = Math.Max(errs.Min(), errs.Max() * 1e-3);
 
             return (WeightFunc.Huber(errs, k), double.NaN);

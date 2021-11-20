@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ShapeFitting {
 
@@ -58,12 +57,20 @@ namespace ShapeFitting {
         }
         public void Deconstruct(out double x, out double y) => (x, y) = (X, Y);
 
-        public static IEnumerable<Vector> Concat(IEnumerable<double> xs, IEnumerable<double> ys) {
-            if (xs.Count() != ys.Count()) {
+        public static Vector[] Concat(IReadOnlyList<double> xs, IReadOnlyList<double> ys) {
+            if (xs.Count != ys.Count) {
                 throw new ArgumentException(ExceptionMessage.MismatchLength);
             }
 
-            return xs.Zip(ys, (x, y) => new Vector(x, y));
+            int n = xs.Count;
+
+            Vector[] vs = new Vector[n];
+
+            for (int i = 0; i < n; i++) {
+                vs[i] = new Vector(xs[i], ys[i]);
+            }
+
+            return vs;
         }
 
         public override int GetHashCode() {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ShapeFitting {
 
@@ -114,36 +113,50 @@ namespace ShapeFitting {
 
         public void Deconstruct(out double theta, out double phi) => (theta, phi) = (Theta, Phi);
 
-        public static IEnumerable<Line> Concat(IEnumerable<double> a_list, IEnumerable<double> b_list, IEnumerable<double> c_list) {
-            if (a_list.Count() != b_list.Count() || a_list.Count() != c_list.Count()) {
+        public static Line[] Concat(IReadOnlyList<double> a_list, IReadOnlyList<double> b_list, IReadOnlyList<double> c_list) {
+            if (a_list.Count != b_list.Count || a_list.Count != c_list.Count) {
                 throw new ArgumentException(ExceptionMessage.MismatchLength);
             }
 
-            using var ea = a_list.GetEnumerator();
-            using var eb = b_list.GetEnumerator();
-            using var ec = c_list.GetEnumerator();
+            int n = a_list.Count;
 
-            while (ea.MoveNext() && eb.MoveNext() && ec.MoveNext()) {
-                yield return new Line(ea.Current, eb.Current, ec.Current);
+            Line[] lines = new Line[n];
+            for (int i = 0; i < n; i++) {
+                lines[i] = new Line(a_list[i], b_list[i], c_list[i]);
             }
+
+            return lines;
         }
 
-        public static IEnumerable<Line> Concat(IEnumerable<double> theta_list, IEnumerable<double> phi_list) {
-            if (theta_list.Count() != phi_list.Count()) {
+        public static Line[] Concat(IReadOnlyList<double> theta_list, IReadOnlyList<double> phi_list) {
+            if (theta_list.Count != phi_list.Count) {
                 throw new ArgumentException(ExceptionMessage.MismatchLength);
             }
 
-            return theta_list.Zip(phi_list, (theta, phi) => new Line(theta, phi));
+            int n = theta_list.Count;
+
+            Line[] lines = new Line[n];
+            for (int i = 0; i < n; i++) {
+                lines[i] = new Line(theta_list[i], phi_list[i]);
+            }
+
+            return lines;
         }
 
-        public static IEnumerable<double> Distance(IEnumerable<Vector> vs, double a, double b, double c) {
+        public static double[] Distance(IReadOnlyList<Vector> vs, double a, double b, double c) {
+            double[] dists = new double[vs.Count];
+
             double n = Math.Sqrt(a * a + b * b);
             (a, b, c) = (a / n, b / n, c / n);
 
-            foreach ((double x, double y) in vs) {
+            for (int i = 0; i < vs.Count; i++) {
+                (double x, double y) = vs[i];
+
                 double dist = Math.Abs(a * x + b * y + c);
-                yield return dist;
+                dists[i] = dist;
             }
+
+            return dists;
         }
 
         public override int GetHashCode() {

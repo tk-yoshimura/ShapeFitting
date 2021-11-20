@@ -2,6 +2,6 @@
 
 namespace ShapeFitting {
     public interface IWeightComputable {
-        public (IEnumerable<double> ws, double scale) Weight(IEnumerable<double> errs);
+        public (double[] ws, double scale) Weight(IReadOnlyList<double> errs);
     }
 }

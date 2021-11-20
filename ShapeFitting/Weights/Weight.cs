@@ -147,7 +147,7 @@ namespace ShapeFitting {
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
             double k = Math.Max(errs.Min(), errs.Max() * 1e-3);
 
-            return (WeightFunc.Huber(errs, k), double.NaN);
+            return (WeightFunc.Huber(errs, k), errs.Median());
         }
     }
 }

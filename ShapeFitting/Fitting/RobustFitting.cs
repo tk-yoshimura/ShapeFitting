@@ -50,13 +50,13 @@ namespace ShapeFitting {
 
                 if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
-                    Trace.WriteLine($"breakiter {iter}");
+                    Trace.WriteLine($"convergence iter {iter}");
 #endif
                     iter = iters;
                 }
-                else if (new_scale > scale || double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
+                else if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
 #if DEBUG
-                    Trace.WriteLine($"breakiter {iter}");
+                    Trace.WriteLine($"break iter {iter}");
 #endif
                     break;
                 }
@@ -122,13 +122,13 @@ namespace ShapeFitting {
 
                 if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
-                    Trace.WriteLine($"breakiter {iter}");
+                    Trace.WriteLine($"convergence iter {iter}");
 #endif
                     iter = iters;
                 }
-                else if (new_scale > scale || double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
+                else if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
 #if DEBUG
-                    Trace.WriteLine($"breakiter {iter}");
+                    Trace.WriteLine($"break iter {iter}");
 #endif
                     break;
                 }
@@ -198,15 +198,14 @@ namespace ShapeFitting {
 
                 if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
-                    Trace.WriteLine($"breakiter {iter}");
+                    Trace.WriteLine($"convergence iter {iter}");
 #endif
                     iter = iters;
                 }
-                else if (new_scale > scale ||
-                         double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c) ||
+                else if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c) ||
                          double.IsNaN(new_d) || double.IsNaN(new_e) || double.IsNaN(new_f)) {
 #if DEBUG
-                    Trace.WriteLine($"breakiter {iter}");
+                    Trace.WriteLine($"break iter {iter}");
 #endif
 
                     break;

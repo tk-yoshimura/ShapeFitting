@@ -27,7 +27,7 @@ namespace ShapeFittingTest {
 
         [TestMethod]
         public void ValidTest() {
-            Vector vector1 = new(2, 3), vector2 = Vector.NaN;
+            Vector vector1 = new(2, 3), vector2 = Vector.Invalid;
 
             Assert.AreNotEqual(vector1, vector2);
             Assert.IsTrue(vector1.IsValid);

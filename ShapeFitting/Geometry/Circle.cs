@@ -21,7 +21,7 @@ namespace ShapeFitting {
 
         public bool IsValid => Center.IsValid && double.IsFinite(Radius) && Radius >= 0;
 
-        public static Circle NaN => new(Vector.NaN, double.NaN);
+        public static Circle Invalid => new(Vector.Invalid, double.NaN);
 
         /// <summary>from x^2 + y^2 + ax + by + c = 0</summary>
         public static Circle FromImplicit(double a, double b, double c) {
@@ -124,7 +124,7 @@ namespace ShapeFitting {
 
         public override string ToString() {
             if (!IsValid) {
-                return nameof(NaN);
+                return nameof(Invalid);
             }
 
             return $"({Center}),{Radius}";

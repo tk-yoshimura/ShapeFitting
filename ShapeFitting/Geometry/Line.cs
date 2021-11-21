@@ -30,7 +30,7 @@ namespace ShapeFitting {
 
         public bool IsValid => double.IsFinite(A) && double.IsFinite(B) && double.IsFinite(C);
 
-        public static Line NaN => new(double.NaN, double.NaN, double.NaN);
+        public static Line Invalid => new(double.NaN, double.NaN, double.NaN);
 
         /// <summary>y = f(x)</summary>
         public double Fx(double x) => -(A * x + C) / B;
@@ -165,7 +165,7 @@ namespace ShapeFitting {
 
         public override string ToString() {
             if (!IsValid) {
-                return nameof(NaN);
+                return nameof(Invalid);
             }
 
             return $"({Theta},{Phi})";

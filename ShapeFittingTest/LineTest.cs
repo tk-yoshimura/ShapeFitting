@@ -41,7 +41,7 @@ namespace ShapeFittingTest {
 
         [TestMethod]
         public void ValidTest() {
-            Line line1 = new(1, 2, 3), line2 = Line.NaN;
+            Line line1 = new(1, 2, 3), line2 = Line.Invalid;
 
             Assert.AreNotEqual(line1, line2);
             Assert.IsTrue(line1.IsValid);

@@ -20,12 +20,12 @@ namespace ShapeFitting {
             && double.IsFinite(Axis.major) && double.IsFinite(Axis.minor)
             && double.IsFinite(Angle);
 
-        public static Ellipse NaN => new(Vector.NaN, (double.NaN, double.NaN), double.NaN);
+        public static Ellipse Invalid => new(Vector.Invalid, (double.NaN, double.NaN), double.NaN);
 
         /// <summary>from a x^2 + b x y + c y^2 + d x + e y + f = 0</summary>
         public static Ellipse FromImplicit(double a, double b, double c, double d, double e, double f) {
             if (4 * a * c - b * b <= 0) {
-                return NaN;
+                return Invalid;
             }
 
             double angle = (b == 0 && a == c) ? 0 : Math.Atan2(b, a - c) / 2;
@@ -129,7 +129,7 @@ namespace ShapeFitting {
 
         public override string ToString() {
             if (!IsValid) {
-                return nameof(NaN);
+                return nameof(Invalid);
             }
 
             return $"({Center}),{Axis},{Angle}";

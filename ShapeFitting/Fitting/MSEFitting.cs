@@ -6,7 +6,7 @@ namespace ShapeFitting {
             int n = vs.Count;
 
             if (n < 2) {
-                return Line.NaN;
+                return Line.Invalid;
             }
 
             (double sx, double sy,
@@ -25,7 +25,7 @@ namespace ShapeFitting {
             int n = vs.Count;
 
             if (n < 3) {
-                return Circle.NaN;
+                return Circle.Invalid;
             }
 
             (double sx, double sy,

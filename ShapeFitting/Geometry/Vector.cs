@@ -15,7 +15,7 @@ namespace ShapeFitting {
 
         public bool IsValid => double.IsFinite(X) && double.IsFinite(Y);
 
-        public static Vector NaN => new(double.NaN, double.NaN);
+        public static Vector Invalid => new(double.NaN, double.NaN);
 
         public static Vector operator +(Vector a, Vector b) {
             return new Vector(a.X + b.X, a.Y + b.Y);
@@ -78,7 +78,7 @@ namespace ShapeFitting {
         }
 
         public override string ToString() {
-            return IsValid ? $"{X},{Y}" : nameof(NaN);
+            return IsValid ? $"{X},{Y}" : nameof(Invalid);
         }
 
     }

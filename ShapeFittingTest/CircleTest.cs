@@ -58,7 +58,7 @@ namespace ShapeFittingTest {
 
         [TestMethod]
         public void ValidTest() {
-            Circle circle1 = new(1, 2, 3), circle2 = Circle.NaN;
+            Circle circle1 = new(1, 2, 3), circle2 = Circle.Invalid;
 
             Assert.AreNotEqual(circle1, circle2);
             Assert.IsTrue(circle1.IsValid);

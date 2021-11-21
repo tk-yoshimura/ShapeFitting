@@ -94,7 +94,7 @@ namespace ShapeFittingTest {
 
         [TestMethod]
         public void ValidTest() {
-            Ellipse ellipse1 = new((1, 2), (4, 3), 5), ellipse2 = Ellipse.NaN;
+            Ellipse ellipse1 = new((1, 2), (4, 3), 5), ellipse2 = Ellipse.Invalid;
 
             Assert.AreNotEqual(ellipse1, ellipse2);
             Assert.IsTrue(ellipse1.IsValid);

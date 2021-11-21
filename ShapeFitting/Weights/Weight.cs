@@ -6,7 +6,7 @@ namespace ShapeFitting {
     public class TukeyMAD : IWeightComputable {
         readonly double c, min_scale;
 
-        public TukeyMAD(double c = 3.160, double min_scale = 0) {
+        public TukeyMAD(double c = 2.75, double min_scale = 0) {
             if (!(c > 0)) {
                 throw new ArgumentOutOfRangeException(nameof(c));
             }
@@ -29,7 +29,7 @@ namespace ShapeFitting {
     public class TukeyAAD : IWeightComputable {
         readonly double c, min_scale;
 
-        public TukeyAAD(double c = 3.738, double min_scale = 0) {
+        public TukeyAAD(double c = 1.50, double min_scale = 0) {
             if (!(c > 0)) {
                 throw new ArgumentOutOfRangeException(nameof(c));
             }
@@ -75,7 +75,7 @@ namespace ShapeFitting {
     public class HuberMAD : IWeightComputable {
         readonly double k, min_scale;
 
-        public HuberMAD(double k = 0.907, double min_scale = 0) {
+        public HuberMAD(double k = 0.75, double min_scale = 0) {
             if (!(k > 0)) {
                 throw new ArgumentOutOfRangeException(nameof(k));
             }
@@ -98,7 +98,7 @@ namespace ShapeFitting {
     public class HuberAAD : IWeightComputable {
         readonly double k, min_scale;
 
-        public HuberAAD(double k = 1.073, double min_scale = 0) {
+        public HuberAAD(double k = 0.25, double min_scale = 0) {
             if (!(k > 0)) {
                 throw new ArgumentOutOfRangeException(nameof(k));
             }
@@ -121,7 +121,7 @@ namespace ShapeFitting {
     public class HuberMedian : IWeightComputable {
         readonly double k, min_scale;
 
-        public HuberMedian(double k = 0.720, double min_scale = 0) {
+        public HuberMedian(double k = 0.50, double min_scale = 0) {
             if (!(k > 0)) {
                 throw new ArgumentOutOfRangeException(nameof(k));
             }

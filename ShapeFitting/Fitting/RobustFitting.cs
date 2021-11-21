@@ -48,17 +48,19 @@ namespace ShapeFitting {
                     swx2, swxy, swy2
                 );
 
+                if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c) ||
+                    !(new Line(new_a, new_b, new_c).IsValid)) {
+#if DEBUG
+                    Trace.WriteLine($"break iter {iter}");
+#endif
+                    break;
+                }
+
                 if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"convergence iter {iter}");
 #endif
                     iter = iters;
-                }
-                else if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
-#if DEBUG
-                    Trace.WriteLine($"break iter {iter}");
-#endif
-                    break;
                 }
 
                 (a, b, c) = (new_a, new_b, new_c);
@@ -120,17 +122,19 @@ namespace ShapeFitting {
                     swx3, swx2y, swxy2, swy3
                 );
 
+                if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)
+                    || !Circle.FromImplicit(new_a, new_b, new_c).IsValid) {
+#if DEBUG
+                    Trace.WriteLine($"break iter {iter}");
+#endif
+                    break;
+                }
+
                 if (new_scale <= scale && scale - new_scale < toi) {
 #if DEBUG
                     Trace.WriteLine($"convergence iter {iter}");
 #endif
                     iter = iters;
-                }
-                else if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c)) {
-#if DEBUG
-                    Trace.WriteLine($"break iter {iter}");
-#endif
-                    break;
                 }
 
                 (a, b, c) = (new_a, new_b, new_c);
@@ -196,19 +200,21 @@ namespace ShapeFitting {
                     swx4, swx3y, swx2y2, swxy3, swy4
                 );
 
-                if (new_scale <= scale && scale - new_scale < toi) {
-#if DEBUG
-                    Trace.WriteLine($"convergence iter {iter}");
-#endif
-                    iter = iters;
-                }
-                else if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c) ||
-                         double.IsNaN(new_d) || double.IsNaN(new_e) || double.IsNaN(new_f)) {
+                if (double.IsNaN(new_a) || double.IsNaN(new_b) || double.IsNaN(new_c) ||
+                    double.IsNaN(new_d) || double.IsNaN(new_e) || double.IsNaN(new_f) ||
+                    !Ellipse.FromImplicit(new_a, new_b, new_c, new_d, new_e, new_f).IsValid) {
 #if DEBUG
                     Trace.WriteLine($"break iter {iter}");
 #endif
 
                     break;
+                }
+
+                if (new_scale <= scale && scale - new_scale < toi) {
+#if DEBUG
+                    Trace.WriteLine($"convergence iter {iter}");
+#endif
+                    iter = iters;
                 }
 
                 (a, b, c, d, e, f) = (new_a, new_b, new_c, new_d, new_e, new_f);
@@ -220,6 +226,18 @@ namespace ShapeFitting {
             }
 
             return Ellipse.FromImplicit(a, b, c, d, e, f);
+        }
+
+        public static Line FitLine(IReadOnlyList<Vector> vs, int iters = 16, double toi = 1e-4) {
+            return FitLine(vs, new Lasso(), iters, toi);
+        }
+
+        public static Circle FitCircle(IReadOnlyList<Vector> vs, int iters = 16, double toi = 1e-4, double points_resolution = 0.01) {
+            return FitCircle(vs, new TukeyMedian(c: 1.5, points_resolution), iters, toi);
+        }
+
+        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, int iters = 16, double toi = 1e-4, double points_resolution = 0.01) {
+            return FitEllipse(vs, new TukeyMedian(c: 1.75, points_resolution), iters, toi);
         }
     }
 }

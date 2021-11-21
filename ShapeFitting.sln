@@ -15,6 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeFittingBenchmark", "ShapeFittingBenchmark\ShapeFittingBenchmark.csproj", "{F038C75C-DA22-48B4-9A07-C825ED0E65B9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{22613731-5DDC-4EF7-B60B-3F217C6B7035} = {22613731-5DDC-4EF7-B60B-3F217C6B7035}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +34,10 @@ Global
 		{8B7BAFBB-2073-462D-B44E-B280F937A801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B7BAFBB-2073-462D-B44E-B280F937A801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B7BAFBB-2073-462D-B44E-B280F937A801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F038C75C-DA22-48B4-9A07-C825ED0E65B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F038C75C-DA22-48B4-9A07-C825ED0E65B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F038C75C-DA22-48B4-9A07-C825ED0E65B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F038C75C-DA22-48B4-9A07-C825ED0E65B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

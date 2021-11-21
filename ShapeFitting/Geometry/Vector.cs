@@ -55,6 +55,7 @@ namespace ShapeFitting {
         public static implicit operator Vector((double x, double y) v) {
             return new Vector(v.x, v.y);
         }
+
         public void Deconstruct(out double x, out double y) => (x, y) = (X, Y);
 
         public static Vector[] Concat(IReadOnlyList<double> xs, IReadOnlyList<double> ys) {
@@ -80,6 +81,5 @@ namespace ShapeFitting {
         public override string ToString() {
             return IsValid ? $"{X},{Y}" : nameof(Invalid);
         }
-
     }
 }

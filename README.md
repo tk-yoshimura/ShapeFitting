@@ -2,18 +2,25 @@
 
 Robust shape fitting
 
-## Weighted Fitting for Line2D
+## Install
+
+[Download DLL](https://github.com/tk-yoshimura/ShapeFitting/releases)
+
+- To install, just import the DLL.
+- This library does not change the environment at all.
+
+## Weighted Fitting for Line
 
 ![fitline1](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitline1.svg)  
 ![fitline2](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitline2.svg)  
 ![fitline3](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitline3.svg)  
 
-## Weighted Fitting for Circle2D
+## Weighted Fitting for Circle
 
 ![fitcircle1](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitcircle1.svg)  
 ![fitcircle2](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitcircle2.svg)  
 
-## Weighted Fitting for Ellipse2D
+## Weighted Fitting for Ellipse
 
 ### least-square approximation (LIN)
 
@@ -28,3 +35,10 @@ Robust shape fitting
 ![fitellipse6](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse6.svg)  
 ![fitellipse7](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse7.svg)  
 ![fitellipse8](https://github.com/tk-yoshimura/ShapeFitting/blob/main/figures/fitellipse8.svg)  
+
+## Licence
+[MIT](https://github.com/tk-yoshimura/ShapeFitting/blob/main/LICENSE)
+
+## Author
+
+[T.Yoshimura](https://github.com/tk-yoshimura)

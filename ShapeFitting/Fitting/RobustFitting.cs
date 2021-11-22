@@ -4,12 +4,12 @@ using System.Diagnostics;
 
 namespace ShapeFitting {
     public static class RobustFitting {
-        public static Line FitLine(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
+        public static Line FitLine(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double tolerance = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
-            if (!(toi > 0)) {
-                throw new ArgumentOutOfRangeException(nameof(toi));
+            if (!(tolerance > 0)) {
+                throw new ArgumentOutOfRangeException(nameof(tolerance));
             }
 
             int n = vs.Count;
@@ -56,7 +56,7 @@ namespace ShapeFitting {
                     break;
                 }
 
-                if (new_scale <= scale && scale - new_scale < toi) {
+                if (new_scale <= scale && scale - new_scale < tolerance) {
 #if DEBUG
                     Trace.WriteLine($"convergence iter {iter}");
 #endif
@@ -74,12 +74,12 @@ namespace ShapeFitting {
             return new Line(a, b, c);
         }
 
-        public static Circle FitCircle(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
+        public static Circle FitCircle(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double tolerance = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
-            if (!(toi > 0)) {
-                throw new ArgumentOutOfRangeException(nameof(toi));
+            if (!(tolerance > 0)) {
+                throw new ArgumentOutOfRangeException(nameof(tolerance));
             }
 
             int n = vs.Count;
@@ -130,7 +130,7 @@ namespace ShapeFitting {
                     break;
                 }
 
-                if (new_scale <= scale && scale - new_scale < toi) {
+                if (new_scale <= scale && scale - new_scale < tolerance) {
 #if DEBUG
                     Trace.WriteLine($"convergence iter {iter}");
 #endif
@@ -148,12 +148,12 @@ namespace ShapeFitting {
             return Circle.FromImplicit(a, b, c);
         }
 
-        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double toi = 1e-4) {
+        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, IWeightComputable weight_rule, int iters = 16, double tolerance = 1e-4) {
             if (iters <= 1) {
                 throw new ArgumentOutOfRangeException(nameof(iters));
             }
-            if (!(toi > 0)) {
-                throw new ArgumentOutOfRangeException(nameof(toi));
+            if (!(tolerance > 0)) {
+                throw new ArgumentOutOfRangeException(nameof(tolerance));
             }
 
             int n = vs.Count;
@@ -210,7 +210,7 @@ namespace ShapeFitting {
                     break;
                 }
 
-                if (new_scale <= scale && scale - new_scale < toi) {
+                if (new_scale <= scale && scale - new_scale < tolerance) {
 #if DEBUG
                     Trace.WriteLine($"convergence iter {iter}");
 #endif
@@ -228,16 +228,16 @@ namespace ShapeFitting {
             return Ellipse.FromImplicit(a, b, c, d, e, f);
         }
 
-        public static Line FitLine(IReadOnlyList<Vector> vs, int iters = 16, double toi = 1e-4) {
-            return FitLine(vs, new Lasso(), iters, toi);
+        public static Line FitLine(IReadOnlyList<Vector> vs, int iters = 16, double tolerance = 1e-4) {
+            return FitLine(vs, new Lasso(), iters, tolerance);
         }
 
-        public static Circle FitCircle(IReadOnlyList<Vector> vs, int iters = 16, double toi = 1e-4, double points_resolution = 0.01) {
-            return FitCircle(vs, new TukeyMedian(c: 1.5, points_resolution), iters, toi);
+        public static Circle FitCircle(IReadOnlyList<Vector> vs, int iters = 16, double tolerance = 1e-4, double points_resolution = 0.01) {
+            return FitCircle(vs, new TukeyMedian(c: 1.5, points_resolution), iters, tolerance);
         }
 
-        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, int iters = 16, double toi = 1e-4, double points_resolution = 0.01) {
-            return FitEllipse(vs, new TukeyMedian(c: 1.75, points_resolution), iters, toi);
+        public static Ellipse FitEllipse(IReadOnlyList<Vector> vs, int iters = 16, double tolerance = 1e-4, double points_resolution = 0.01) {
+            return FitEllipse(vs, new TukeyMedian(c: 1.75, points_resolution), iters, tolerance);
         }
     }
 }

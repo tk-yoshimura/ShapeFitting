@@ -15,6 +15,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("72817856-824A-41A6-9962-FC8D0F514546")]
 
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.1")]
 
 [assembly: InternalsVisibleTo("ShapeFittingTest")]

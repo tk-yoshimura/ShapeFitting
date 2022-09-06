@@ -2,6 +2,9 @@
 
 Robust shape fitting
 
+## Requirement
+ .NET 6.0
+
 ## Install
 
 [Download DLL](https://github.com/tk-yoshimura/ShapeFitting/releases)

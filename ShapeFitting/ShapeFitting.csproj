@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
-    <DocumentationFile>bin\Debug\net5.0\ShapeFitting.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net6.0\ShapeFitting.xml</DocumentationFile>
     <Optimize>False</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
-    <DocumentationFile>bin\Release\net5.0\ShapeFitting.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net6.0\ShapeFitting.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

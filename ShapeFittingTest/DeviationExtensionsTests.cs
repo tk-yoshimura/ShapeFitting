@@ -17,12 +17,12 @@ namespace ShapeFittingTest {
 
         [TestMethod]
         public void MedianAbsoluteDeviationTest() {
-            Assert.AreEqual(1d, new double[] { 1, 4, 1, 6, 2, 9, 2 }.MedianAbsoluteDeviation());
+            Assert.AreEqual(1d, new double[] { 1, 4, 1, 6, 2, 9, 2 }.MedianAbsoluteDeviation().mad);
         }
 
         [TestMethod]
         public void AverageAbsoluteDeviationTest() {
-            Assert.AreEqual(3.6d, new double[] { 2, 2, 3, 4, 14 }.AverageAbsoluteDeviation(), 1e-10);
+            Assert.AreEqual(3.6d, new double[] { 2, 2, 3, 4, 14 }.AverageAbsoluteDeviation().aad, 1e-10);
         }
     }
 }

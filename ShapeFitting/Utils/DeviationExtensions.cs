@@ -27,19 +27,19 @@ namespace ShapeFitting {
         }
 
         /// <summary> MAD = median(|x - median(x)|) </summary>
-        public static double MedianAbsoluteDeviation(this IEnumerable<double> vs) {
+        public static (double median, double mad) MedianAbsoluteDeviation(this IEnumerable<double> vs) {
             double median = vs.Median();
             double mad = vs.Select((v) => Math.Abs(v - median)).Median();
 
-            return mad;
+            return (median, mad);
         }
 
         /// <summary> AAD = mean(|x - mean(x)|) </summary>
-        public static double AverageAbsoluteDeviation(this IEnumerable<double> vs) {
+        public static (double mean, double aad) AverageAbsoluteDeviation(this IEnumerable<double> vs) {
             double mean = vs.Average();
             double aad = vs.Select((v) => Math.Abs(v - mean)).Average();
 
-            return aad;
+            return (mean, aad);
         }
     }
 }

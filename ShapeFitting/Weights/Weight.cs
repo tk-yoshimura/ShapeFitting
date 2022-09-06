@@ -19,8 +19,8 @@ namespace ShapeFitting {
         }
 
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
-            double mad = errs.MedianAbsoluteDeviation();
-            double scale = Math.Max(min_scale, c * mad);
+            (double median, double mad) = errs.MedianAbsoluteDeviation();
+            double scale = median + Math.Max(min_scale, c * mad);
 
             return (WeightFunc.Tukey(errs, scale), scale);
         }
@@ -42,8 +42,8 @@ namespace ShapeFitting {
         }
 
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
-            double aad = errs.AverageAbsoluteDeviation();
-            double scale = Math.Max(min_scale, c * aad);
+            (double mean, double aad) = errs.AverageAbsoluteDeviation();
+            double scale = mean + Math.Max(min_scale, c * aad);
 
             return (WeightFunc.Tukey(errs, scale), scale);
         }
@@ -65,8 +65,8 @@ namespace ShapeFitting {
         }
 
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
-            double mad = errs.Median();
-            double scale = Math.Max(min_scale, c * mad);
+            double median = errs.Median();
+            double scale = Math.Max(min_scale, c * median);
 
             return (WeightFunc.Tukey(errs, scale), scale);
         }
@@ -88,8 +88,8 @@ namespace ShapeFitting {
         }
 
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
-            double mad = errs.MedianAbsoluteDeviation();
-            double scale = Math.Max(min_scale, k * mad);
+            (double median, double mad) = errs.MedianAbsoluteDeviation();
+            double scale = median + Math.Max(min_scale, k * mad);
 
             return (WeightFunc.Huber(errs, scale), scale);
         }
@@ -111,8 +111,8 @@ namespace ShapeFitting {
         }
 
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
-            double aad = errs.AverageAbsoluteDeviation();
-            double scale = Math.Max(min_scale, k * aad);
+            (double mean, double aad) = errs.AverageAbsoluteDeviation();
+            double scale = mean + Math.Max(min_scale, k * aad);
 
             return (WeightFunc.Huber(errs, scale), scale);
         }
@@ -134,8 +134,8 @@ namespace ShapeFitting {
         }
 
         public (double[] ws, double scale) Weight(IReadOnlyList<double> errs) {
-            double mad = errs.Median();
-            double scale = Math.Max(min_scale, k * mad);
+            double median = errs.Median();
+            double scale = Math.Max(min_scale, k * median);
 
             return (WeightFunc.Huber(errs, scale), scale);
         }

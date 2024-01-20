@@ -3,14 +3,12 @@
 Robust shape fitting
 
 ## Requirement
- .NET 6.0
+ .NET 8.0
 
 ## Install
 
 [Download DLL](https://github.com/tk-yoshimura/ShapeFitting/releases)
-
-- To install, just import the DLL.
-- This library does not change the environment at all.
+[Download Nuget](https://github.com/tk-yoshimura/ShapeFitting/releases)
 
 ## Weighted Fitting for Line
 

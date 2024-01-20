@@ -310,12 +310,12 @@ namespace ShapeFitting {
             m11 -= l; m22 -= l; m33 -= l;
 
             double rx, ry, rz;
-            double[][] e = { new double[]{ m11, m12, m13 },
-                             new double[]{ m21, m22, m23 },
-                             new double[]{ m31, m32, m33 } };
+            double[][] e = [ [m11, m12, m13],
+                             [m21, m22, m23],
+                             [m31, m32, m33] ];
 
             (int i0, int i1, int i2) = Order.AbsArgSort(e[0][0], e[1][0], e[2][0]);
-            e = new double[][] { e[i0], e[i1], e[i2] };
+            e = [e[i0], e[i1], e[i2]];
 
             if (Math.Abs(e[2][0]) > eps) {
                 double r02 = e[0][0] / e[2][0], r12 = e[1][0] / e[2][0];
@@ -328,7 +328,7 @@ namespace ShapeFitting {
             }
 
             if (Math.Abs(e[0][1]) > Math.Abs(e[1][1])) {
-                e = new double[][] { e[1], e[0], e[2] };
+                e = [e[1], e[0], e[2]];
             }
 
             if (Math.Abs(e[1][1]) > eps) {

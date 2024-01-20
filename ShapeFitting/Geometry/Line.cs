@@ -13,8 +13,8 @@ namespace ShapeFitting {
         public double B { set; get; }
         public double C { set; get; }
 
-        public double Theta => Math.Atan2(A, B);
-        public double Phi => C;
+        public readonly double Theta => Math.Atan2(A, B);
+        public readonly double Phi => C;
 
         public Line(double a, double b, double c) {
             this.A = a;
@@ -28,15 +28,15 @@ namespace ShapeFitting {
             this.C = phi;
         }
 
-        public bool IsValid => double.IsFinite(A) && double.IsFinite(B) && double.IsFinite(C);
+        public readonly bool IsValid => double.IsFinite(A) && double.IsFinite(B) && double.IsFinite(C);
 
         public static Line Invalid => new(double.NaN, double.NaN, double.NaN);
 
         /// <summary>y = f(x)</summary>
-        public double Fx(double x) => -(A * x + C) / B;
+        public readonly double Fx(double x) => -(A * x + C) / B;
 
         /// <summary>y = f(x)</summary>
-        public double[] Fx(double[] xs) {
+        public readonly double[] Fx(double[] xs) {
             double[] ys = new double[xs.Length];
             for (int i = 0; i < xs.Length; i++) {
                 ys[i] = -(A * xs[i] + C) / B;
@@ -46,10 +46,10 @@ namespace ShapeFitting {
         }
 
         /// <summary>x = f(y)</summary>
-        public double Fy(double y) => -(B * y + C) / A;
+        public readonly double Fy(double y) => -(B * y + C) / A;
 
         /// <summary>x = f(y)</summary>
-        public double[] Fy(double[] ys) {
+        public readonly double[] Fy(double[] ys) {
             double[] xs = new double[ys.Length];
             for (int i = 0; i < ys.Length; i++) {
                 xs[i] = -(B * ys[i] + C) / A;
@@ -81,7 +81,7 @@ namespace ShapeFitting {
             }
         }
 
-        public override bool Equals(object obj) {
+        public override readonly bool Equals(object obj) {
             return obj is Line line && (line == this);
         }
 
@@ -109,9 +109,9 @@ namespace ShapeFitting {
             return (line.Theta, line.Phi);
         }
 
-        public void Deconstruct(out double a, out double b, out double c) => (a, b, c) = (A, B, C);
+        public readonly void Deconstruct(out double a, out double b, out double c) => (a, b, c) = (A, B, C);
 
-        public void Deconstruct(out double theta, out double phi) => (theta, phi) = (Theta, Phi);
+        public readonly void Deconstruct(out double theta, out double phi) => (theta, phi) = (Theta, Phi);
 
         public static Line[] Concat(IReadOnlyList<double> a_list, IReadOnlyList<double> b_list, IReadOnlyList<double> c_list) {
             if (a_list.Count != b_list.Count || a_list.Count != c_list.Count) {
@@ -159,11 +159,11 @@ namespace ShapeFitting {
             return dists;
         }
 
-        public override int GetHashCode() {
+        public override readonly int GetHashCode() {
             return A.GetHashCode() ^ B.GetHashCode() ^ C.GetHashCode();
         }
 
-        public override string ToString() {
+        public override readonly string ToString() {
             if (!IsValid) {
                 return nameof(Invalid);
             }

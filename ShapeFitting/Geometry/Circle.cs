@@ -19,7 +19,7 @@ namespace ShapeFitting {
             this.Radius = r;
         }
 
-        public bool IsValid => Center.IsValid && double.IsFinite(Radius) && Radius >= 0;
+        public readonly bool IsValid => Center.IsValid && double.IsFinite(Radius) && Radius >= 0;
 
         public static Circle Invalid => new(Vector.Invalid, double.NaN);
 
@@ -52,11 +52,11 @@ namespace ShapeFitting {
             return new Circle(center, radius);
         }
 
-        public Vector Point(double theta) {
+        public readonly Vector Point(double theta) {
             return Center + new Vector(Math.Cos(theta) * Radius, Math.Sin(theta) * Radius);
         }
 
-        public Vector[] Points(IReadOnlyList<double> thetas) {
+        public readonly Vector[] Points(IReadOnlyList<double> thetas) {
             Vector[] vs = new Vector[thetas.Count];
 
             for (int i = 0; i < thetas.Count; i++) {
@@ -67,7 +67,7 @@ namespace ShapeFitting {
             return vs;
         }
 
-        public override bool Equals(object obj) {
+        public override readonly bool Equals(object obj) {
             return obj is Circle circle && (circle == this);
         }
 
@@ -99,9 +99,9 @@ namespace ShapeFitting {
             return new Ellipse(circle.Center, (circle.Radius, circle.Radius), 0);
         }
 
-        public void Deconstruct(out double cx, out double cy, out double r) => (cx, cy, r) = (Center.X, Center.Y, Radius);
+        public readonly void Deconstruct(out double cx, out double cy, out double r) => (cx, cy, r) = (Center.X, Center.Y, Radius);
 
-        public void Deconstruct(out Vector c, out double r) => (c, r) = (Center, Radius);
+        public readonly void Deconstruct(out Vector c, out double r) => (c, r) = (Center, Radius);
 
         public static double[] Distance(IReadOnlyList<Vector> vs, double a, double b, double c) {
             double[] dists = new double[vs.Count];
@@ -118,11 +118,11 @@ namespace ShapeFitting {
             return dists;
         }
 
-        public override int GetHashCode() {
+        public override readonly int GetHashCode() {
             return Center.GetHashCode() ^ Radius.GetHashCode();
         }
 
-        public override string ToString() {
+        public override readonly string ToString() {
             if (!IsValid) {
                 return nameof(Invalid);
             }

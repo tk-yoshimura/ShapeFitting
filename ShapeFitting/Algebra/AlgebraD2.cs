@@ -192,8 +192,8 @@ namespace ShapeFitting {
 
             Matrix mat_asymm = new(m1, m3, m3, m2);
 
-            return ((l1, EigenVector(mat_asymm, l1, veps)),
-                    (l2, EigenVector(mat_asymm, l2, veps)));
+            return ((l1, EigenVector(mat_asymm, l1)),
+                    (l2, EigenVector(mat_asymm, l2)));
         }
 
         public static (double val, Vector vec)[] EigenValues(Matrix mat, double eps = 1e-8) {
@@ -221,10 +221,10 @@ namespace ShapeFitting {
                     .Distinct()
                 ).ToArray();
 
-            return ls.Select((l) => (l, EigenVector(mat, l, veps))).ToArray();
+            return ls.Select((l) => (l, EigenVector(mat, l))).ToArray();
         }
 
-        private static Vector EigenVector(Matrix mat, double l, double eps) {
+        private static Vector EigenVector(Matrix mat, double l) {
 
             static Vector normalize(Vector v) {
                 (double x, double y) = v;

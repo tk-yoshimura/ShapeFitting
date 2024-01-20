@@ -10,12 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShapeFittingTest", "ShapeFi
 		{22613731-5DDC-4EF7-B60B-3F217C6B7035} = {22613731-5DDC-4EF7-B60B-3F217C6B7035}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0211DD41-0938-4BC1-BA21-261315195536}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeFittingBenchmark", "ShapeFittingBenchmark\ShapeFittingBenchmark.csproj", "{F038C75C-DA22-48B4-9A07-C825ED0E65B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShapeFittingBenchmark", "ShapeFittingBenchmark\ShapeFittingBenchmark.csproj", "{F038C75C-DA22-48B4-9A07-C825ED0E65B9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{22613731-5DDC-4EF7-B60B-3F217C6B7035} = {22613731-5DDC-4EF7-B60B-3F217C6B7035}
 	EndProjectSection

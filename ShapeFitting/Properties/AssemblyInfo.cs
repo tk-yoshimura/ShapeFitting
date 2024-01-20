@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ShapeFitting")]
-[assembly: AssemblyCopyright("Copyright © T.Yoshimura 2021-2022")]
+[assembly: AssemblyCopyright("Copyright © T.Yoshimura 2021-2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,6 +15,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("72817856-824A-41A6-9962-FC8D0F514546")]
 
-[assembly: AssemblyVersion("1.1.0")]
+[assembly: AssemblyVersion("1.2.0")]
 
 [assembly: InternalsVisibleTo("ShapeFittingTest")]

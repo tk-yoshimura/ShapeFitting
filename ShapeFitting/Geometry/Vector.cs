@@ -13,7 +13,7 @@ namespace ShapeFitting {
             this.Y = y;
         }
 
-        public bool IsValid => double.IsFinite(X) && double.IsFinite(Y);
+        public readonly bool IsValid => double.IsFinite(X) && double.IsFinite(Y);
 
         public static Vector Invalid => new(double.NaN, double.NaN);
 
@@ -37,10 +37,10 @@ namespace ShapeFitting {
             return v * (1d / r);
         }
 
-        public double SquareNorm => X * X + Y * Y;
+        public readonly double SquareNorm => X * X + Y * Y;
         public double Norm => Math.Sqrt(SquareNorm);
 
-        public override bool Equals(object obj) {
+        public override readonly bool Equals(object obj) {
             return obj is Vector vector && (vector == this);
         }
 
@@ -56,7 +56,7 @@ namespace ShapeFitting {
             return new Vector(v.x, v.y);
         }
 
-        public void Deconstruct(out double x, out double y) => (x, y) = (X, Y);
+        public readonly void Deconstruct(out double x, out double y) => (x, y) = (X, Y);
 
         public static Vector[] Concat(IReadOnlyList<double> xs, IReadOnlyList<double> ys) {
             if (xs.Count != ys.Count) {
@@ -74,7 +74,7 @@ namespace ShapeFitting {
             return vs;
         }
 
-        public override int GetHashCode() {
+        public override readonly int GetHashCode() {
             return X.GetHashCode() ^ Y.GetHashCode();
         }
 

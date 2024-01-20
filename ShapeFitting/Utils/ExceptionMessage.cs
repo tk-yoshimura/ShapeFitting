@@ -9,14 +9,10 @@ namespace ShapeFitting {
 
         static ExceptionMessage() {
             string culture_name = CultureInfo.CurrentCulture.Name;
-            switch (culture_name) {
-                case "ja-JP":
-                    lang = Lang.JP;
-                    break;
-                default:
-                    lang = Lang.Default;
-                    break;
-            }
+            lang = culture_name switch {
+                "ja-JP" => Lang.JP,
+                _ => Lang.Default,
+            };
         }
 
         public static string MismatchLength =>

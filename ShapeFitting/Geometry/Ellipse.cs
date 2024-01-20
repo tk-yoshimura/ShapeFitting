@@ -16,7 +16,7 @@ namespace ShapeFitting {
             this.Angle = angle;
         }
 
-        public bool IsValid => Center.IsValid
+        public readonly bool IsValid => Center.IsValid
             && double.IsFinite(Axis.major) && double.IsFinite(Axis.minor)
             && double.IsFinite(Angle);
 
@@ -51,14 +51,14 @@ namespace ShapeFitting {
             return new Ellipse(new Vector(cx, cy), (major_axis, minor_axis), angle);
         }
 
-        public Vector Point(double theta) {
+        public readonly Vector Point(double theta) {
             double cs = Math.Cos(Angle), sn = Math.Sin(Angle);
             double a = Math.Cos(theta) * Axis.major, b = Math.Sin(theta) * Axis.minor;
 
             return Center + new Vector(cs * a - sn * b, sn * a + cs * b);
         }
 
-        public Vector[] Points(IReadOnlyList<double> thetas) {
+        public readonly Vector[] Points(IReadOnlyList<double> thetas) {
             Vector[] vs = new Vector[thetas.Count];
 
             double cs = Math.Cos(Angle), sn = Math.Sin(Angle);
@@ -74,7 +74,7 @@ namespace ShapeFitting {
             return vs;
         }
 
-        public override bool Equals(object obj) {
+        public override readonly bool Equals(object obj) {
             return obj is Ellipse ellipse && (ellipse == this);
         }
 
@@ -102,10 +102,10 @@ namespace ShapeFitting {
             return (ellipse.Center, ellipse.Axis, ellipse.Angle);
         }
 
-        public void Deconstruct(out double cx, out double cy, out double rx, out double ry, out double angle)
+        public readonly void Deconstruct(out double cx, out double cy, out double rx, out double ry, out double angle)
             => (cx, cy, rx, ry, angle) = (Center.X, Center.Y, Axis.major, Axis.minor, Angle);
 
-        public void Deconstruct(out Vector center, out (double major, double minor) axis, out double angle)
+        public readonly void Deconstruct(out Vector center, out (double major, double minor) axis, out double angle)
             => (center, axis, angle) = (Center, Axis, Angle);
 
         public static double[] Distance(IReadOnlyList<Vector> vs, double a, double b, double c, double d, double e, double f) {
@@ -123,7 +123,7 @@ namespace ShapeFitting {
             return dists;
         }
 
-        public override int GetHashCode() {
+        public override readonly int GetHashCode() {
             return Center.GetHashCode() ^ Axis.GetHashCode() ^ Angle.GetHashCode();
         }
 
